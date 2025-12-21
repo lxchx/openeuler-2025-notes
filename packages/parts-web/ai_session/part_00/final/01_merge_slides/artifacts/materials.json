@@ -1,0 +1,214 @@
+{
+  "materials": [
+    {
+      "id": "chunk_00/slide_001",
+      "type": "slide",
+      "start_ms": 500,
+      "end_ms": 120500,
+      "title": "AI分论坛 开场背景页",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_001",
+        "slide_index": 1,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_002",
+      "type": "slide",
+      "start_ms": 121500,
+      "end_ms": 140000,
+      "title": "基于openEuler intelligence 组建一支OS开发团队 演讲标题页",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_002",
+        "slide_index": 2,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_003",
+      "type": "slide",
+      "start_ms": 142500,
+      "end_ms": 217500,
+      "title": "基于openEuler intelligence 组建一支OS开发团队 演讲标题页（画面闪烁后恢复）",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_003",
+        "slide_index": 3,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_004",
+      "type": "slide",
+      "start_ms": 219000,
+      "end_ms": 523000,
+      "title": "OS Lifecycle workjob OS生命周期中的主要工作任务",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_004",
+        "slide_index": 4,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_005",
+      "type": "slide",
+      "start_ms": 525000,
+      "end_ms": 665000,
+      "title": "用户旅程：基于MCP Servers实现人机协同 展示用户与Agent交互的流程图",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_005",
+        "slide_index": 5,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_006",
+      "type": "slide",
+      "start_ms": 667000,
+      "end_ms": 855500,
+      "title": "Patch Merging - 技术实现 (白盒视角) 补丁合并的技术实现流程图",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_006",
+        "slide_index": 6,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_007",
+      "type": "slide",
+      "start_ms": 857000,
+      "end_ms": 934000,
+      "title": "Patch Merging - 落地效果 补丁合并的落地效果柱状图",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_007",
+        "slide_index": 7,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_008",
+      "type": "slide",
+      "start_ms": 936000,
+      "end_ms": 970500,
+      "title": "Integration Test/Bugfix 集成测试与Bug修复流程",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_008",
+        "slide_index": 8,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_009",
+      "type": "slide",
+      "start_ms": 972000,
+      "end_ms": 1019500,
+      "title": "Vmcore Analysis Vmcore分析流程",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_009",
+        "slide_index": 9,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_010",
+      "type": "slide",
+      "start_ms": 1021000,
+      "end_ms": 1059500,
+      "title": "技术架构：分层解耦驱动智能高效协同 分层技术架构图",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_010",
+        "slide_index": 10,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_011",
+      "type": "slide",
+      "start_ms": 1061000,
+      "end_ms": 1111500,
+      "title": "组建一支专业的OS开发团队 展示Agent与团队角色的对应关系表",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_011",
+        "slide_index": 11,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_012",
+      "type": "slide",
+      "start_ms": 1113000,
+      "end_ms": 1142500,
+      "title": "组建一支专业的OS开发团队 (Supervisor Agent) 强调Supervisor Agent的角色",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_012",
+        "slide_index": 12,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_013",
+      "type": "slide",
+      "start_ms": 1144000,
+      "end_ms": 1151500,
+      "title": "谢谢 演讲结束页",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_013",
+        "slide_index": 13,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_014",
+      "type": "slide",
+      "start_ms": 1153000,
+      "end_ms": 1201869,
+      "title": "AI分论坛 论坛背景页",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_014",
+        "slide_index": 14,
+        "offset_ms": 0
+      }
+    }
+  ]
+}

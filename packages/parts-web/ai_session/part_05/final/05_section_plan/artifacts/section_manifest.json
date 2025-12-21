@@ -1,0 +1,119 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "开场与主题介绍",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "start_ms": 1000,
+      "end_ms": 28000,
+      "summary_hint": "主持人介绍讲者李宇振，随后讲者介绍本次分享的主题：《通算/智算大模型推理加速协同探索与实践》。",
+      "text_span": {
+        "start": 0,
+        "end": 2
+      },
+      "lead_text": "下面，有请华为技术有限公司AI工程师李宇振先生，为我们带来《通算/智算大模型推理加速协同探索与实践》。大家欢迎。",
+      "tail_text": "我是来自华为的李宇振。今天给大家带来的是《通算/智算大模型推理加速协同探索与实践》。"
+    },
+    {
+      "id": "sec_2",
+      "title": "业务背景与传统推理痛点",
+      "material_ids": [
+        "chunk_00/slide_003"
+      ],
+      "start_ms": 31000,
+      "end_ms": 162000,
+      "summary_hint": "介绍传统推理场景中，计算集中于GPU导致CPU资源浪费，并指出XPU内存容量瓶颈是核心痛点。",
+      "text_span": {
+        "start": 3,
+        "end": 16
+      },
+      "lead_text": "首先，我们来看一下业务场景。",
+      "tail_text": "例如，在前向计算过程中，XPU承担了95%以上的计算量，而CPU的算力和内存利用率都非常低。"
+    },
+    {
+      "id": "sec_3",
+      "title": "CPU+XPU算力协同方案与PD分离",
+      "material_ids": [
+        "chunk_00/slide_004"
+      ],
+      "start_ms": 166000,
+      "end_ms": 357000,
+      "summary_hint": "为解决痛点，提出CPU+XPU算力协同方案。核心概念是PD分离，即将计算密集的Prefill置于XPU，内存密集的Decode置于CPU。",
+      "text_span": {
+        "start": 17,
+        "end": 27
+      },
+      "lead_text": "为了利用CPU的算力，我们提出了CPU+XPU算力协同方案。",
+      "tail_text": "协同方案的第二部分是通算推理加速，主要使用了三项技术：NUMA亲和、多线程并行和算子优化。这项技术目前主要应用于两大类模型：稠密模型的推理加速和MoE模型的推理加速。"
+    },
+    {
+      "id": "sec_4",
+      "title": "异构算力调度",
+      "material_ids": [
+        "chunk_00/slide_005"
+      ],
+      "start_ms": 361000,
+      "end_ms": 554000,
+      "summary_hint": "为平衡高并发与低时延，设计了异构算力调度。通过动态调度，解决PD分离带来的KV Cache传输开销挑战。",
+      "text_span": {
+        "start": 28,
+        "end": 38
+      },
+      "lead_text": "我们先来看异构算力调度。",
+      "tail_text": "为解决这个问题，我们可以收集历史调度信息，包括每次调度时的负载情况和吞吐量等。通过学习这些历史数据，我们可以预测在当前状态下，将Decode任务发送到某个设备后其吞吐量的变化，从而进行更精准的动态调度。"
+    },
+    {
+      "id": "sec_5",
+      "title": "通算推理加速关键技术",
+      "material_ids": [
+        "chunk_00/slide_006",
+        "chunk_00/slide_007"
+      ],
+      "start_ms": 558000,
+      "end_ms": 760000,
+      "summary_hint": "详细介绍CPU端的推理加速技术，包括NUMA亲和、多线程并行和算子优化，并说明其在稠密模型和MoE模型中的具体应用。",
+      "text_span": {
+        "start": 39,
+        "end": 46
+      },
+      "lead_text": "关于通算推理加速，主要涉及三点：NUMA亲和、多线程并行和算子优化。",
+      "tail_text": "对于MoE模型，我们目前的策略是在XPU上完成注意力计算，而在CPU上进行大量的专家计算。"
+    },
+    {
+      "id": "sec_6",
+      "title": "业务效果展示",
+      "material_ids": [
+        "chunk_00/slide_008"
+      ],
+      "start_ms": 763000,
+      "end_ms": 811000,
+      "summary_hint": "展示协同方案带来的性能提升：在实时在线推理场景中并发量提升，在离线批量推理场景中总吞吐量提升。",
+      "text_span": {
+        "start": 47,
+        "end": 49
+      },
+      "lead_text": "关于业务效果，我们分两个场景来看。",
+      "tail_text": "在非实时离线批量推理场景下，与原始方案相比，协同方案在Qwen-32B模型上可将总吞吐量提升20.1%，在Qwen-7B模型上可提升7.1%。"
+    },
+    {
+      "id": "sec_7",
+      "title": "总结与未来工作展望",
+      "material_ids": [
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "start_ms": 814000,
+      "end_ms": 868000,
+      "summary_hint": "总结演讲内容，并提出下一步工作将聚焦于MoE模型的多机多卡异构调度、AF分离及Expert分布式调度。",
+      "text_span": {
+        "start": 50,
+        "end": 52
+      },
+      "lead_text": "我们下一步的工作将重点聚焦于MoE模型。我们会继续探索其在多机多卡场景下的异构调度，以及AF分离（Attention和FFN/Expert分离）的优化，还将探索Expert的分布式调度方案。",
+      "tail_text": "感谢李老师为我们带来的通算与智算协同推理技术，非常精彩。刚才看到的性能提升效果令人印象深刻，我们特别期待后续在AF分离以及Expert分布式调度等面向集群能力方面的进展。好，谢谢。"
+    }
+  ]
+}

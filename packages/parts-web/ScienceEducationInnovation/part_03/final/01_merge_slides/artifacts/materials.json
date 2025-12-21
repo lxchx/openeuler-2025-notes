@@ -1,0 +1,454 @@
+{
+  "materials": [
+    {
+      "id": "chunk_00/slide_001",
+      "type": "slide",
+      "start_ms": 0,
+      "end_ms": 4200,
+      "title": "科教创新分论坛 开场背景板",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_001",
+        "slide_index": 1,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_002",
+      "type": "slide",
+      "start_ms": 4800,
+      "end_ms": 57200,
+      "title": "人工智能端到端的复杂攻击检测技术研究 讲者介绍：李锭",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_002",
+        "slide_index": 2,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_003",
+      "type": "slide",
+      "start_ms": 57800,
+      "end_ms": 62100,
+      "title": "人工智能端到端的复杂攻击检测技术研究 演讲封面",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_003",
+        "slide_index": 3,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_004",
+      "type": "slide",
+      "start_ms": 62700,
+      "end_ms": 99200,
+      "title": "背景介绍 - 高级可持续性威胁 (APT) APT攻击已成为全球范围内的重大安全威胁",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_004",
+        "slide_index": 4,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_005",
+      "type": "slide",
+      "start_ms": 99800,
+      "end_ms": 159500,
+      "title": "背景介绍 - APT攻击特征 逻辑复杂、特征隐蔽、技术多变",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_005",
+        "slide_index": 5,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_006",
+      "type": "slide",
+      "start_ms": 160100,
+      "end_ms": 195200,
+      "title": "背景介绍 - 现有技术局限性 当前技术大量依赖专家规则和人工研判",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_006",
+        "slide_index": 6,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_007",
+      "type": "slide",
+      "start_ms": 195800,
+      "end_ms": 240500,
+      "title": "科学问题 - AI端到端检测 能否摆脱对人工规则的依赖，实现完全AI端到端的APT攻击检测",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_007",
+        "slide_index": 7,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_008",
+      "type": "slide",
+      "start_ms": 241100,
+      "end_ms": 328100,
+      "title": "关键挑战一：数据质量差 训练数据不足、数据标注匮乏、数据分布不均",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_008",
+        "slide_index": 8,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_009",
+      "type": "slide",
+      "start_ms": 328700,
+      "end_ms": 400200,
+      "title": "关键挑战二：语义理解难 语义鸿沟难弥合、理解存在二义性、日志数据维度高",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_009",
+        "slide_index": 9,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_010",
+      "type": "slide",
+      "start_ms": 400800,
+      "end_ms": 437200,
+      "title": "关键挑战三：成本损耗大 攻击检测算法成本昂贵，难以适应大规模模型",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_010",
+        "slide_index": 10,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_011",
+      "type": "slide",
+      "start_ms": 437800,
+      "end_ms": 501500,
+      "title": "研究方法 - 系统/算法/硬件协同优化 数据质量差、语义理解难、成本损耗大的应对策略",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_011",
+        "slide_index": 11,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_012",
+      "type": "slide",
+      "start_ms": 502100,
+      "end_ms": 541200,
+      "title": "核心思路：溯源分析 用图模型表征进程间及对文件、网络端口等资源的依赖关系",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_012",
+        "slide_index": 12,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_013",
+      "type": "slide",
+      "start_ms": 541800,
+      "end_ms": 632100,
+      "title": "关键技术一：无监督快速日志过滤 攻击事件在正常事件中占比极小，分析大量正常事件浪费算力资源",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_013",
+        "slide_index": 13,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_014",
+      "type": "slide",
+      "start_ms": 632700,
+      "end_ms": 649100,
+      "title": "关键技术一：在线斯坦纳树问题 充分利用异常度和聚集性，采用图搜索算法建模",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_014",
+        "slide_index": 14,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_015",
+      "type": "slide",
+      "start_ms": 649700,
+      "end_ms": 679200,
+      "title": "关键技术一：两阶段检测流程 阶段一：基于VAE的异常检测；阶段二：节点异常传播与检测",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_015",
+        "slide_index": 15,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_016",
+      "type": "slide",
+      "start_ms": 679800,
+      "end_ms": 707200,
+      "title": "关键技术一：实验效果验证 误报率和漏报率对比",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_016",
+        "slide_index": 16,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_017",
+      "type": "slide",
+      "start_ms": 707800,
+      "end_ms": 818200,
+      "title": "关键技术二：基于大语言模型的攻击检测回归去理解 底层系统日志和自然语言存在语义鸿沟",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_017",
+        "slide_index": 17,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_018",
+      "type": "slide",
+      "start_ms": 818800,
+      "end_ms": 850200,
+      "title": "关键技术二：基于溯源图的上下文提取 联合检测与推理框架，消除误报",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_018",
+        "slide_index": 18,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_019",
+      "type": "slide",
+      "start_ms": 850800,
+      "end_ms": 889200,
+      "title": "关键技术二：自主生成的APT攻击检测报告 基于大语言模型，自主生成APT攻击检测报告",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_019",
+        "slide_index": 19,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_020",
+      "type": "slide",
+      "start_ms": 889800,
+      "end_ms": 907200,
+      "title": "关键技术二：基于企业运维数据的实验验证 华为实际运维和攻防数据效果",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_020",
+        "slide_index": 20,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_021",
+      "type": "slide",
+      "start_ms": 907800,
+      "end_ms": 972200,
+      "title": "软件隔离：核心问题 现有中心化架构：一个进程监控所有任务，可能更容易被攻击产生威胁",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_021",
+        "slide_index": 21,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_022",
+      "type": "slide",
+      "start_ms": 972800,
+      "end_ms": 982100,
+      "title": "软件隔离：关键思路 分片式架构：针对系统中每一个进程建立独立监控器",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_022",
+        "slide_index": 22,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_023",
+      "type": "slide",
+      "start_ms": 982700,
+      "end_ms": 993100,
+      "title": "硬件加速：基于DPU的系统调用日志追踪 将检测系统卸载到DPU上，减少对主机业务的开销",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_023",
+        "slide_index": 23,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_024",
+      "type": "slide",
+      "start_ms": 993700,
+      "end_ms": 996100,
+      "title": "硬件部署：核心挑战 需要保证取证数据和身份的真实性，防止取证攻击和篡改日志",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_024",
+        "slide_index": 24,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_025",
+      "type": "slide",
+      "start_ms": 996700,
+      "end_ms": 1006200,
+      "title": "硬件部署：关键思路 以DPU为主导，利用DPU快速读取内存能力，主动从主机拉取日志",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_025",
+        "slide_index": 25,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_026",
+      "type": "slide",
+      "start_ms": 1006800,
+      "end_ms": 1027200,
+      "title": "性能损耗：实验效果 性能开销在3%以内，优于竞品10倍",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_026",
+        "slide_index": 26,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_027",
+      "type": "slide",
+      "start_ms": 1027800,
+      "end_ms": 1062200,
+      "title": "原型系统：SysArmor 技术成果演示",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_027",
+        "slide_index": 27,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_028",
+      "type": "slide",
+      "start_ms": 1062800,
+      "end_ms": 1085200,
+      "title": "其他工作 - WASEM/SPFuzz/PKUS 软件分析与漏洞挖掘、可信数据共享流通系统",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_028",
+        "slide_index": 28,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_029",
+      "type": "slide",
+      "start_ms": 1085800,
+      "end_ms": 1183200,
+      "title": "未来工作 - 社区建设/系统构建/应用扩展 我们将openEuler计划把工业级社区",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_029",
+        "slide_index": 29,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_030",
+      "type": "slide",
+      "start_ms": 1183800,
+      "end_ms": 1225000,
+      "title": "总结 - SysArmor AI端到端的APT攻击检测",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_030",
+        "slide_index": 30,
+        "offset_ms": 0
+      }
+    }
+  ]
+}

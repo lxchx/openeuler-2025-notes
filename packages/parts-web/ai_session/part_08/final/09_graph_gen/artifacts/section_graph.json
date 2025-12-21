@@ -1,0 +1,470 @@
+{
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "p1",
+        "label": "AI通信技术趋势与诉求",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_004"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_004",
+            "primary_time_ts": "00:01:00,500",
+            "primary_time_ms": 60500
+          }
+        },
+        "parent": null,
+        "summary": "随着AI从文本LLM向多模态及Agent场景演进，对底层通信提出了超低时延、高动态性等新挑战。为应对此趋势，通信范式从单机、集合通信演进到更弹性的M2N异步通信，并对性能、生态和拓扑亲和性提出了更高要求。"
+      },
+      {
+        "id": "p2",
+        "label": "灵雀通信软件UMDK架构",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_005"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_005",
+            "primary_time_ts": "00:04:34,000",
+            "primary_time_ms": 274000
+          }
+        },
+        "parent": null,
+        "summary": "介绍了灵雀的高性能通信基础底座UMDK，它基于URMA统一内存语义构建，南向屏蔽硬件差异，并面向智算场景构建了超异构通信加速库CAM，支持主流接口，使AI框架可无缝使用其加速能力。"
+      },
+      {
+        "id": "p3",
+        "label": "昇腾亲和的通信加速库CAM关键技术",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_006",
+            "chunk_00/slide_007",
+            "chunk_00/slide_008",
+            "chunk_00/slide_009",
+            "chunk_00/slide_010"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_006",
+            "primary_time_ts": "00:05:26,000",
+            "primary_time_ms": 326000
+          }
+        },
+        "parent": null,
+        "summary": "CAM旨在为MoE、AFD分离、PD分离等不同场景构建通信加速能力。通过大EP通信库、通算融合库FusedDeepMoE、M2N通信库及KV Cache传输库MIXL，解决通信开销大、计算通信串行等问题，显著提升系统性能。"
+      },
+      {
+        "id": "d1_1",
+        "label": "AI通信范式演进",
+        "category": "Concept",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_004"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_004",
+            "primary_time_ts": "00:02:00,740",
+            "primary_time_ms": 120740
+          }
+        },
+        "parent": "p1",
+        "summary": "为应对AI负载变化，AI通信范式经历了从单机通信、多机集合通信、点对点通信，最终演进到弹性的M2N异步通信，以支持未来完全分离的AI系统架构。"
+      },
+      {
+        "id": "d1_2",
+        "label": "AI负载演进带来的挑战",
+        "category": "Problem",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_004"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_004",
+            "primary_time_ts": "00:01:08,000",
+            "primary_time_ms": 68000
+          }
+        },
+        "parent": "p1",
+        "summary": "AI负载从文本LLM向多模态及Agent演进，带来了超低时延推理需求（<5ms）、负载高度动态化和多样化（超长序列）等新挑战。"
+      },
+      {
+        "id": "d2_1",
+        "label": "UMDK：统一通信底座",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_005"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_005",
+            "primary_time_ts": "00:04:35,310",
+            "primary_time_ms": 275310
+          }
+        },
+        "parent": "p2",
+        "summary": "UMDK是灵雀设计的高性能通信基础底座，基于URMA统一内存语义，南向屏蔽硬件差异，为智算、通算等场景提供统一互联支持。"
+      },
+      {
+        "id": "d3_1",
+        "label": "大EP通信库 (MoE优化)",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_007"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_007",
+            "primary_time_ts": "00:06:44,500",
+            "primary_time_ms": 404500
+          }
+        },
+        "parent": "p3",
+        "summary": "针对MoE场景中占比高达30%的通信开销，通过向量化计算、通信时序编排和负载均衡等技术，优化Dispatch和Combine算子，解决数据准备耗时、带宽利用率低和同步等待长等瓶颈。"
+      },
+      {
+        "id": "d3_2",
+        "label": "FusedDeepMoE (通算融合)",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_008"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_008",
+            "primary_time_ts": "00:08:58,000",
+            "primary_time_ms": 538000
+          }
+        },
+        "parent": "p3",
+        "summary": "为解决MoE层计算与通信串行执行的问题，将整个MoE层融合成一个大算子，通过细粒度流水并行技术，实现计算与通信的深度重叠，掩盖通信开销。"
+      },
+      {
+        "id": "d3_3",
+        "label": "M2N通信加速 (AFD场景)",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_009"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_009",
+            "primary_time_ts": "00:11:09,500",
+            "primary_time_ms": 669500
+          }
+        },
+        "parent": "p3",
+        "summary": "针对AFD分离架构引入的M2N通信开销，通过NPU直驱通信减少控制面开销，并提供弹性通信能力以支持节点的动态增减，保证系统弹性伸缩。"
+      },
+      {
+        "id": "d3_4",
+        "label": "MIXL (KV Cache传输加速)",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_010"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_010",
+            "primary_time_ts": "00:13:40,000",
+            "primary_time_ms": 820000
+          }
+        },
+        "parent": "p3",
+        "summary": "在PD分离架构下，构建MIXL中间件加速跨节点的KV Cache传输。通过分片消息聚合和异构多径聚合技术，提升有效带宽利用率和系统吞吐，性能提升30%。"
+      },
+      {
+        "id": "d3_2_1",
+        "label": "细粒度流水并行",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_008"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_008",
+            "primary_time_ts": "00:10:05,000",
+            "primary_time_ms": 605000
+          }
+        },
+        "parent": "d3_2",
+        "summary": "将Token动态分组，采用流水线作业模式，实现Dispatch与GEMM1、GEMM2与Combine的深度融合，从而在计算一组Token的同时异步处理下一组，有效掩盖通信延迟。"
+      },
+      {
+        "id": "d3_4_1",
+        "label": "分片消息聚合",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_010"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_010",
+            "primary_time_ts": "00:14:15,000",
+            "primary_time_ms": 855000
+          }
+        },
+        "parent": "d3_4",
+        "summary": "根据不同策略，将多层KV Cache数据在发送前聚合成一个或少数几个大的消息包，通过传输大消息包来提升单次传输的数据量，从而提高有效带宽利用率。"
+      },
+      {
+        "id": "d3_4_2",
+        "label": "异构多径聚合",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_010"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_010",
+            "primary_time_ts": "00:14:35,000",
+            "primary_time_ms": 875000
+          }
+        },
+        "parent": "d3_4",
+        "summary": "聚合利用NPU可访问的多种传输通道（如片上UB、RoCE网卡），包括利用其他空闲NPU卡的传输资源，实现多路径并行传输，最大化整体传输带宽。"
+      }
+    ],
+    "edges": [
+      {
+        "source": "p1",
+        "target": "p2",
+        "relation_type": "sequential",
+        "label": "介绍基础架构"
+      },
+      {
+        "source": "p2",
+        "target": "p3",
+        "relation_type": "sequential",
+        "label": "介绍关键技术"
+      },
+      {
+        "source": "p1",
+        "target": "d1_2",
+        "relation_type": "compositional",
+        "label": "面临"
+      },
+      {
+        "source": "d1_2",
+        "target": "d1_1",
+        "relation_type": "causal",
+        "label": "推动范式演进"
+      },
+      {
+        "source": "p2",
+        "target": "d2_1",
+        "relation_type": "compositional",
+        "label": "核心是"
+      },
+      {
+        "source": "p3",
+        "target": "d3_1",
+        "relation_type": "compositional",
+        "label": "包含组件"
+      },
+      {
+        "source": "p3",
+        "target": "d3_2",
+        "relation_type": "compositional",
+        "label": "包含组件"
+      },
+      {
+        "source": "p3",
+        "target": "d3_3",
+        "relation_type": "compositional",
+        "label": "包含组件"
+      },
+      {
+        "source": "p3",
+        "target": "d3_4",
+        "relation_type": "compositional",
+        "label": "包含组件"
+      },
+      {
+        "source": "d3_1",
+        "target": "d3_2",
+        "relation_type": "sequential",
+        "label": "优化后进一步融合"
+      },
+      {
+        "source": "d3_2",
+        "target": "d3_2_1",
+        "relation_type": "compositional",
+        "label": "核心技术"
+      },
+      {
+        "source": "d3_4",
+        "target": "d3_4_1",
+        "relation_type": "compositional",
+        "label": "采用技术"
+      },
+      {
+        "source": "d3_4",
+        "target": "d3_4_2",
+        "relation_type": "compositional",
+        "label": "采用技术"
+      },
+      {
+        "source": "d3_4_1",
+        "target": "d3_4_2",
+        "relation_type": "parallel",
+        "label": "并列技术"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec_1",
+      "index": 0,
+      "title": "开场与议程介绍",
+      "time_range": "00:00:00,000 - 00:00:59,235",
+      "summary": "华为AI通信专家韩远坤先生进行自我介绍，并预告了本次分享的主题——《昇腾亲和的通信加速库CAM关键技术和生态介绍》。他将从AI通信技术趋势、灵雀通信软件UMDK架构以及CAM关键技术三个方面展开介绍。",
+      "refined_script": "# 昇腾亲和的通信加速库 CAM 关键技术与生态介绍\n\n## 本次分享议程\n\n本次分享将主要包含以下三个部分：\n\n1.  **AI 通信技术趋势演进与通信诉求**\n2.  **灵雀通信软件 UMDK 总体架构介绍**\n3.  **昇腾亲和的通信加速库 CAM 关键技术介绍**",
+      "original_script": "下面有请华为技术有限公司AI通信专家韩远坤先生，为我们带来《昇腾亲和的通信加速库CAM关键技术和生态介绍》。大家欢迎。大家好，我是华为公司的韩远坤。现在负责AI通信这一块。下面我分享一下昇腾亲和的通信加速库CAM的关键技术和生态介绍。今天主要分三个部分。第一部分是AI通信技术的趋势演进和通信诉求。第二部分是灵雀通信软件UMDK的总体架构介绍。最后一部分是昇腾亲和的通信加速库CAM的关键技术介绍。",
+      "start_ms": 0,
+      "end_ms": 59235,
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002",
+        "chunk_00/slide_003"
+      ],
+      "summary_hint": "讲者进行自我介绍，并概述了本次分享的三个主要部分：AI通信技术趋势、灵雀通信软件UMDK架构，以及昇腾亲和的通信加速库CAM关键技术。",
+      "lead_text": "下面有请华为技术有限公司AI通信专家韩远坤先生，",
+      "tail_text": "最后一部分是昇腾亲和的通信加速库CAM的关键技术介绍。",
+      "text_span": {
+        "start": 0,
+        "end": 9
+      }
+    },
+    {
+      "id": "sec_2",
+      "index": 1,
+      "title": "AI通信技术趋势演进和通信诉求",
+      "time_range": "00:01:00,740 - 00:04:32,445",
+      "summary": "AI通信技术与AI负载强相关，随着AI从文本LLM向多模态及Agent场景演进，对底层通信提出了超低时延、高动态性等新挑战。为应对此趋势，通信范式从单机、集合通信演进到更弹性的M2N异步通信，并对高性能优化、生态易用性和超异构拓扑亲和性提出了更高要求。",
+      "refined_script": "# AI通信技术趋势演进和通信诉求\n\nAI通信技术与AI负载强相关，并随着AI负载的演进而发展。当前，AI负载正呈现出新的趋势，对底层通信技术提出了更高的要求。\n\n## 一、 AI负载演进带来的通信挑战\n\nAI负载正从以文本为主的LLM（大语言模型）向多模态及Agent场景演进，同时模型本身也在持续迭代优化。这些变化导致流量负载特性发生改变，为底层通信带来一系列新挑战。\n\n### 1. 超低时延推理需求\n推理服务的响应时延是关键指标。随着模型优化和应用场景的演进，时延要求愈发严苛：\n- **原有标准**: 典型Token-per-Token时延约为50ms。\n- **当前水平**: 以“豆包”、“Kimi”为代表的国内主流模型，时延已下探至10ms级别。\n- **前沿水平**: 部分国外先进模型的时延要求低于5ms。\n\n### 2. 负载的高度动态化与多样化\n随着AI Agent和多模态技术的发展，AI业务的流量负载呈现出高度多样化和动态化的特性。此外，超长序列（Sequence Length）处理已成为常态，序列长度可达兆字节（MB）级别，对通信的灵活性和效率提出了挑战。\n\n## 二、 AI通信范式的演进路径\n\n为应对上述负载变化，AI通信范式经历了以下演进过程：\n\n1.  **单机通信**\n    -   **场景**: 模型参数量较小，可在单台服务器内部完成计算。\n\n2.  **多机集合通信 (Collective Communication)**\n    -   **场景**: 模型规模增大，需采用张量并行（TP）、数据并行（DP）、专家并行（EP）等多种并行策略进行分布式训练和推理。\n    -   **模式**: 以All-Reduce、All-Gather等集合操作为主。\n\n3.  **点对点通信 (Point-to-Point, P2P)**\n    -   **场景**: 在推理优化架构（如Prefill/Decode分离）中，Prefill节点与Decode节点之间需要高效传输KV Cache。\n\n4.  **M2N 通信**\n    -   **固定M2N**: 在更细粒度的AFD（Attention-FFN Decode）分离场景中，Decode阶段的Attention和FFN计算被进一步解耦，产生了多对多（M2N）的通信关系，但节点关系相对固定。\n    -   **弹性异步M2N**: 未来，AI系统将向完全分离（Full Disaggregation）的架构演进。这种系统要求通信具备弹性和异步特性，以支持任意计算节点间的按需通信，形成更为灵活的M2N通信范式。\n\n## 三、 基础设施演进与核心通信诉求\n\n从基础设施（南向）来看，AI集群正从传统的服务器形态向基于ED-Mesh、2D-Mesh等拓扑的超异构形态演进。结合北向的AI负载变化，可以总结出对未来AI通信的几点核心诉求：\n\n### 1. 极致性能\n- **基于内存语义的优化**: 针对超低时延推理场景，需采用基于内存语义（如RDMA）的方式进行极致的性能优化。\n- **计算与通信深度融合**: 实现计算与通信的协同调度和深度融合，隐藏通信开销。\n- **拓扑亲和的通信**: 针对超异构、大规模互联场景，通信库必须具备拓扑感知能力，以充分利用底层硬件的大带宽优势。\n\n### 2. 生态与易用性\n- **开箱即用**: 提供无需复杂配置的“开箱即用”体验。\n- **无缝集成**: 确保通信加速库能与vLLM、SGLang等主流推理框架无缝集成，方便社区和开发者快速应用。",
+      "original_script": "我们可以看到，AI通信技术与AI负载强相关，\n并随着AI负载的变化而变化。\n从趋势中可以看到，以文本为主的LLM场景，正在向多模态以及Agent场景演进。\n同时，模型也在不断地优化和更新当中。\n这两者会导致流量负载的变化，对底层通信提出不同的挑战。\n例如，超低时延推理场景。\n原本的TPOT是50毫秒。\n现在以豆包、Kimi为主的国内模型，已经下探到10毫秒级别，\n甚至国外的模型会到5毫秒以下。\n同时，随着AI Agent以及多模态的发展，\nAI业务的负载呈现出高度多样化和动态化的特性。\n超长序列已成为常态。\n序列长度甚至达到兆级别。\n针对这些变化，我们看一下AI通信是如何演进的。\n参数量较小时，我们以单机通信为主。\n模型变大后，会产生不同的并行策略，如TP、DP、EP。\n这时以多机的集合通信为主。\n在PD分离的场景下，P和D节点之间要传输KV Cache，这时就产生了P2P通信。\n在AFD场景，Decode的Attention和FFN之间进一步分离，\n产生了M2N这种通信范式，这还是一种比较固定的关系。\n我们认为，未来AI系统会是一个全分离的系统，\n它必须具备弹性、异步这样一种特征。\n对于通信而言，也是这种异步、任意的点对点通信，即M2N的通信范式。\n南向的变化，从Server形态到超异构形态。\n超异构又有ED Mesh、2D Mesh等，这种变化对通信也有不同的诉求。\n我们结合来看，从南向的基础设施变化到北向的AI负载变化，总结出对通信的三种不同诉求。\n首先是高性能方面，要基于内存语义做极致的性能优化，应对超低时延的推理场景。\n同时要做计算与通信的深度融合。\n针对超异构大规模互联的场景，要做拓扑亲和的通信，将超异构的大带宽优势发挥出来。\n在生态与应用性上，我们强调开箱即用，让vLLM、SGLang等主流社区可以无缝使用我们的通信加速库。",
+      "start_ms": 60740,
+      "end_ms": 272445,
+      "material_ids": [
+        "chunk_00/slide_004"
+      ],
+      "summary_hint": "讲者分析了AI通信技术随AI负载变化的趋势，指出从文本LLM向多模态及Agent场景演进，对底层通信提出了超低时延等新挑战。",
+      "lead_text": "我们可以看到，AI通信技术与AI负载强相关，",
+      "tail_text": "在生态与应用性上，我们强调开箱即用，让vLLM、SGLang等主流社区可以无缝使用我们的通信加速库。",
+      "text_span": {
+        "start": 10,
+        "end": 39
+      }
+    },
+    {
+      "id": "sec_3",
+      "index": 2,
+      "title": "灵雀通信软件UMDK总体架构",
+      "time_range": "00:04:35,310 - 00:05:24,445",
+      "summary": "本节介绍了灵雀的高性能通信基础底座UMDK。它基于URMA统一内存语义构建，南向屏蔽硬件差异，并面向智算场景构建了超异构通信加速库CAM，支持DeepEP、Mooncake等主流接口，使AI框架可无缝使用其加速能力。",
+      "refined_script": "## 灵雀通信软件UMDK总体架构\n\n### 1. UMDK：高性能通信基础底座\n\nUMDK是灵雀设计的高性能通信基础底座，其核心构建于 **URMA** 统一内存语义之上。\n\n其主要作用包括：\n- **南向硬件抽象**：屏蔽底层不同硬件的实现差异。\n- **构建互联底座**：为智算和通算等多种计算场景提供统一的互联支持。\n\n### 2. CAM：面向智算场景的超异构通信加速库\n\n针对智算场景，UMDK 提供了超异构通信加速库 **CAM**。该库基于内存语义通信，旨在优化 AI 负载的通信性能。\n\n**核心特性：**\n- **低延迟通信**：针对大规模端点（EP）间的通信进行优化，实现低延迟。\n- **计算通信并行**：通过细粒度的流水线并行技术，有效掩盖（Overlap）计算与通信开销。\n\n### 3. 生态兼容性\n\nUMDK 注重与现有主流生态的融合，确保上层应用可以无缝迁移。\n- **接口支持**：兼容 **DeepEP**、**Mooncake** 等主流社区接口。\n- **无缝集成**：使 AI 框架无需修改代码，即可直接利用灵雀提供的超异构通信加速能力。",
+      "original_script": "UMDK是灵雀的高性能通信基础底座，基于URMA统一内存语义来构建。南向能够屏蔽不同硬件的差异，构建智算、通算场景下的互联底座。面向智算场景，我们构建了超异构通信加速库CAM。它能基于内存语义通信，突破大EP通信的低时延，并做细粒度流水并行，实现计算和通信的掩盖。在生态上，UMDK支持DeepEP、Mooncake等主流社区接口，能让AI框架在不修改代码的情况下，无缝使用灵雀超异构通信加速的能力。",
+      "start_ms": 275310,
+      "end_ms": 324445,
+      "material_ids": [
+        "chunk_00/slide_005"
+      ],
+      "summary_hint": "介绍了灵雀的高性能通信基础底座UMDK，它基于URMA统一内存语义，南向屏蔽硬件差异，并支持CAM、DeepEP、Mooncake等，实现AI框架的无缝使用。",
+      "lead_text": "UMDK是灵雀的高性能通信基础底座，基于URMA统一内存语义来构建。",
+      "tail_text": "在生态上，UMDK支持DeepEP、Mooncake等主流社区接口，能让AI框架在不修改代码的情况下，无缝使用灵雀超异构通信加速的能力。",
+      "text_span": {
+        "start": 40,
+        "end": 44
+      }
+    },
+    {
+      "id": "sec_4",
+      "index": 3,
+      "title": "昇腾亲和的通信加速库CAM关键技术介绍",
+      "time_range": "00:05:26,710 - 00:15:10,625",
+      "summary": "本节介绍了昇腾亲和的通信加速库CAM，它旨在为MoE、AFD分离、PD分离等不同场景构建通信加速能力。CAM通过大EP通信库、通算融合加速库FusedDeepMoE、M2N通信加速库及KV Cache传输加速库MIXL，采用通信时序编排、细粒度流水并行、NPU直驱通信、分片消息聚合等关键技术，解决通信开销大、计算通信串行等问题，从而显著提升系统性能。",
+      "refined_script": "# 昇腾亲和的通信加速库CAM关键技术介绍\n\n## 1. CAM库定位与组成\n\n通信加速库CAM（Communication Acceleration for Ascend）是为昇腾平台打造的通信加速解决方案，旨在为不同的大模型训练与推理场景构建高效的通信能力。CAM主要包含以下四个面向特定场景的加速库：\n\n- **大EP通信库**：针对MoE（Mixture of Experts）场景，提供Prefill和Decode阶段的高性能通信算子。\n- **通算融合加速库 (FusedDeepMoE)**：通过深度融合MoE层内的计算与通信，实现极致性能。\n- **M2N通信加速库**：为AFD（Attention/FFN Decoupling）分离等M2N（Many-to-Many）通信场景提供弹性可靠的通信能力。\n- **KV Cache传输加速库 (MIXL)**：在PD（Pipeline/Data Parallelism）分离场景下，加速节点间的KV Cache传输。\n\n---\n\n## 2. 大EP通信库：MoE场景优化\n\n在MoE模型中，`Dispatch`和`Combine`等通信操作的开销显著，通信耗时占比可达30%。通信时延主要由传输时延和静态时延（控制面开销、算子启动开销）构成。我们针对`Dispatch`算子进行分析，发现其主要瓶颈并实施了以下优化：\n\n| 瓶颈分析 | 原因 | 优化措施 |\n| :--- | :--- | :--- |\n| **1. 通信数据准备耗时** | 在多核NPU上，为避免地址冲突，分发Token到同一专家时需进行地址偏移计算。该过程采用Scalar计算，效率低下。 | **向量化计算**：将地址偏移计算改造为Vector方式执行，大幅加速数据准备过程。 |\n| **2. 数据传输带宽利用率低** | 网络冲突或NPU端口负载不均导致实际传输带宽未被充分利用。 | **通信时序编排**：优化共享专家的Token通信模式（如从2/6打1改为8打1），减少网络冲突。<br>**负载均衡**：通过优化地址偏移的哈希算法，使数据更均匀地散列到不同NPU端口。 |\n| **3. 同步等待耗时长** | 大EP（Expert Parallelism）通信模式下，各计算卡之间需要进行全量同步，导致等待开销较大。 | **EPLB负载均衡**：引入负载均衡机制。<br>**通算融合**：构建大融合算子，将通信与计算深度融合，掩盖同步开销。 |\n\n---\n\n## 3. FusedDeepMoE：通算融合加速库\n\n尽管对MoE通信进行了优化，但计算与通信的串行执行模式依然限制了整体性能。此外，MoE层算子数量多导致Kernel Launch开销大，且部分算子算力利用率不高。\n\n**核心思路**：将Decode阶段的整个MoE层（从`Dispatch`到两次GEMM运算，再到`Combine`）融合成一个大算子，通过细粒度流水并行技术实现计算与通信的深度重叠。\n\n**实现方式**：\n1.  **Dispatch与GEMM1的深度融合**：\n    -   对Token进行动态分组。\n    -   采用流水线作业模式：接收一组Token后立即开始计算，同时异步接收下一组Token。\n2.  **GEMM2与Combine的深度融合**：\n    -   同样采用流水线模式：计算完一部分Token后，立即对这部分数据进行`Combine`通信与聚合，同时开始计算下一组Token。\n\n**社区合作**：该能力已接入SGLang社区，并正与vLLM社区展开合作。\n\n---\n\n## 4. M2N通信加速：AFD分离场景\n\n在LLM推理的Decode阶段，由于Batch Size较小，FFN部分的算力利用率通常较低。AFD（Attention/FFN Decoupling）分离思想通过将Attention和FFN解耦，允许FFN独立组建更大的Batch，从而提升系统总吞吐。然而，该方案引入了Attention节点与FFN节点之间额外的M2N通信开销。\n\n我们构建了M2N通信加速库以应对此挑战，关键技术包括：\n\n- **NPU直驱通信**：通信请求由NPU侧直接发起，而非传统的CPU侧，显著减少了控制面的时间开销。\n- **通信融合与编排调度**：将A2F（Attention to FFN）和F2A（FFN to Attention）的通信过程与本地计算进行融合调度，消除冗余通信，掩盖通信延迟。\n- **弹性通信能力**：支持Attention和FFN节点的动态增减。通信域能够弹性适应节点变化，无需销毁并重建整个通信域，保证了系统的弹性伸缩能力。\n\n---\n\n## 5. MIXL：KV Cache传输加速库\n\n在PD（Pipeline/Data Parallelism）分离的推理架构下，跨节点的KV Cache传输是关键性能瓶颈之一。我们为此构建了推理传输加速库MIXL（Middleware for Inference Communication Acceleration Layer），作为屏蔽底层传输差异、对接上层AI框架的中间件，可将KV Cache传输性能提升30%。\n\n**核心技术**：\n1.  **分片消息聚合 (Sliced Message Aggregation)**：\n    -   根据不同策略，将多层KV Cache数据在发送前聚合成一个或少数几个大的消息包。\n    -   通过传输大消息包来提升单次传输的数据量，从而提高有效带宽利用率和系统吞吐。\n2.  **异构多径聚合 (Heterogeneous Multi-path Aggregation)**：\n    -   昇腾架构下，NPU可访问多种传输通道（如片上UB、RoCE网卡等）。\n    -   该技术能够聚合利用多种传输路径，包括利用其他空闲NPU卡的传输资源，实现多路径并行传输，最大化整体传输带宽。",
+      "original_script": "通信加速库CAM的定位是做昇腾亲和的通信加速库，构建不同场景的通信加速能力。\n包括MoE场景下的大EP通信库、大通算融合加速库、M2N场景以及KV Cache传输的加速库。\n对于大EP通信库，我们提供了Prefill和Decode阶段的MoE通信算子，包括Dispatch和Combine。\n同时支持不同的代际。\n虽然我们针对MoE通信做了极致的性能优化，但通信和计算仍是串行的。\n所以我们做了MoE大融合加速库FusedDeepMoE，通过Token的动态分组和细粒度流水并行，实现计算和通信的掩盖。\nM2N场景下，通信库需具备弹性可靠的通信能力。\n同时我们也在探索异步的M2N通信范式。\n在KV Cache传输场景下，我们通过自动聚合技术，提升PD分离下KV Cache的传输加速。\n我们看一下在大EP通信库下做了哪些技术手段的优化。\n可以看到，MoE通信占比将近30%，包括Dispatch和Combine。\n通信时延主要包括传输时延和静态时延，即静态下发的控制面开销和算子启动开销。\n我们以Dispatch算子为例进行打点，分析各流程的时延，可以看到主要包含三部分时延。\n一是通信数据准备。因为Dispatch阶段要把Token分发到不同专家，\n而昇腾NPU是多核的，多核并行分发Token时，如果都发给同一专家，为避免冲突，需要计算地址偏移。\n计算时Scalar能力较弱，计算时间长。\n所以我们的优化措施是让它以Vector方式计算，从而加速数据准备过程。\n二是传输数据时间较长，主要是带宽利用率低，原因是网络冲突或端口负载不均。\n我们通过通信时序编排，让共享专家Token通信时，从2/6打1变成8打1，\n减少网络冲突。\n同时通过地址偏移计算，让哈希分布更均匀，散列在不同NPU端口上，使负载更均衡。\n最后是同步耗时较长。通信有同步等待过程，\n特别是在大EP通信下，各卡间需做一次全量同步。\n这里的优化技术包括EPLB负载均衡，以及构建大通算融合算子，进一步融合通信和计算，降低同步的影响。\n我们如何做大EP的通算融合加速库呢？\n可以看到，通信和计算是串行执行的，所以通信耗时没有被掩盖。\n另外，在做Cube矩阵运算时，Vector算子是串行执行的，算力有浪费。\n而且MoE层算子个数多，下发次数多，Kernel Launch耗时也较长。\n我们的思路是，将Decode中的整个MoE层融合成一个大算子，通过细粒度流水并行，实现通信与计算的掩盖。\n融合的范围包括红框内。\n从Dispatch开始，到两次GEMM计算（一次升维、一次降维），再到Combine，整个阶段融合成一个大算子。\n如何实现呢？包含两部分的深度融合。\n首先是Dispatch和第一个GEMM的融合。\n我们可以对Token进行动态分组，收到一组Token就做一组的计算，同时接收下一组Token，实现流水线作业。\n第二部分是第二个GEMM与Combine的深度融合。\n即计算出一部分Token，就可以对这部分Token进行通信和聚合（Combine），同时计算第二组Token，实现计算与通信的流水线掩盖。\n当前这个能力已接入SGLang社区，同时也在和vLLM社区合作。\n这个场景是AFD分离场景的M2N通信加速。\n前面讲过，大家都说Decode是访存bound的。\n那究竟是哪里bound呢？主要是在Attention阶段，它要读取Prefill阶段产生的KV Cache。\n实际上，由于FFN阶段的BS较小，其算力利用率较低。\n这时我们能否加大FFN阶段的BS？因为加大BS就能提升整个系统的吞吐。\n所以这就是AFD的核心思想：将Attention与FFN分离，\n让它们可以独立组batch。这样FFN就可以组一个较大的batch，从而提升整个系统的吞吞吐。\n但是，A和F分离后，产生了额外的M2N通信，即Attention和FFN之间。\n这时，AI框架上就需要做多batch流水，将通信掩盖掉。\n在该场景下，我们也构建了自己的M2N通信加速库。\n首先，通过NPU直驱通信，减少控制面的时间开销。\nNPU直驱是指在NPU侧发起AI集合通信，而非从CPU侧发起，这样可以减少控制面开销。\n同时，做通信融合与编排调度，将A2F及F2A通信与本地计算融合，消除冗余通信。同时，A和F分离要求整个系统是弹性的。\nAttention和FFN节点各有其弹性机制。这时通信库也需具备弹性能力。\n随意增减节点，通信域都能弹性地进行通信，而无需销毁整个通信域，后者是无法接受的。\n最后介绍一下PD分离场景。在PD分离下，KV Cache的传输是重要环节。\n通过我们构建的推理传输加速库MIXL，相比现有能力可提升30%。\nMIXL是一个中间件，南向屏蔽不同传输通道，北向对接不同AI服务平台及框架。\n我们通过两种技术实现。一是分片消息聚合。\n通过对多层KV Cache数据进行聚合（这里有不同聚合策略），再一起传输数据，提升带宽，从而提升系统吞吐。\n二是异构多径聚合。\n昇腾架构中，RoCE网卡嵌入NPU侧，NPU侧能看到多种传输通道，包括UB和RoCE。\n当前我们只使用单一类型的传输通道。\n通过多径聚合技术，我们可以使用多个传输通道，包括其他空闲卡的通道。\n基于这种多路径传输，提升整体传输效率。",
+      "start_ms": 326710,
+      "end_ms": 910625,
+      "material_ids": [
+        "chunk_00/slide_006",
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "summary_hint": "详细介绍昇腾亲和的通信加速库CAM的总体架构和各项关键技术，旨在构建不同场景下的通信加速能力。",
+      "notes": "本部分详细介绍了CAM的四项关键技术：大EP通信优化、通算融合的FusedDeepMoE、AFD分离场景的M2N通信加速，以及PD分离场景下利用MIXL技术加速KV Cache传输。",
+      "lead_text": "通信加速库CAM的定位是做昇腾亲和的通信加速库，构建不同场景的通信加速能力。",
+      "tail_text": "基于这种多路径传输，提升整体传输效率。",
+      "text_span": {
+        "start": 45,
+        "end": 106
+      }
+    },
+    {
+      "id": "sec_5",
+      "index": 4,
+      "title": "总结与Q&A",
+      "time_range": "00:15:11,970 - 00:16:42,220",
+      "summary": "讲者结束分享，并提供了 openEuler 社区和 UMDK 技术微信群作为后续交流渠道。主持人随后总结了分享的核心技术点，即如何通过异构多平面传输、M2N通信及计算通信掩盖等方式，解决大模型推理中的通信开销问题，并展望了未来的合作方向。",
+      "refined_script": "# 总结与Q&A\n\n## 技术核心总结\n\n随着大模型并行方案（如专家并行）的应用，通信开销逐渐成为推理性能的主要瓶颈。为解决此问题，本次分享介绍了一系列基于基础通信库的优化方法，核心技术点如下：\n\n- **异构多平面传输**：利用多种网络平面进行数据传输，提升整体带宽和效率。\n- **M2N 通信模式**：将传统的点对点通信优化为多对多（M2N）通信模式，通过多通道叠加的方式提升性能。\n- **计算与通信掩盖**：在执行计算任务的同时进行通信操作，以隐藏通信延迟，从而提升设备利用率和端到端性能。\n\n该基础通信库能够高效实现 `reduce`、`all-gather`、`all-to-all` 等集合通信语义，为上层应用提供加速能力。\n\n## 未来展望\n\n计划与 openEuler 社区内的相关 SIG（特别兴趣小组）及其他技术团队深化合作，共同打造更具性价比的大模型推理解决方案。\n\n## 交流与资源\n\n- **openEuler 社区**：获取更多项目与技术信息。\n- **UMDK 技术交流群**：如需深入了解 UMDK 相关技术，可加入官方微信群进行交流。",
+      "original_script": "以上是我的分享，谢谢大家。\n更多信息可以访问openEuler社区。\n如果大家对UMDK的技术希望有更多了解，也可以加入我们的微信群。\n好，谢谢大家。\n好，感谢韩老师带来的分享。\n做过推理的人应该很清楚，随着大EP方案的出现，原来对计算的要求很高。\n后来通信的开销越来越大。所以刚才韩老师给我们带来了，\n包括异构多平面的传输，将点对点通信变为M2N的多对多通信，通过多通道叠加，同时在计算和通信时做掩盖来提升性能。\n这种基础通信库能帮助我们实现reduce、all-gather、all-to-all等通信语义，加速这部分的能力，这是一个非常好的情况。\n后面也希望跟这个SIG组，结合之前刘宇振老师交流的能力，可能会变成一个更有性价比的推理方案。好，谢谢。",
+      "start_ms": 911970,
+      "end_ms": 1002220,
+      "material_ids": [
+        "chunk_00/slide_011"
+      ],
+      "summary_hint": "讲者总结分享内容，并提供社区和微信群联系方式。主持人对分享内容进行了回顾。",
+      "lead_text": "以上是我的分享，谢谢大家。",
+      "tail_text": "后面也希望跟这个SIG组，结合之前刘宇振老师交流的能力，可能会变成一个更有性价比的推理方案。好，谢谢。",
+      "text_span": {
+        "start": 107,
+        "end": 116
+      }
+    }
+  ]
+}

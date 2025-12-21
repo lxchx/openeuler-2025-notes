@@ -1,0 +1,634 @@
+{
+  "materials": [
+    {
+      "id": "chunk_00/slide_001",
+      "type": "slide",
+      "start_ms": 15500,
+      "end_ms": 48500,
+      "title": "面向推荐大模型的参数存储系统研究 谢明晖，中国人民大学计算机系讲师、助理教授",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_001",
+        "slide_index": 1,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_002",
+      "type": "slide",
+      "start_ms": 49300,
+      "end_ms": 86500,
+      "title": "自我介绍 谢明晖的教育背景、获奖情况及研究方向",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_002",
+        "slide_index": 2,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_003",
+      "type": "slide",
+      "start_ms": 87300,
+      "end_ms": 147500,
+      "title": "工作总览 涵盖记忆存储、向量存储和参数存储三个层面",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_003",
+        "slide_index": 3,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_004",
+      "type": "slide",
+      "start_ms": 148300,
+      "end_ms": 198500,
+      "title": "研究背景：应用需求 信息过载与推荐系统，推荐模型已成为现代数据中心AI服务的主要载体",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_004",
+        "slide_index": 4,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_005",
+      "type": "slide",
+      "start_ms": 199300,
+      "end_ms": 264500,
+      "title": "研究背景：推荐模型结构 使用稀疏参数处理海量高维稀疏特征（ID特征）",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_005",
+        "slide_index": 5,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_006",
+      "type": "slide",
+      "start_ms": 265300,
+      "end_ms": 326500,
+      "title": "研究背景：推荐模型的存储困境 面临容量墙和带宽墙的双重挑战",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_006",
+        "slide_index": 6,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_007",
+      "type": "slide",
+      "start_ms": 327300,
+      "end_ms": 335500,
+      "title": "存储系统已成为制约推荐模型发展的核心因素",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_007",
+        "slide_index": 7,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_008",
+      "type": "slide",
+      "start_ms": 336300,
+      "end_ms": 379500,
+      "title": "研究背景：硬件趋势 存储层级变深，包括高带宽内存（HBM）和持久性内存（PM）",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_008",
+        "slide_index": 8,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_009",
+      "type": "slide",
+      "start_ms": 380300,
+      "end_ms": 417500,
+      "title": "关键问题：介质特性各异，软件难以充分利用 GPU片上内存：软硬交互效率低",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_009",
+        "slide_index": 9,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_010",
+      "type": "slide",
+      "start_ms": 418300,
+      "end_ms": 448500,
+      "title": "关键问题：介质特性各异，软件难以充分利用 PM层：介质性能难发挥",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_010",
+        "slide_index": 10,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_011",
+      "type": "slide",
+      "start_ms": 449300,
+      "end_ms": 493500,
+      "title": "关键问题：介质特性各异，软件难以充分利用 SSD层：读放大现象严重",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_011",
+        "slide_index": 11,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_012",
+      "type": "slide",
+      "start_ms": 494300,
+      "end_ms": 508500,
+      "title": "针对不同层级存储问题的研究工作概览 Fleche, PetPS, MaxEmbed",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_012",
+        "slide_index": 12,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_013",
+      "type": "slide",
+      "start_ms": 509300,
+      "end_ms": 510500,
+      "title": "报告目录 01 研究背景, 02 GPU层参数存储, 03 PM层参数存储, 04 SSD层参数存储, 05 未来展望",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_013",
+        "slide_index": 13,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_014",
+      "type": "slide",
+      "start_ms": 511300,
+      "end_ms": 516500,
+      "title": "Fleche - 研究动机 现有GPU稀疏参数缓存交互开销大",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_014",
+        "slide_index": 14,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_015",
+      "type": "slide",
+      "start_ms": 517300,
+      "end_ms": 537500,
+      "title": "Fleche - 研究动机 静态张量结构导致产生大量零碎小kernel",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_015",
+        "slide_index": 15,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_016",
+      "type": "slide",
+      "start_ms": 538300,
+      "end_ms": 592500,
+      "title": "Fleche - 核心想法 解决kernel fusion（内核融合）在推荐模型动态形状下的难题",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_016",
+        "slide_index": 16,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_017",
+      "type": "slide",
+      "start_ms": 593300,
+      "end_ms": 629500,
+      "title": "Fleche - 核心想法：查询融合 小kernel调用来自于同一函数，通过自识别实现融合",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_017",
+        "slide_index": 17,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_018",
+      "type": "slide",
+      "start_ms": 630300,
+      "end_ms": 688500,
+      "title": "Fleche - 关键技术：自识别kernel融合方法 三阶段融合：初始化参数、自识别阶段、执行阶段",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_018",
+        "slide_index": 18,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_019",
+      "type": "slide",
+      "start_ms": 689300,
+      "end_ms": 701500,
+      "title": "Fleche - 性能评估 吞吐率提升及缓存查询延迟对比",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_019",
+        "slide_index": 19,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_020",
+      "type": "slide",
+      "start_ms": 702300,
+      "end_ms": 711500,
+      "title": "Fleche - 小结 针对GPU片上内存软硬交互开销大的解决方案",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_020",
+        "slide_index": 20,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_021",
+      "type": "slide",
+      "start_ms": 712300,
+      "end_ms": 713500,
+      "title": "报告目录 03 PM层参数存储：参数网卡聚集机制 [VLDB'23]",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_021",
+        "slide_index": 21,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_022",
+      "type": "slide",
+      "start_ms": 714300,
+      "end_ms": 752500,
+      "title": "PetPS - 研究动机 持久性内存参数服务器（PS）的CPU瓶颈现象",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_022",
+        "slide_index": 22,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_023",
+      "type": "slide",
+      "start_ms": 753300,
+      "end_ms": 776500,
+      "title": "PetPS - 核心想法 PM参数聚集消耗大量CPU指令周期",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_023",
+        "slide_index": 23,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_024",
+      "type": "slide",
+      "start_ms": 777300,
+      "end_ms": 812500,
+      "title": "PetPS - 核心想法 利用网卡DMA引擎（SG-DMA）功能，减轻CPU负担",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_024",
+        "slide_index": 24,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_025",
+      "type": "slide",
+      "start_ms": 813300,
+      "end_ms": 851500,
+      "title": "PetPS - 关键技术：网卡聚集机制 对比Naive方法与PetPS方法的执行流程",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_025",
+        "slide_index": 25,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_026",
+      "type": "slide",
+      "start_ms": 852300,
+      "end_ms": 873500,
+      "title": "PetPS - 关键技术：网卡聚集机制 面临的问题：参数一致性",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_026",
+        "slide_index": 26,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_027",
+      "type": "slide",
+      "start_ms": 874300,
+      "end_ms": 888500,
+      "title": "PetPS - 关键技术：参数一致性的维护 写时拷贝与基于epoch-list的空间回收机制",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_027",
+        "slide_index": 27,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_028",
+      "type": "slide",
+      "start_ms": 889300,
+      "end_ms": 915500,
+      "title": "PetPS - 整体性能 端到端吞吐率及延迟对比",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_028",
+        "slide_index": 28,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_029",
+      "type": "slide",
+      "start_ms": 916300,
+      "end_ms": 931500,
+      "title": "PetPS - 小结 利用网卡访存，使CPU更高效率地处理PM层参数",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_029",
+        "slide_index": 29,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_030",
+      "type": "slide",
+      "start_ms": 932300,
+      "end_ms": 933500,
+      "title": "报告目录 04 SSD层参数存储：参数选择性副本布局机制 [ASPLOS'24]",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_030",
+        "slide_index": 30,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_031",
+      "type": "slide",
+      "start_ms": 934300,
+      "end_ms": 975500,
+      "title": "MaxEmbed - 研究动机 使用SSD存储参数时存在的严重读放大现象，浪费带宽",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_031",
+        "slide_index": 31,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_032",
+      "type": "slide",
+      "start_ms": 976300,
+      "end_ms": 989500,
+      "title": "MaxEmbed - 研究动机 现有工作使用超图划分共现关系，但一个参数仅获一个共现关系",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_032",
+        "slide_index": 32,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_033",
+      "type": "slide",
+      "start_ms": 990300,
+      "end_ms": 1025500,
+      "title": "MaxEmbed - 研究动机 超图划分后，一个节点仅存在于一个子图中",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_033",
+        "slide_index": 33,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_034",
+      "type": "slide",
+      "start_ms": 1026300,
+      "end_ms": 1081500,
+      "title": "MaxEmbed - 研究动机 一个热点参数同时存在于多个共现关系中",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_034",
+        "slide_index": 34,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_035",
+      "type": "slide",
+      "start_ms": 1082300,
+      "end_ms": 1111500,
+      "title": "MaxEmbed - 核心想法 选择性副本热点参数，在空间开销内捕获组合共现关系",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_035",
+        "slide_index": 35,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_036",
+      "type": "slide",
+      "start_ms": 1112300,
+      "end_ms": 1174500,
+      "title": "MaxEmbed - 核心想法 面临的挑战：选择哪些参数副本及如何拆分用户请求",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_036",
+        "slide_index": 36,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_037",
+      "type": "slide",
+      "start_ms": 1175300,
+      "end_ms": 1187500,
+      "title": "MaxEmbed - 实验结果 单次页面包含有效参数数量分布及端到端吞吐率提升",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_037",
+        "slide_index": 37,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_038",
+      "type": "slide",
+      "start_ms": 1188300,
+      "end_ms": 1197500,
+      "title": "MaxEmbed - 小结 针对SSD读放大问题，采用热点参数选择性副本策略",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_038",
+        "slide_index": 38,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_039",
+      "type": "slide",
+      "start_ms": 1198300,
+      "end_ms": 1212500,
+      "title": "框架研发 - RecStore 通用、高效、低成本的推荐参数存储系统",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_039",
+        "slide_index": 39,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_040",
+      "type": "slide",
+      "start_ms": 1213300,
+      "end_ms": 1228500,
+      "title": "研究工作影响力 在阿里巴巴、快手、NVIDIA、Intel等企业的落地与应用",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_040",
+        "slide_index": 40,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_041",
+      "type": "slide",
+      "start_ms": 1229300,
+      "end_ms": 1273500,
+      "title": "未来展望：生成式推荐大模型 从DLRM到GR（生成式推荐），参数量和计算模式的变化",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_041",
+        "slide_index": 41,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_042",
+      "type": "slide",
+      "start_ms": 1274300,
+      "end_ms": 1482840,
+      "title": "总结 推荐模型对存储系统提出的挑战及多层次存储优化思路",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_042",
+        "slide_index": 42,
+        "offset_ms": 0
+      }
+    }
+  ]
+}

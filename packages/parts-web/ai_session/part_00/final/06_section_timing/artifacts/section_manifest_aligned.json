@@ -1,0 +1,110 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "论坛开场与嘉宾介绍",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "start_ms": 500,
+      "end_ms": 123000,
+      "summary_hint": "主持人杜海田为AI分论坛开场，并介绍第一位演讲嘉宾——来自深信服科技的孙政华先生及其分享主题。",
+      "text_span": {
+        "start": 0,
+        "end": 12
+      },
+      "lead_text": "女士们,先生们,大家下午好。",
+      "tail_text": "下面, 我们隆重地邀请我们第一个演讲嘉宾, 他是来自于深信服科技股份有限公司的研发主管, 孙政华先生, 给我们带来《基于 openEuler intelligence 组建一支 OS 开发团队》的分享。大家欢迎。"
+    },
+    {
+      "id": "sec_2",
+      "title": "AI Agent时代背景与OS维护挑战",
+      "material_ids": [
+        "chunk_00/slide_003",
+        "chunk_00/slide_004"
+      ],
+      "start_ms": 142500,
+      "end_ms": 523659,
+      "summary_hint": "讲者首先介绍了AI Agent的应用元年背景，并引出操作系统（OS）生命周期维护中的核心痛点，特别是补丁合入（Patch Merging）的巨大工作量。",
+      "text_span": {
+        "start": 13,
+        "end": 46
+      },
+      "lead_text": "各位来宾,各位老师,大家下午好。",
+      "tail_text": "我们怎么解决的呢?"
+    },
+    {
+      "id": "sec_3",
+      "title": "实践案例一：补丁合并（Patch Merging）",
+      "material_ids": [
+        "chunk_00/slide_005",
+        "chunk_00/slide_006",
+        "chunk_00/slide_007"
+      ],
+      "start_ms": 523660,
+      "end_ms": 935359,
+      "summary_hint": "详细介绍了第一个落地案例——补丁合并。内容涵盖了基于MCP Servers的人机协同用户旅程、Agent内部工作流的技术实现，以及将分析效率从周级提升到小时级的显著落地效果。",
+      "notes": "尾句后紧跟转场词“好。”（00:15:34,359），已将 end_ts 顺延以包含该转场，确保语义完整性。",
+      "text_span": {
+        "start": 47,
+        "end": 81
+      },
+      "lead_text": "我们先以第一个 MCP Servers 来落地我们 Patch Merging 这个, 我一个例子, 我一个一个起点来做一下简单的介绍。从用户的角度来说的话, 我们如果说以前在合代码, 以前合代码的旅程的话, 就是人工地去做大量的分析。",
+      "tail_text": "整个的那个合入的效率其实得到了一个数量级的一个提升。"
+    },
+    {
+      "id": "sec_4",
+      "title": "实践案例二与三：集成测试及Vmcore分析",
+      "material_ids": [
+        "chunk_00/slide_008",
+        "chunk_00/slide_009"
+      ],
+      "start_ms": 935359,
+      "end_ms": 1019885,
+      "summary_hint": "简要介绍了另外两个实践案例：利用Agent进行集成测试与Bug修复，以及在Vmcore分析中集成多个Agent进行智能检测。",
+      "text_span": {
+        "start": 83,
+        "end": 90
+      },
+      "lead_text": "第二块的话就是那个集成测试, 它整体的工作流其实也类似, 只是说它完成的任务会不一样。",
+      "tail_text": "主要这个过程的话还是需要强调一个人机协同。"
+    },
+    {
+      "id": "sec_5",
+      "title": "技术架构与团队组建原则",
+      "material_ids": [
+        "chunk_00/slide_010",
+        "chunk_00/slide_011",
+        "chunk_00/slide_012"
+      ],
+      "start_ms": 1021000,
+      "end_ms": 1144959,
+      "summary_hint": "介绍了依托openEuler intelligence的分层技术架构，并分享了组建OS开发团队的原则，强调人机协同而非完全自动化，并引入监督Agent以提升准确性。",
+      "text_span": {
+        "start": 91,
+        "end": 100
+      },
+      "lead_text": "然后呢, 整体的话, 我们还是依托于那个 openEuler intelligence 这套架构来做的。openEuler 这套架构呢, 其实给我们带来了还是比较多的便利性的, 比如说对于交互控制层, 我们把它直接集成到了我们的基于 VS Code 实现的一个 Codelet 的那个代码编辑器里面去。",
+      "tail_text": "这是我们大概的一些实践的案例, 感谢大家。"
+    },
+    {
+      "id": "sec_6",
+      "title": "演讲总结与致谢",
+      "material_ids": [
+        "chunk_00/slide_013",
+        "chunk_00/slide_014"
+      ],
+      "start_ms": 1155000,
+      "end_ms": 1201210,
+      "summary_hint": "讲者结束分享，主持人总结了分享的核心亮点，特别是补丁合并效率从周级到小时级的巨大提升，以及准确率的显著提高。",
+      "notes": "原定首句为上一章节讲者结束语。已根据主持人开场白（00:19:16,039）校准 start_ts，以包含掌声和过渡。",
+      "text_span": {
+        "start": 100,
+        "end": 102
+      },
+      "lead_text": "这是我们大概的一些实践的案例, 感谢大家。",
+      "tail_text": "所以这个其实为我们这个后面的那个运维啊, 就是个方向, OS 的一个重要的运维方向提供了很好的思路。很欣喜也看到后面有很多的这个这个规划, 所以我们社区可以跟这个孙老师继续合作, 把这块做得更好。"
+    }
+  ]
+}

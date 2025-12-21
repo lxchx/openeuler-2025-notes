@@ -1,0 +1,394 @@
+{
+  "materials": [
+    {
+      "id": "chunk_00/slide_001",
+      "type": "slide",
+      "start_ms": 0,
+      "end_ms": 23000,
+      "title": "沙上聚塔：基于LLM的核心系统软件栈智能调优探索 Speaker: 黄俊 (招商证券核心系统架构师)",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_001",
+        "slide_index": 1,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_002",
+      "type": "slide",
+      "start_ms": 23500,
+      "end_ms": 113000,
+      "title": "自我介绍 Content: 黄俊，招商证券核心系统架构师，openEuler社区AI联合工作组成员，年度云原生MVP。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_002",
+        "slide_index": 2,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_003",
+      "type": "slide",
+      "start_ms": 113500,
+      "end_ms": 151000,
+      "title": "目录 Content: 01 全面架构升级的痛点与挑战",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_003",
+        "slide_index": 3,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_004",
+      "type": "slide",
+      "start_ms": 151500,
+      "end_ms": 282000,
+      "title": "1.1 核心系统全面改造背景下，系统运行不确定性大幅增加 Content: 基础软硬件（CPU、网络、存储、操作系统、JDK、数据库）替换时面临的挑战。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_004",
+        "slide_index": 4,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_005",
+      "type": "slide",
+      "start_ms": 282500,
+      "end_ms": 341000,
+      "title": "1.2 全面架构升级背景下研发资源空洞问题 Content: 传统研发运维分工的断点，基础软件差距（慢+快+性价比）。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_005",
+        "slide_index": 5,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_006",
+      "type": "slide",
+      "start_ms": 341500,
+      "end_ms": 410000,
+      "title": "1.3 大模型技术方兴未艾，但现阶段幻觉问题不能盲目挂载业务 Content: 模型幻觉——隐蔽的不确定性炸弹。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_006",
+        "slide_index": 6,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_007",
+      "type": "slide",
+      "start_ms": 410500,
+      "end_ms": 421000,
+      "title": "目录 Content: 02 大模型技术发展带来的新机遇",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_007",
+        "slide_index": 7,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_008",
+      "type": "slide",
+      "start_ms": 421500,
+      "end_ms": 519000,
+      "title": "2.1 基于贝叶斯模型的参数调优技术 Content: 收集特征 -> 选择调优参数 -> 训练代理模型 -> 生成推荐参数配置 -> 运行负载获取反馈。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_008",
+        "slide_index": 8,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_009",
+      "type": "slide",
+      "start_ms": 519500,
+      "end_ms": 658000,
+      "title": "2.2 LLM综合智能调优方案相较贝叶斯调优的优势 Content: 对比负载感知维度、参数识别范围、调优效率、可解释性。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_009",
+        "slide_index": 9,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_010",
+      "type": "slide",
+      "start_ms": 658500,
+      "end_ms": 724000,
+      "title": "2.3 RAG技术优劣势分析 Content: 技术优势（成本低、私有数据、可解释） vs 技术劣势（推理能力弱、上下文限制、检索精度）。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_010",
+        "slide_index": 10,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_011",
+      "type": "slide",
+      "start_ms": 724500,
+      "end_ms": 783000,
+      "title": "2.4 模型微调技术架构模型微调生命力 Content: 提升领域适应性，加速模型迭代（Adapter, Prefix Tuning, LoRA等）。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_011",
+        "slide_index": 11,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_012",
+      "type": "slide",
+      "start_ms": 783500,
+      "end_ms": 839000,
+      "title": "2.5 模型蒸馏技术在中小模型部署运用探索 Content: 降低部署成本，提升应用灵活性（Teacher Model -> Student Model）。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_012",
+        "slide_index": 12,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_013",
+      "type": "slide",
+      "start_ms": 840500,
+      "end_ms": 895000,
+      "title": "2.6 博采众长，MCP技术带来的创新落地可能性 Content: 技术融合器，MCP架构（MCP Clients, MCP Server）。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_013",
+        "slide_index": 13,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_014",
+      "type": "slide",
+      "start_ms": 895500,
+      "end_ms": 902000,
+      "title": "目录 Content: 03 软件栈智能调优方案与创新点",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_014",
+        "slide_index": 14,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_015",
+      "type": "slide",
+      "start_ms": 902500,
+      "end_ms": 913000,
+      "title": "3.1 智能调优自验证闭环解决大模型不确定性影响 Content: 智能调优自动验证闭环流程图。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_015",
+        "slide_index": 15,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_016",
+      "type": "slide",
+      "start_ms": 913500,
+      "end_ms": 933000,
+      "title": "3.2 基于通用大模型的多级架构方案构想 Content: 通用大模型 -> 上下文理解与路由 -> 领域模型/Agent。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_016",
+        "slide_index": 16,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_017",
+      "type": "slide",
+      "start_ms": 933500,
+      "end_ms": 958000,
+      "title": "3.4 核心交通运维平台SEE集成 openEuler intelligence Content: 集成后效果展示，平台具备较精准专业的性能问题诊断能力。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_017",
+        "slide_index": 17,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_018",
+      "type": "slide",
+      "start_ms": 958500,
+      "end_ms": 979000,
+      "title": "3.5 RAG原始知识库展示 Content: 核心系统运维知识库、OceanBase资产列表等。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_018",
+        "slide_index": 18,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_019",
+      "type": "slide",
+      "start_ms": 979500,
+      "end_ms": 1004000,
+      "title": "3.6 智能调优方案初步实验验证数据赋能 Content: 已在恒生电子相关方案中验证，具备较精准专业的性能问题诊断能力。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_019",
+        "slide_index": 19,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_020",
+      "type": "slide",
+      "start_ms": 1004500,
+      "end_ms": 1020000,
+      "title": "3.7 IAR网关接入开源调优效果 Content: copilot调优对比，吞吐量提升13.6%。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_020",
+        "slide_index": 20,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_021",
+      "type": "slide",
+      "start_ms": 1020500,
+      "end_ms": 1063000,
+      "title": "3.8 期权原子系统调优效果对比数据 Content: 调优前后吞吐量对比数据展示。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_021",
+        "slide_index": 21,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_022",
+      "type": "slide",
+      "start_ms": 1063500,
+      "end_ms": 1067000,
+      "title": "目录 Content: 04 创新技术生态建议",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_022",
+        "slide_index": 22,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_023",
+      "type": "slide",
+      "start_ms": 1067500,
+      "end_ms": 1130000,
+      "title": "4.1 后续计划 Content: 完成公司专有领域模型微调，完善平台产品易用性，探索持续在线学习方案等。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_023",
+        "slide_index": 23,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_024",
+      "type": "slide",
+      "start_ms": 1130500,
+      "end_ms": 1268000,
+      "title": "4.2 生态共建：独行快，众行远 Content: 呼吁行业共建，解决数据安全与模型训练的矛盾。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_024",
+        "slide_index": 24,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_025",
+      "type": "slide",
+      "start_ms": 1268500,
+      "end_ms": 1280000,
+      "title": "感谢聆听！ Content: CMS 招商证券",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_025",
+        "slide_index": 25,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_026",
+      "type": "slide",
+      "start_ms": 1280500,
+      "end_ms": 1290000,
+      "title": "AI分论坛 Content: 开放原子开源基金会 | openEuler",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_026",
+        "slide_index": 26,
+        "offset_ms": 0
+      }
+    }
+  ]
+}

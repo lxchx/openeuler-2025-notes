@@ -1,0 +1,652 @@
+{
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "p0",
+        "label": "主题介绍",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_1"
+          ],
+          "material_ids": [
+            "chunk_00/slide_001",
+            "chunk_00/slide_002"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_002",
+            "primary_time_ts": "00:00:10,500",
+            "primary_time_ms": 10500
+          }
+        },
+        "parent": null,
+        "summary": "演讲开场，介绍分享主题为“CTyunOS智能安全中心”，并点明核心议题：如何将人工智能（AI）技术与操作系统安全相结合。"
+      },
+      {
+        "id": "p1",
+        "label": "CTyunOS智能安全中心概览",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_003",
+            "chunk_00/slide_004",
+            "chunk_00/slide_005"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_003",
+            "primary_time_ts": "00:00:43,000",
+            "primary_time_ms": 43000
+          }
+        },
+        "parent": null,
+        "summary": "对CTyunOS智能安全中心进行总体介绍，涵盖其平台定义、核心特色、技术架构及功能模块。它是一个集成了AI大模型的智能化漏洞全生命周期管理平台，旨在实现对漏洞从感知到修复的一体化智能管理。"
+      },
+      {
+        "id": "d1_1",
+        "label": "平台定义与目标",
+        "category": "Concept",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_003"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_003",
+            "primary_time_ts": "00:00:43,000",
+            "primary_time_ms": 43000
+          }
+        },
+        "parent": "p1",
+        "summary": "CTyunOS智能安全中心是由天翼云开发的智能化漏洞全生命周期管理平台，引入AI大模型能力，旨在实现对漏洞从感知到公告的全流程智能化跟踪与管理。"
+      },
+      {
+        "id": "d1_2",
+        "label": "技术架构",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_004"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_004",
+            "primary_time_ts": "00:01:39,200",
+            "primary_time_ms": 99200
+          }
+        },
+        "parent": "p1",
+        "summary": "系统采用前后端分离架构，前端基于Vue.js和ECharts，后端使用Flask框架，集成DeepSeek大模型，并采用PostgreSQL、Redis和Celery进行数据处理和任务管理。"
+      },
+      {
+        "id": "d1_3",
+        "label": "基于开源项目扩展",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_003",
+            "chunk_00/slide_005"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_005",
+            "primary_time_ts": "00:02:18,200",
+            "primary_time_ms": 138200
+          }
+        },
+        "parent": "p1",
+        "summary": "系统基于天翼云贡献至openEuler社区的CVE-ease（漏洞处理）和security-baseline（安全基线管理）等开源项目进行扩展，以更好地服务于操作系统安全任务。"
+      },
+      {
+        "id": "p2",
+        "label": "漏洞全生命周期管理",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_006"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_006",
+            "primary_time_ts": "00:02:59,500",
+            "primary_time_ms": 179500
+          }
+        },
+        "parent": null,
+        "summary": "详细阐述了CTyunOS智能安全中心如何对漏洞进行从感知、分析、修复到测试与公告的全生命周期闭环管控，并说明了各阶段的核心流程与技术应用。"
+      },
+      {
+        "id": "d2_1",
+        "label": "漏洞感知",
+        "category": "ProcessStep",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_006"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_006",
+            "primary_time_ts": "00:03:05,000",
+            "primary_time_ms": 185000
+          }
+        },
+        "parent": "p2",
+        "summary": "从NVD、CNVD、openEuler社区、Yum源等多元数据源自动抓取漏洞信息，并通过智能化筛选，将有效信息推送给研发人员。"
+      },
+      {
+        "id": "d2_2",
+        "label": "漏洞分析",
+        "category": "ProcessStep",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_006"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_006",
+            "primary_time_ts": "00:03:20,000",
+            "primary_time_ms": 200000
+          }
+        },
+        "parent": "p2",
+        "summary": "利用AI智能体对漏洞的实际影响进行分析和定级。根据CVSS评分与预设阈值的比较结果，决定采纳AI分析或触发人工审核。"
+      },
+      {
+        "id": "d2_3",
+        "label": "漏洞修复",
+        "category": "ProcessStep",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_006"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_006",
+            "primary_time_ts": "00:04:00,000",
+            "primary_time_ms": 240000
+          }
+        },
+        "parent": "p2",
+        "summary": "尝试自动获取并合入修复补丁。研发人员可与AI智能体交互获取修复建议，AI源码分析结果也会作为佐证材料输出到分析报告中。"
+      },
+      {
+        "id": "d2_4",
+        "label": "测试与公告",
+        "category": "ProcessStep",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_006"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_006",
+            "primary_time_ts": "00:05:35,000",
+            "primary_time_ms": 335000
+          }
+        },
+        "parent": "p2",
+        "summary": "修复完成后，对补丁的有效性和稳定性进行测试，并通过官网发布安全公告和邮件通知客户，形成管理闭环。"
+      },
+      {
+        "id": "p3",
+        "label": "AI核心能力与功能",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_4",
+            "sec_5",
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_007",
+            "chunk_00/slide_008",
+            "chunk_00/slide_009",
+            "chunk_00/slide_010",
+            "chunk_00/slide_011",
+            "chunk_00/slide_012",
+            "chunk_00/slide_013",
+            "chunk_00/slide_014"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_007",
+            "primary_time_ts": "00:05:48,000",
+            "primary_time_ms": 348000
+          }
+        },
+        "parent": null,
+        "summary": "重点介绍AI技术在漏洞分析与处理中的具体应用，包括漏洞影响分析、源码分析流程，以及基于知识图谱的AI聊天引擎。同时展示了AI辅助评分、自动化分析、进度追踪和安全加固等核心功能。"
+      },
+      {
+        "id": "d3_1",
+        "label": "AI漏洞影响分析",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4",
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_007"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_007",
+            "primary_time_ts": "00:05:48,000",
+            "primary_time_ms": 348000
+          }
+        },
+        "parent": "p3",
+        "summary": "通过信息整理、AI大模型分析、结果验证与上报三个阶段，利用结构化数据和AI模型（如DeepSeek-R1）评估漏洞的潜在影响。"
+      },
+      {
+        "id": "d3_2",
+        "label": "AI漏洞源码分析",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_008"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_008",
+            "primary_time_ts": "00:06:43,200",
+            "primary_time_ms": 403200
+          }
+        },
+        "parent": "p3",
+        "summary": "分析源码以判断漏洞补丁合入的可行性，并通过自动化构建流程验证其安全性，最终生成AI分析报告作为修复依据。"
+      },
+      {
+        "id": "d3_3",
+        "label": "AI聊天引擎",
+        "category": "Feature",
+        "references": {
+          "section_ids": [
+            "sec_4"
+          ],
+          "material_ids": [
+            "chunk_00/slide_009",
+            "chunk_00/slide_010"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_010",
+            "primary_time_ts": "00:07:48,200",
+            "primary_time_ms": 468200
+          }
+        },
+        "parent": "p3",
+        "summary": "基于知识图谱构建的AI聊天引擎，用户可通过自然语言交互，直接查询已有的漏洞修复信息或对特定漏洞问题进行提问。"
+      },
+      {
+        "id": "d3_4",
+        "label": "AI辅助漏洞评分",
+        "category": "Feature",
+        "references": {
+          "section_ids": [
+            "sec_5"
+          ],
+          "material_ids": [
+            "chunk_00/slide_011"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_011",
+            "primary_time_ts": "00:08:02,000",
+            "primary_time_ms": 482000
+          }
+        },
+        "parent": "p3",
+        "summary": "AI综合多维度信息为漏洞提供初始建议分数，研发人员可二次调整，确保评分准确性。"
+      },
+      {
+        "id": "d3_5",
+        "label": "自动化AI分析",
+        "category": "Feature",
+        "references": {
+          "section_ids": [
+            "sec_5"
+          ],
+          "material_ids": [
+            "chunk_00/slide_012"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_012",
+            "primary_time_ts": "00:08:25,200",
+            "primary_time_ms": 505200
+          }
+        },
+        "parent": "p3",
+        "summary": "系统以定时任务形式自动触发AI分析新感知的漏洞，提升处理效率，并持续优化对非openEuler上游软件包的分析准确性。"
+      },
+      {
+        "id": "d3_6",
+        "label": "漏洞修复进度追踪",
+        "category": "Feature",
+        "references": {
+          "section_ids": [
+            "sec_5"
+          ],
+          "material_ids": [
+            "chunk_00/slide_013"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_013",
+            "primary_time_ts": "00:09:02,200",
+            "primary_time_ms": 542200
+          }
+        },
+        "parent": "p3",
+        "summary": "系统支持对漏洞修复全流程的进度追踪，并对“受影响”和“不受影响”的漏洞采用差异化处理流程。"
+      },
+      {
+        "id": "d3_7",
+        "label": "AI安全加固",
+        "category": "Feature",
+        "references": {
+          "section_ids": [
+            "sec_5"
+          ],
+          "material_ids": [
+            "chunk_00/slide_014"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_014",
+            "primary_time_ts": "00:09:19,200",
+            "primary_time_ms": 559200
+          }
+        },
+        "parent": "p3",
+        "summary": "利用AI生成专业的安全加固项，并内置防篡改的完整性校验机制，确保执行安全。"
+      },
+      {
+        "id": "p4",
+        "label": "研发规划与总结",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_6"
+          ],
+          "material_ids": [
+            "chunk_00/slide_015"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_015",
+            "primary_time_ts": "00:09:41,200",
+            "primary_time_ms": 581200
+          }
+        },
+        "parent": null,
+        "summary": "总结了当前项目的开源进展，并阐述了未来的研发规划。下一步将围绕AI进行深化，通过扩展数据源和微调大模型，提升在复杂漏洞修复环节的应用能力。"
+      },
+      {
+        "id": "d4_1",
+        "label": "开源进展",
+        "category": "Result",
+        "references": {
+          "section_ids": [
+            "sec_6"
+          ],
+          "material_ids": [
+            "chunk_00/slide_015"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_015",
+            "primary_time_ts": "00:09:41,200",
+            "primary_time_ms": 581200
+          }
+        },
+        "parent": "p4",
+        "summary": "漏洞感知、安全加固、补丁获取等核心模块已经或正在向openEuler社区进行开源，回馈社区。"
+      },
+      {
+        "id": "d4_2",
+        "label": "下一步规划",
+        "category": "Concept",
+        "references": {
+          "section_ids": [
+            "sec_6"
+          ],
+          "material_ids": [
+            "chunk_00/slide_015"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_015",
+            "primary_time_ts": "00:09:50,000",
+            "primary_time_ms": 590000
+          }
+        },
+        "parent": "p4",
+        "summary": "未来的研发工作将围绕AI展开，通过接入更多漏洞数据源、对大语言模型进行微调等方式，深化AI在漏洞修复等复杂环节的应用。"
+      }
+    ],
+    "edges": [
+      {
+        "source": "p0",
+        "target": "p1",
+        "relation_type": "sequential",
+        "label": "引出"
+      },
+      {
+        "source": "p1",
+        "target": "p2",
+        "relation_type": "sequential",
+        "label": "展开流程"
+      },
+      {
+        "source": "p2",
+        "target": "p3",
+        "relation_type": "sequential",
+        "label": "技术深化"
+      },
+      {
+        "source": "p3",
+        "target": "p4",
+        "relation_type": "sequential",
+        "label": "展望未来"
+      },
+      {
+        "source": "d2_1",
+        "target": "d2_2",
+        "relation_type": "sequential",
+        "label": "分析"
+      },
+      {
+        "source": "d2_2",
+        "target": "d2_3",
+        "relation_type": "sequential",
+        "label": "修复"
+      },
+      {
+        "source": "d2_3",
+        "target": "d2_4",
+        "relation_type": "sequential",
+        "label": "验证与发布"
+      },
+      {
+        "source": "d4_1",
+        "target": "d4_2",
+        "relation_type": "sequential",
+        "label": "展望"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec_1",
+      "index": 0,
+      "title": "开场与主题介绍",
+      "time_range": "00:00:00,000 - 00:00:41,405",
+      "summary": "主持人开场后，来自天翼云的后端开发工程师吴开顺先生开始分享。他介绍了本次的主题——CTyunOS智能安全中心，并指出将AI与操作系统安全相结合是本次分享的重点和有趣话题。",
+      "refined_script": "# 主题介绍：CTyunOS 智能安全中心\n\n## 1. 核心理念\n\n操作系统安全是整个操作系统运行的基石。\n\n## 2. 分享重点\n\n本次分享将介绍由天翼云研发的 **CTyunOS 智能安全中心**，并重点探讨一个核心议题：如何将人工智能（AI）技术与操作系统安全相结合。",
+      "original_script": "下面有请天翼云科技有限公司的后端开发工程师\n吴开顺先生，为我们带来《CTyunOS智能安全中心》的分享。\n大家欢迎。\nCTyunOS智能安全中心的一个分享，大家欢迎。\n各位同事，大家下午好。\n今天在这里主要是对天翼云研发的CTyunOS智能安全中心做一个介绍。\n操作系统安全是我们整个操作系统运行的基石。\n如何将AI和我们的操作系统安全结合，这是一个很有趣的话题。",
+      "start_ms": 0,
+      "end_ms": 41405,
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "summary_hint": "主持人开场，演讲者介绍本次分享的主题：CTyunOS智能安全中心，以及AI与操作系统安全结合的背景。",
+      "lead_text": "下面有请天翼云科技有限公司的后端开发工程师",
+      "tail_text": "如何将AI和我们的操作系统安全结合，这是一个很有趣的话题。",
+      "text_span": {
+        "start": 0,
+        "end": 7
+      }
+    },
+    {
+      "id": "sec_2",
+      "index": 1,
+      "title": "CTyunOS智能安全中心概览",
+      "time_range": "00:00:42,860 - 00:02:59,000",
+      "summary": "CTyunOS智能安全中心是由天翼云开发的智能化漏洞全生命周期管理平台，它引入AI大模型能力，对漏洞进行从感知、分析到修复、公告的一体化智能管理。该系统采用前后端分离架构，基于CVE-ease和security-baseline等开源项目扩展，实现对漏洞影响的精准评估与高效追踪修复。",
+      "refined_script": "# CTyunOS 智能安全中心概览\n\n## 1. 平台简介\n\nCTyunOS 智能安全中心是由天翼云操作系统团队开发的一款智能化漏洞全生命周期管理平台。该平台旨在实现对漏洞从感知、播报、分析、修复、测试到公告的全流程智能化跟踪与管理。\n\n平台的核心特色是引入 AI 大模型能力，能够基于 CVE 信息、源码、补丁等多维要素，智能分析并精准评估漏洞对 CTyunOS 操作系统的实际影响。\n\n## 2. 核心能力与技术基础\n\n### AI 驱动的漏洞分析\n\n- **智能评估**：集成 AI 大模型（如 DeepSeek），分析漏洞是否对操作系统构成影响。\n- **数据驱动**：分析过程综合利用 CVE 信息、源码信息、补丁信息等多种数据源，以提高评估的准确性。\n\n### 基于开源项目的扩展\n\nCTyunOS 智能安全中心基于天翼云贡献至 openEuler 社区的开源项目进行扩展，以更好地服务于操作系统安全任务。主要包括：\n\n- **`CVE-ease`**：用于漏洞处理与分析。\n- **`security-baseline`**：用于安全基线管理。\n\n## 3. 系统架构\n\n系统采用前后端分离的现代化架构，并支持容器化一键启动部署。\n\n- **前端技术栈**\n  - **框架**: Vue.js\n  - **图表**: ECharts\n  - **托管**: Nginx\n\n- **后端技术栈**\n  - **框架**: Flask\n  - **数据库**: PostgreSQL\n  - **缓存**: Redis\n  - **异步任务**: Celery\n  - **智能分析**: 集成 DeepSeek 大模型\n\n- **核心模块**\n  - **CVE-Ease**：漏洞处理模块\n  - **Security-Baseline**：安全基线管理模块\n\n## 4. 功能总结\n\nCTyunOS 智能安全中心是一个集成了 AI 大模型的智能化漏洞全生命周期管理平台。它通过自动化分析 CVE、源码及补丁信息，精准评估漏洞对 CTyunOS 的影响并追踪修复流程。同时，平台结合了播报管理、定时任务与权限控制等功能，实现了对漏洞从感知、分析到修复、公告的一体化智能管理。",
+      "original_script": "首先介绍一下CTyunOS智能安全中心。\nCTyunOS智能安全中心是由天翼云操作系统团队开发，旨在对漏洞从感知、播报、分析、修复、测试和公告全生命周期进行智能化跟踪的系统。\n通过引入AI大模型相关能力，\nCTyunOS智能安全中心能够分析漏洞是否对操作系统构成影响，\n并根据CVE信息、源码信息、补丁信息等要素对漏洞影响进行分析。\n在漏洞感知能力和安全加固相关，CTyunOS智能安全中心基于天翼云贡献到欧拉社区开源的CVE-ease和security-baseline进行扩展，\n使其能够更好地服务于操作系统安全相关任务。\n已开源和计划开源内容如上图所示。\nCTyunOS智能安全中心采用前后端分离架构，\n前端基于Vue.js和ECharts构建，\n由Nginx托管。\n后端使用Flask框架，集成DeepSeek大模型进行智能分析，\n并通过PostgreSQL数据库、Redis缓存\n和Celery异步任务处理数据。\n系统包含CVE-Ease漏洞处理和Security-Baseline安全基线管理等核心模块，\n实现高效的漏洞全生命周期管理。\n我们其实是能够通过容器一键启动的。\nCTyunOS智能安全中心是一个集成了AI大模型的智能化漏洞全生命周期管理平台。\n它通过自动化分析CVE、源码及补丁信息，精准评估漏洞对CTyunOS的影响并追踪修复流程，\n同时结合播报管理、定时任务与权限控制，\n实现对漏洞从感知、分析到修复、公告的智能化一体化管理。\n实现对漏洞从感知、分析到修复、公告的智能化一体化管理。",
+      "start_ms": 42860,
+      "end_ms": 179000,
+      "material_ids": [
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005"
+      ],
+      "summary_hint": "从系统定义、技术架构和功能架构三个方面，对CTyunOS智能安全中心进行总体介绍。",
+      "lead_text": "首先介绍一下CTyunOS智能安全中心。",
+      "tail_text": "实现对漏洞从感知、分析到修复、公告的智能化一体化管理。",
+      "text_span": {
+        "start": 8,
+        "end": 29
+      }
+    },
+    {
+      "id": "sec_3",
+      "index": 2,
+      "title": "漏洞全生命周期管理流程",
+      "time_range": "00:02:59,440 - 00:05:48,700",
+      "summary": "CTyunOS智能安全中心对漏洞进行全生命周期闭环管控，覆盖从感知、分析到修复、公告等环节。该流程利用多元数据源自动感知漏洞，并借助AI智能体进行影响分析和辅助修复，对于高危漏洞则引入人工审核以确保安全。最终，修复情况会通过官网公告和邮件通知客户，形成完整的管理闭环。",
+      "refined_script": "# 漏洞全生命周期管理流程\n\nCTyunOS 智能安全中心对漏洞实施从感知、分析、修复到公告的全生命周期闭环管控。\n\n## 1. 漏洞感知\n\n此阶段旨在自动化地发现并筛选漏洞信息。\n\n- **数据源**: 系统从多元化的数据源自动抓取漏洞信息，包括：\n  - NVD (National Vulnerability Database)\n  - CNVD (China National Vulnerability Database)\n  - openEuler 社区\n  - Yum 源\n- **处理流程**:\n  1. 自动抓取原始漏洞数据。\n  2. 通过智能化筛选，过滤无关信息。\n  3. 将有效的漏洞信息推送给相关研发人员。\n\n## 2. 漏洞分析\n\n利用 AI 智能体对漏洞的实际影响进行分析和定级。\n\n- **分析核心**: AI 智能体\n- **分析流程**:\n  1. **参考 CVSS 评分**: 针对公开披露的漏洞，系统会获取其 CVSS 评分。\n  2. **阈值判断**:\n     - **低于阈值**: 若 CVSS 评分低于预设阈值，系统将采纳 AI 的分析结果，判定为“不受影响”，并直接进入公告环节。\n     - **高于阈值**: 若 CVSS 评分高于预设阈值，系统将判定为“受影响”，并自动触发人工审核流程。此举旨在对高危漏洞采取更为审慎的态度，确保分析的准确性。\n\n## 3. 漏洞修复\n\n此阶段的目标是高效、准确地生成并合入修复补丁。\n\n- **初步尝试**:\n  - 使用 `CVE-word` 工具尝试获取官方或社区提供的修复补丁。\n  - 判断补丁是否能够成功合入现有代码库。\n- **修复触发**:\n  - 当补丁确认可合入并通过代码门禁（CI/CD）检查后，系统将自动触发漏洞修复流程。\n  - **注**: 当前流程由于基础设施尚在完善中，部分环节仍需人工参与，最终目标是实现全自动化修复。\n- **AI 辅助修复**:\n  - 系统将安全漏洞的相关信息构建成 AI 智能体，研发人员可在修复过程中直接与其交互，获取修复建议。\n  - AI 源码分析的结果也会作为佐证材料，输出到最终的漏洞分析报告中。\n\n## 4. 测试与公告\n\n在修复完成后，对结果进行验证并通知相关方。\n\n- **测试**: 修复后的版本需通过完整的测试流程，确保补丁的有效性和稳定性。\n- **公告**:\n  - **官网发布**: 在官方网站上发布安全公告。\n  - **邮件通知**: 通过邮件向外部客户通知漏洞修复情况，形成管理闭环。",
+      "original_script": "CTyunOS智能安全中心对漏洞感知、播报、分析、修复、测试和公告安全生命周期都进行了闭环管控。首先，在漏洞感知阶段，我们从NVD、CNVD、openEuler、Yum源等多元数据源自动抓取信息，进行智能化筛选后，将漏洞信息推送给研发人员。之后，我们会利用AI智能体对漏洞影响进行分析。分析涉及两点。首先，对于公开披露的漏洞，我们会参考其CVSS评分。如果评分低于预设阈值，我们会直接采纳AI的分析结果，判定为不受影响，并进入公告环节。如果评分高于阈值，则判定为受影响，并触发人工审核。因为AI虽然能解决大部分问题，但对于高危漏洞，我们仍需采取审慎的态度。在漏洞修复阶段，我们首先会用CVE-word工具尝试获取补丁，判断补丁能否合入。如果可以合入，并且通过代码门禁，系统就会触发漏洞修复流程。理想状态是全自动修复，但目前由于基础设施尚未完全建成，仍需要一定的人工参与。同时，我们将安全漏洞相关信息构建成AI智能体。在修复过程中，研发人员可直接与其交互，获取建议。AI源码分析的结果也会作为佐证材料，输出到漏洞分析报告中，稍后我会为大家呈现。最后，通过测试后，我们会发布公告。公告会呈现在官网，同时也会通过邮件通知外部客户漏洞修复情况。",
+      "start_ms": 179440,
+      "end_ms": 348700,
+      "material_ids": [
+        "chunk_00/slide_006"
+      ],
+      "summary_hint": "详细阐述了CTyunOS智能安全中心如何对漏洞进行从感知、播报、分析、修复、测试到公告的全生命周期闭环管控。",
+      "lead_text": "CTyunOS智能安全中心对漏洞感知、播报、分析、修复、测试和公告安全生命周期都进行了闭环管控。",
+      "tail_text": "同时也会通过邮件通知外部客户漏洞修复情况。",
+      "text_span": {
+        "start": 30,
+        "end": 61
+      }
+    },
+    {
+      "id": "sec_4",
+      "index": 3,
+      "title": "AI赋能的漏洞分析能力",
+      "time_range": "00:05:48,700 - 00:08:01,330",
+      "summary": "本节介绍了AI赋能的漏洞分析流程，该流程通过信息整理、大模型分析和结果验证三个阶段，评估漏洞影响及补丁合入可行性。此外，系统还构建了基于知识图谱的AI聊天引擎，方便用户直接查询和提问漏洞修复相关信息。",
+      "refined_script": "## AI 赋能的漏洞分析能力\n\n### 漏洞影响分析流程\n该流程通过三个阶段评估漏洞的潜在影响：\n\n1.  **输入信息整理**\n    将与 CVE 相关的信息处理为结构化数据，用于后续分析。输入信息包括：\n    *   CVE 描述文本\n    *   影响等级\n    *   相关软件包\n    *   NVD 及 openEuler 社区发布的信息\n    *   攻击向量\n\n    在此阶段，系统会提取关键特征并明确补丁状态。\n\n2.  **AI 大模型分析**\n    将整理后的结构化数据输入 AI 大模型（当前使用 DeepSeek-R1，未来可定制专属模型）进行深度分析。\n\n3.  **结果验证与上报**\n    根据大模型分析得出的影响分数，采取差异化策略进行结果验证，以确保分析的可靠性。\n\n### 漏洞源码分析流程\n此流程主要用于判断漏洞补丁合入的可行性。\n\n*   **可行性评估**：分析源码以确定补丁是否可以安全合入。\n*   **自动化验证**：若补丁可行，则通过自动化构建流程验证其安全性。\n*   **报告生成**：该过程会生成一份 AI 分析报告，作为 CVE 排查文档和漏洞修复的主要依据。\n\n### AI 聊天引擎\n为方便用户快速获取漏洞修复信息，系统构建了基于知识图谱的 AI 聊天引擎。\n\n#### 构建方式\n1.  **数据预处理**：对漏洞修复相关的各类数据进行标准化处理。\n2.  **知识图谱构建**：通过数据差异分析引擎，将预处理后的数据构建成知识图谱。\n\n#### 功能\n系统内置了 AI 聊天功能，用户可通过自然语言交互，直接查询知识图谱中已有的漏洞修复信息或对特定漏洞问题进行提问。",
+      "original_script": "这就是漏洞影响分析的流程，主要分为三个阶段。\n第一阶段是输入信息整理。\n我们会将CVE相关信息，如描述文本、影响等级、软件包、NVD和openEuler发布的信息、\n攻击向量等，处理成结构化数据，提取关键特征和补丁状态，\n为分析做准备。\n为分析做准备。\n第二阶段是调用AI大模型分析。\n我们将统一表示的数据输入到大模型（目前暂时使用DeepSeek-R1，\n后续可能定制专属模型）进行分析。\n第三阶段是结果验证与上报。\n根据分析得出的影响分数，我们会采取差异化策略，\n确保漏洞影响分析的可靠性。\n确保漏洞影响分析的可靠性。\n这是漏洞源码分析的流程，与刚才类似。\n我们主要利用此流程判断补丁合入的可行性。\n如果可行，还会通过自动化构建验证其安全性。\n此过程会生成AI分析报告，作为CVE排查文档，为漏洞修复提供主要依据。\n为漏洞修复提供主要依据。\n这里也介绍了AI聊天引擎的构建方式。\n我们会对漏洞修复相关数据进行预处理，通过数据差异分析引擎构建知识图谱。\n之后，通过AI交互便可查询已有的漏洞修复相关信息。\n之后，通过AI交互便可查询已有的漏洞修复相关信息。\n系统内置了AI聊天功能，\n您可以直接对漏洞问题进行提问。\n您可以直接对漏洞问题进行提问。",
+      "start_ms": 348700,
+      "end_ms": 481330,
+      "material_ids": [
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "summary_hint": "详细介绍系统如何利用AI进行漏洞影响分析和源码分析，并展示了用于信息查询的AI聊天引擎及其界面。",
+      "notes": "首句与上一节尾句重合，已根据语义将本节起始时间校准为 00:05:48,700。",
+      "lead_text": "同时也会通过邮件通知外部客户漏洞修复情况。",
+      "tail_text": "您可以直接对漏洞问题进行提问。",
+      "text_span": {
+        "start": 62,
+        "end": 87
+      }
+    },
+    {
+      "id": "sec_5",
+      "index": 4,
+      "title": "核心功能展示",
+      "time_range": "00:08:04,130 - 00:09:40,710",
+      "summary": "本节展示了系统的几项核心功能，包括AI辅助的漏洞评分、自动化的AI分析、漏洞修复进度追踪以及安全加固能力。系统利用AI提供初始评分建议和自动分析，并对漏洞修复进度进行跟踪，同时集成了带有防篡改校验的AI生成安全加固项。",
+      "refined_script": "### 核心功能展示\n\n本文档介绍系统的四项核心功能：AI 辅助漏洞评分、自动化 AI 分析、漏洞修复进度追踪以及安全加固。\n\n#### 1. AI 辅助漏洞评分\n\n系统利用 AI 技术，综合多个维度的信息，为新发现的漏洞提供一个初始的建议影响分数。研发人员可以基于自身对漏洞的分析和理解，对该分数进行二次调整，以确保评分的准确性。\n\n#### 2. 自动化 AI 分析\n\n系统提供自动化的 AI 分析能力，旨在提升漏洞处理效率。\n\n- **触发机制**：分析任务主要以定时任务的形式自动触发，在系统感知到新漏洞后启动。同时也支持手动触发。\n- **分析能力**：AI 会自动抓取漏洞相关信息进行分析。\n- **当前状态与优化**：\n  - 对于基于 openEuler 上游的漏洞，分析结果准确率较高。\n  - 部分软件包由于数据源问题，分析准确性有待提升，此为当前持续优化的方向。\n\n#### 3. 漏洞修复进度追踪\n\n系统支持对漏洞修复全流程的进度追踪。针对不同状态的漏洞，系统采用差异化处理流程：\n\n- **受影响 (Affected)**：进入标准修复流程。\n- **不受影响 (Unaffected)**：进入快速关闭或归档流程。\n\n#### 4. 安全加固\n\n系统集成了 AI 驱动的安全加固能力。\n\n- **AI 生成**：利用 AI 技术生成专业的安全加固项，并将其集成到系统中，供用户按需选用。\n- **防篡改校验**：所有加固项均内置完整性校验机制。若加固项在执行前被篡改，系统将拒绝执行，以确保操作的安全性。",
+      "original_script": "在漏洞评分环节，AI会参考多个维度的评分，输出一个初始的建议影响分数。研发人员可以根据自己对漏洞的认知和分析，对该分数进行调整。研发人员可以根据自己对漏洞的认知和分析，对该分数进行调整。关于AI分析，它可以手动触发。但主要流程是，一旦漏洞被感知，系统就会以定时任务的形式自动触发AI分析。系统就会以定时任务的形式自动触发AI分析。它会抓取相关信息。目前，如果是基于openEuler上游的漏洞，大部分分析结果都相当准确。但有一部分软件包，由于数据原因，分析准确性有待提升，这也是我们正在优化的方向。通过本系统，我们可以快速跟踪漏洞修复进度。对于“不受影响”和“受影响”的漏洞，系统会采用两种不同的流程进行跟踪。系统会采用两种不同的流程进行跟踪。本系统也支持安全加固。我们利用AI能力生成加固项，并将其纳入系统，您可以根据需求进行各类安全加固。同时，安全加固项设置了校验，如果被篡改则无法执行。同时，安全加固项设置了校验，如果被篡改则无法执行。",
+      "start_ms": 484130,
+      "end_ms": 580710,
+      "material_ids": [
+        "chunk_00/slide_011",
+        "chunk_00/slide_012",
+        "chunk_00/slide_013",
+        "chunk_00/slide_014"
+      ],
+      "summary_hint": "展示了系统的几项核心功能，包括AI辅助的漏洞评分、自动化的AI分析、漏洞修复进度追踪以及安全加固能力。",
+      "lead_text": "在漏洞评分环节，",
+      "tail_text": "同时，安全加固项设置了校验，如果被篡改则无法执行。",
+      "text_span": {
+        "start": 88,
+        "end": 104
+      }
+    },
+    {
+      "id": "sec_6",
+      "index": 5,
+      "title": "研发规划与总结",
+      "time_range": "00:09:40,710 - 00:10:15,855",
+      "summary": "讲者首先介绍了当前的研发进展，说明漏洞感知、安全加固等模块已在或正在开源到 openEuler 社区。未来的规划将围绕 AI 展开，通过接入更多漏洞数据源、对大模型进行微调等方式，进一步深化 AI 在漏洞修复复杂环节的应用。",
+      "refined_script": "# 研发规划与总结\n\n## 1. 开源进展\n\n目前，以下模块已完成或正在向 openEuler 社区进行开源：\n\n- 漏洞感知\n- 安全加固\n- 补丁获取\n\n## 2. 下一步规划\n\n未来的研发工作将围绕人工智能（AI）展开，旨在进一步深化 AI 在漏洞修复等复杂环节的应用。具体措施包括：\n\n- **数据源扩展**：接入更多漏洞数据源，为模型提供更丰富的训练信息。\n- **模型优化**：针对特定场景，对大语言模型进行微调，以提升其在漏洞分析与修复任务中的表现。",
+      "original_script": "下面介绍我们的研发规划。目前，漏洞感知、安全加固、补丁获取等模块已开源或正在开源到openEuler社区。下一步，我们将围绕AI进行更细化的工作。在现有功能基础上，进一步深化AI在漏洞修复复杂环节的应用，接入更多的漏洞数据源，对大模型进行微调等措施。以上就是我今天的演讲，谢谢大家。",
+      "start_ms": 580710,
+      "end_ms": 615855,
+      "material_ids": [
+        "chunk_00/slide_015"
+      ],
+      "summary_hint": "介绍已开源和计划开源的模块，阐述未来的研发规划，重点是进一步深化AI在漏洞修复中的应用。",
+      "lead_text": "下面介绍我们的研发规划。",
+      "tail_text": "以上就是我今天的演讲，谢谢大家。",
+      "text_span": {
+        "start": 105,
+        "end": 111
+      }
+    },
+    {
+      "id": "sec_7",
+      "index": 6,
+      "title": "致谢与结束",
+      "time_range": "00:10:16,780 - 00:10:52,774",
+      "summary": "主持人感谢吴老师的分享，并总结了天翼云基于CVE构建智能体为企业降本增效的价值。随后，主持人宣布AI分论坛结束，并预告了接下来的SIG组会议与中场休息。",
+      "refined_script": "# 总结与后续安排\n\n## 核心内容回顾：天翼云 CVE 智能体\n\n天翼云基于 CVE (Common Vulnerabilities and Exposures) 构建了一套智能体解决方案，其核心价值在于：\n\n- **优化操作体验**：旨在优化 CVE 漏洞修复的操作流程。\n- **实现降本增效**：帮助企业在漏洞管理方面降低成本、提升效率。\n\n## 后续议程\n\n- **AI 分论坛**：已结束。\n- **SIG 组会议**：将于 16:15 开始。",
+      "original_script": "非常感谢吴老师的精彩分享。\n我们可以看到，天翼云基于CVE构建了一个智能体，帮助优化CVE漏洞修复的操作体验，\n为企业带来了降本增效的效果，非常感谢。\n为企业带来了降本增效的效果，非常感谢。\n今天的AI分论坛到此结束。\n16点15分，我们将继续启动SIG组的会议，\n感兴趣的各位可以继续参加。\n谢谢大家，我们中场休息一会。",
+      "start_ms": 616780,
+      "end_ms": 652774,
+      "material_ids": [
+        "chunk_00/slide_016",
+        "chunk_00/slide_017"
+      ],
+      "summary_hint": "演讲者结束分享，主持人致谢并宣布分论坛结束。",
+      "notes": "首句与上一节尾句重合，已根据语义将本节起始时间校准为 00:10:16,780。",
+      "lead_text": "以上就是我今天的演讲，谢谢大家。",
+      "tail_text": "谢谢大家，我们中场休息一会。",
+      "text_span": {
+        "start": 111,
+        "end": 119
+      }
+    }
+  ]
+}

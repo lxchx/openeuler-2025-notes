@@ -1,0 +1,174 @@
+{
+  "sections": [
+    {
+      "id": "sec_001",
+      "title": "开场致辞与背景介绍：异构融合的 AI Infra 系统软件资源管理与可靠性保障",
+      "material_ids": [
+        "chunk_00/slide_001"
+      ],
+      "start_ms": 15500,
+      "end_ms": 54000,
+      "text_span": {
+        "start": 1,
+        "end": 3
+      },
+      "lead_text": "接下来，我们将有请北京航空航天大学的杨任宇老师，带来《异构融合的 AI Infra 系统软件资源管理与可靠性保障》的分享。",
+      "tail_text": "各位老师、同学，大家下午好。今天很荣幸代表团队分享在大规模 AI 基础设施环境下，从系统软件视角如何进行资源管理、稳定性及可靠性保障。"
+    },
+    {
+      "id": "sec_002",
+      "title": "大模型时代的挑战：云原生演进与新型模型架构需求",
+      "material_ids": [
+        "chunk_00/slide_002",
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005"
+      ],
+      "start_ms": 55500,
+      "end_ms": 197500,
+      "text_span": {
+        "start": 4,
+        "end": 7
+      },
+      "lead_text": "首先，云计算已发展十余年，许多应用“生于云、长于云”。AI 智能服务与应用也不例外，其开发、执行、运维均在云平台或基础设施环境下进行。",
+      "tail_text": "除了大语言领域，大模型在互联网搜广推等场景下的数据处理也已成为实现商业价值闭环的关键。因此，无论是稀疏场景还是稠密场景，都对软件层算力管理与设计提出了更高要求。"
+    },
+    {
+      "id": "sec_003",
+      "title": "AI 基础设施现状：超异构计算时代与系统软件整体思路",
+      "material_ids": [
+        "chunk_00/slide_006",
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010",
+        "chunk_00/slide_011"
+      ],
+      "start_ms": 199500,
+      "end_ms": 451500,
+      "text_span": {
+        "start": 8,
+        "end": 13
+      },
+      "lead_text": "从硬件来看，AI 已进入超异构时代。为满足多样化智能需求，基础设施需从底层资源管理到上层编程 API、编译框架、工具链及软件栈，全面感知并利用异构算力。",
+      "tail_text": "整体思路是：对异构资源进行合理、一致的抽象，在运行时对算力（尤其是国产卡）进行高效适配与优化。同时，支持多租户、多模型环境下的高效训练与推理，并实现软硬件状态的良好观测与追踪。"
+    },
+    {
+      "id": "sec_004",
+      "title": "探索方向 1：异构融合运行时调度与多作业混部优化",
+      "material_ids": [
+        "chunk_00/slide_012",
+        "chunk_00/slide_013",
+        "chunk_00/slide_014"
+      ],
+      "start_ms": 453500,
+      "end_ms": 659500,
+      "text_span": {
+        "start": 14,
+        "end": 17
+      },
+      "lead_text": "探索方向一：异构融合运行时调度与配置优化。我们观测到，不同模型在不同异构卡上执行时性能差异巨大。当多个作业在同一组算力上混部时，执行表现呈现非对称性。此外，在异构环境下部署 Serving 时，满足相同 QoS 的成本也各不相同。",
+      "tail_text": "我们利用图匹配算法解决多作业调度问题，相关系统已在快手千卡集群中进行实验。结果显示，作业完成率提升了 44.7%，JCT（作业周转时间）缩短了近两倍。"
+    },
+    {
+      "id": "sec_005",
+      "title": "面向 LLM 推理的异构算力调度：GPU Combo 资源套餐",
+      "material_ids": [
+        "chunk_00/slide_015",
+        "chunk_00/slide_016",
+        "chunk_00/slide_017"
+      ],
+      "start_ms": 661500,
+      "end_ms": 787500,
+      "text_span": {
+        "start": 18,
+        "end": 19
+      },
+      "lead_text": "工作 2：面向 LLM 推理的异构算力调度。推理包含 Prefill 和 Decode 阶段，算力需求与执行模式差异显著。我们提出以 GPU Combo（资源套餐）形式满足特定 PD 配比，并在云原生环境下精确分析不同配比的部署成本。",
+      "tail_text": "当 PD 实例在 NPU 和 GPU 上部署后，系统可动态响应请求，在 Combo 间及 Combo 内进行动态部署，以满足实时 QoS 需求。初步实验表明，性能提升了 25%-38%。"
+    },
+    {
+      "id": "sec_006",
+      "title": "Expert Kit：以 Expert 为中心的异构融合推理系统",
+      "material_ids": [
+        "chunk_00/slide_018",
+        "chunk_00/slide_019"
+      ],
+      "start_ms": 789500,
+      "end_ms": 915500,
+      "text_span": {
+        "start": 20,
+        "end": 21
+      },
+      "lead_text": "工作 3：Expert Kit——以 Expert 为中心的异构推理系统。针对 MoE 模型，在资源受限或算力需求极高时，我们利用 Expert 的冷热差异，在运行时实现 CPU 与 XPU 的协同调度与 Offloading。",
+      "tail_text": "我们进一步实现了 Attention 与 Expert 的解耦，优化了分布式异构存储与计算。该项目得到了华为与北航联合实验室的支持，通过软件定义视角，实现了集群范围内高效的算力分配与请求适配。"
+    },
+    {
+      "id": "sec_007",
+      "title": "探索方向 2：AI 基础设施稳定性、异常检测与根因分析",
+      "material_ids": [
+        "chunk_00/slide_020",
+        "chunk_00/slide_021",
+        "chunk_00/slide_022"
+      ],
+      "start_ms": 917500,
+      "end_ms": 1091500,
+      "text_span": {
+        "start": 22,
+        "end": 24
+      },
+      "lead_text": "探索方向二：AI 基础设施稳定性与可靠性。大模型训练中失效频发，恢复成本极高。我们建立了从追踪、故障隔离到 Checkpoint 读写及运行时恢复的完整链路。在网络层，针对 NCCL 通信实现失效后的及时恢复，并动态剔除故障节点。",
+      "tail_text": "通过跨节点数据收集与聚合，利用统计手段定位 Straggler。我们还引入图学习与 RAG 技术进行根因分析，相关系统已集成至快手平台，将诊断耗时从半小时缩短至分钟级，效率提升数十倍。"
+    },
+    {
+      "id": "sec_008",
+      "title": "可靠性保障技术：Checkpoint 优化与快速失效恢复",
+      "material_ids": [
+        "chunk_00/slide_023",
+        "chunk_00/slide_024"
+      ],
+      "start_ms": 1093000,
+      "end_ms": 1156500,
+      "text_span": {
+        "start": 25,
+        "end": 26
+      },
+      "lead_text": "工作 2：面向大规模推荐模型训练的 Checkpoint 优化。针对 Embedding 层的冷热特征，实现自适应 Checkpoint 策略。通过 Pipeline 编排，使 Checkpoint 过程不影响正常的训练任务。",
+      "tail_text": "工作 3：基于动态重建的快速失效恢复技术。在运行时通过 Device Proxy 和 Flexible CCL 实现通信链路的动态重构，降低失效恢复成本。"
+    },
+    {
+      "id": "sec_009",
+      "title": "平台化落地：Crater 多租户异构集群智能调度系统",
+      "material_ids": [
+        "chunk_00/slide_025",
+        "chunk_00/slide_026",
+        "chunk_00/slide_027",
+        "chunk_00/slide_028"
+      ],
+      "start_ms": 1158500,
+      "end_ms": 1231500,
+      "text_span": {
+        "start": 27,
+        "end": 30
+      },
+      "lead_text": "相关研究得到了多个国家级项目及工业伙伴的支持，并在训练、推理及异常检测层面发表了多篇高水平论文。",
+      "tail_text": "Crater 简化了异构算力的操作流程，助力多种场景快速落地。目前该系统已正式上线运行一年，累计执行任务超 2 万个。"
+    },
+    {
+      "id": "sec_010",
+      "title": "总结与致谢",
+      "material_ids": [
+        "chunk_00/slide_029",
+        "chunk_00/slide_030"
+      ],
+      "start_ms": 1233000,
+      "end_ms": 1293000,
+      "text_span": {
+        "start": 31,
+        "end": 33
+      },
+      "lead_text": "最后，感谢各位同事与同学。我们是来自北航分布式系统可靠与智能系统团队（RAIDS Lab）。谢谢聆听，请批评指正。",
+      "tail_text": "再次感谢杨老师的精彩呈现。从资源调度到可靠性保障，杨老师的研究为异构融合 AI Infra 系统的发展提供了有力支撑。"
+    }
+  ]
+}

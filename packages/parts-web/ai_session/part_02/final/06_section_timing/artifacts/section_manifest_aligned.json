@@ -1,0 +1,124 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "开场与自我介绍",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "start_ms": 870,
+      "end_ms": 112205,
+      "summary_hint": "主持人介绍讲者黄俊，随后讲者进行自我介绍，并引出本次分享的主题：基于大模型技术在信创领域做性能差距的补齐探索。",
+      "text_span": {
+        "start": 0,
+        "end": 12
+      },
+      "lead_text": "下面有请招商证券股份有限公司核心系统架构师黄俊先生，",
+      "tail_text": "最后，我是公司的内部培训认证讲师，也曾受邀担任TWT企业IT社区特邀技术主持。"
+    },
+    {
+      "id": "sec_2",
+      "title": "全面架构升级的痛点与挑战",
+      "material_ids": [
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005",
+        "chunk_00/slide_006"
+      ],
+      "start_ms": 114410,
+      "end_ms": 414970,
+      "summary_hint": "探讨国产化替代中，核心系统改造面临的软硬件差距、组织架构和模型幻觉三大挑战。",
+      "notes": "讲者根据议程第一部分，阐述了在国产化替代背景下，核心系统改造面临的三大挑战：基础软硬件差距带来的不确定性、研发与运维分工断点导致的资源空洞，以及大模型现阶段的幻觉问题。",
+      "text_span": {
+        "start": 13,
+        "end": 40
+      },
+      "lead_text": "本次分享分为四块。",
+      "tail_text": "但是我们就是说，我们既想用这个大模型的一些优势，同时呢，还是得想办法要摒弃它的一些劣势。"
+    },
+    {
+      "id": "sec_3",
+      "title": "大模型技术发展带来的新机遇",
+      "material_ids": [
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010",
+        "chunk_00/slide_011",
+        "chunk_00/slide_012",
+        "chunk_00/slide_013"
+      ],
+      "start_ms": 415270,
+      "end_ms": 908586,
+      "summary_hint": "讲者介绍了大模型技术为系统调优带来的新机遇。首先对比了传统的贝叶斯调优与LLM方案的优势，然后详细分析了RAG、模型微调、模型蒸馏等关键技术，并提出了一个博采众长的多模型协作（MCP）架构构想。",
+      "notes": "The planned start sentence was the end of the previous section. The start time has been adjusted to the next sentence, which marks the beginning of the new topic.",
+      "text_span": {
+        "start": 40,
+        "end": 76
+      },
+      "lead_text": "但是我们就是说，我们既想用这个大模型的一些优势，同时呢，还是得想办法要摒弃它的一些劣势。",
+      "tail_text": "右边是我们画的我们自己的一个核心交易系统简图，就除了刚刚那个Tuner Agent和跟我们这个模型层做交互之外，它本身我们也还有一个应用的一个运维的监控平台，来实现整个一个运行的监控跟应用的部署。"
+    },
+    {
+      "id": "sec_4",
+      "title": "软件栈智能调优方案与创新点",
+      "material_ids": [
+        "chunk_00/slide_014",
+        "chunk_00/slide_015",
+        "chunk_00/slide_016",
+        "chunk_00/slide_017",
+        "chunk_00/slide_018",
+        "chunk_00/slide_019",
+        "chunk_00/slide_020",
+        "chunk_00/slide_021"
+      ],
+      "start_ms": 958850,
+      "end_ms": 1062355,
+      "summary_hint": "详细阐述智能调优方案，包括闭环设计、多级架构和RAG知识库，并展示初步实验数据。",
+      "notes": "The planned start sentence was the end of the previous section. The start time has been adjusted to the next logical topic after a long pause in the speech.",
+      "text_span": {
+        "start": 76,
+        "end": 84
+      },
+      "lead_text": "右边是我们画的我们自己的一个核心交易系统简图，就除了刚刚那个Tuner Agent和跟我们这个模型层做交互之外，它本身我们也还有一个应用的一个运维的监控平台，来实现整个一个运行的监控跟应用的部署。",
+      "tail_text": "跟X86其实我们也做了一版对比，当然这个涉及到那个硬件的性能它不完全一致，就对得起，所以数据还是仅供参考。而且也看到了，哪怕是这样，下面还是有蛮多接口，它的性能还是不及X86的，只能说我们通过调优是可以尽可能的弥补这些差距。"
+    },
+    {
+      "id": "sec_5",
+      "title": "创新技术生态建议与共建",
+      "material_ids": [
+        "chunk_00/slide_022",
+        "chunk_00/slide_023",
+        "chunk_00/slide_024"
+      ],
+      "start_ms": 1065720,
+      "end_ms": 1264915,
+      "summary_hint": "讲者分享了后续计划，包括微调专有领域模型和完善平台易用性。同时，他发出了生态共建的倡议，探讨如何通过云端训练与企业端推理相结合的模式，解决数据安全与模型训练成本之间的矛盾。",
+      "text_span": {
+        "start": 85,
+        "end": 96
+      },
+      "lead_text": "分享最后呢，其实还是想跟大家同步一下，就是我们的一些下一阶段的一些研究计划，也欢迎大家一起来共建。就一方面我们是希望就是把我们公司专有领域调优模型做进一步的输出，然后使平台它的那个方案能够输出得更专业、精准。",
+      "tail_text": "所以这种情况下只能就是说大家就是说一起来做，然后步骤尽可能地保持一致，就因为你大家都来用，你那些可能的坑啊，或者场景啊方面，你就能使产品能得到更多的锤炼，那就能更快地加速它的一个成熟化。"
+    },
+    {
+      "id": "sec_6",
+      "title": "问答与结束",
+      "material_ids": [
+        "chunk_00/slide_025",
+        "chunk_00/slide_026"
+      ],
+      "start_ms": 1268890,
+      "end_ms": 1500680,
+      "summary_hint": "讲者结束分享，进入问答环节。",
+      "notes": "The planned end time was too early. The end time has been extended to include the entire Q&A session and the host's final remarks.",
+      "text_span": {
+        "start": 97,
+        "end": 100
+      },
+      "lead_text": "行，我的分享就到这里，时间好像也超了一些，感谢大家。",
+      "tail_text": "老师能帮我回放一下吗？那个，就是或者没关系，也可以，耽误一分钟时间。"
+    }
+  ]
+}

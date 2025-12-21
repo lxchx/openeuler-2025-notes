@@ -1,0 +1,71 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "背景介绍",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002",
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005",
+        "chunk_00/slide_006",
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "start_ms": 500,
+      "end_ms": 623000,
+      "summary_hint": "讲者首先介绍了本次分享的议程，然后详细阐述了JuiceFS文件系统、MLPerf Storage基准测试的背景、架构、工作负载以及其内部工作流程和线程模型。",
+      "text_span": {
+        "start": 0,
+        "end": 44
+      },
+      "lead_text": "下面有请Linaro的工程师刘新良先生，",
+      "tail_text": "这张图展示了一个简化的例子。可以看到，应用层有多个IO线程(App Threads)，比如mlp-storage dataloader threads。它们发起读写请求。JuiceFS是一个FUSE文件系统，它有处理IO请求的主goroutines。它会向后端的Meta client和ObjectStore client发送请求，这些client内部也有异步的goroutines。这个过程中涉及多个步骤，有些是同步的，有些是异步的，还有一些关键的数据拷贝(copy)操作。这些都是我们需要了解的。"
+    },
+    {
+      "id": "sec_2",
+      "title": "性能测试与分析",
+      "material_ids": [
+        "chunk_00/slide_011",
+        "chunk_00/slide_012",
+        "chunk_00/slide_013",
+        "chunk_00/slide_014",
+        "chunk_00/slide_015",
+        "chunk_00/slide_016",
+        "chunk_00/slide_017",
+        "chunk_00/slide_018",
+        "chunk_00/slide_019"
+      ],
+      "start_ms": 624500,
+      "end_ms": 955000,
+      "summary_hint": "讲者介绍了测试环境和数据生成方法，并分别对unet3d和resnet50两个模型进行了性能测试。通过分析，指出了unet3d的瓶颈在于内存拷贝带宽，而resnet50的瓶颈在于JuiceFS自身吞吐带宽，并揭示了JuiceFS吞吐量与系统内存带宽的强相关性。",
+      "notes": "本章节详细分析了unet3d和resnet50两个模型在JuiceFS上的性能表现和瓶颈所在。",
+      "text_span": {
+        "start": 45,
+        "end": 69
+      },
+      "lead_text": "接下来我们看一下性能测试与分析。这是我们的测试环境。",
+      "tail_text": "我们测试了不同机器的stream单CPU内存copy带宽和JuiceFS单机部署的read带宽，发现JuiceFS吞吐带宽本身很取决于内存带宽大小。"
+    },
+    {
+      "id": "sec_3",
+      "title": "总结",
+      "material_ids": [
+        "chunk_00/slide_020",
+        "chunk_00/slide_021"
+      ],
+      "start_ms": 956500,
+      "end_ms": 1089000,
+      "summary_hint": "讲者总结了MLPerf Storage测试中的关键发现，强调了JuiceFS吞吐带宽是决定支持GPU数量的关键，并指出性能调优是一个系统工程。最后主持人致谢并结束分享。",
+      "text_span": {
+        "start": 69,
+        "end": 83
+      },
+      "lead_text": "我们测试了不同机器的stream单CPU内存copy带宽和JuiceFS单机部署的read带宽，发现JuiceFS吞吐带宽本身很取决于内存带宽大小。",
+      "tail_text": "这也填补了我们社区在相关工具链上的一些空白，后续我们会联系您，获得更多相关的处理方法。好，下面..."
+    }
+  ]
+}

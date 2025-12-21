@@ -1,0 +1,184 @@
+{
+  "materials": [
+    {
+      "id": "chunk_00/slide_001",
+      "type": "slide",
+      "start_ms": 84500,
+      "end_ms": 86800,
+      "title": "智跃无界 openEuler引领AI时代操作系统 演讲主题页",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_001",
+        "slide_index": 1,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_002",
+      "type": "slide",
+      "start_ms": 87500,
+      "end_ms": 190300,
+      "title": "首个五年：openEuler成为中国新增市场份额第一 回顾过去五年的发展历程与成就",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_002",
+        "slide_index": 2,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_003",
+      "type": "slide",
+      "start_ms": 191000,
+      "end_ms": 266500,
+      "title": "拥抱超级节点，构建操作系统新底座 全场景协同、多样性算力支持与全球化布局",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_003",
+        "slide_index": 3,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_004",
+      "type": "slide",
+      "start_ms": 267300,
+      "end_ms": 374000,
+      "title": "分层构建，释放智能：超节点OS赋能智算与通算新高度 分层架构图：从内核到应用框架的技术细节",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_004",
+        "slide_index": 4,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_005",
+      "type": "slide",
+      "start_ms": 375000,
+      "end_ms": 421800,
+      "title": "openEuler 24.03 LTS SP3 发布 发布首个支持超节点的版本",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_005",
+        "slide_index": 5,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_006",
+      "type": "slide",
+      "start_ms": 422500,
+      "end_ms": 508000,
+      "title": "Intelligence Boom 开源AI解决方案 面向数据中心场景，加速企业AI落地",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_006",
+        "slide_index": 6,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_007",
+      "type": "slide",
+      "start_ms": 508800,
+      "end_ms": 519500,
+      "title": "Intelligence Boom 解决方案架构图 模型微调、异构协同、生态拓展与易用性",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_007",
+        "slide_index": 7,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_008",
+      "type": "slide",
+      "start_ms": 520300,
+      "end_ms": 627000,
+      "title": "深入工控控制领域，携手伙伴打造OT/IT，引领产业智能化转型 openEuler嵌入式与实时虚拟化解决方案",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_008",
+        "slide_index": 8,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_009",
+      "type": "slide",
+      "start_ms": 628000,
+      "end_ms": 697500,
+      "title": "涓流成海，奔涌向前：社区繁荣发展离不开社区伙伴的贡献 展示新增捐赠人与新合作基金会",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_009",
+        "slide_index": 9,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_010",
+      "type": "slide",
+      "start_ms": 698500,
+      "end_ms": 823000,
+      "title": "社区基础建设智能化升级，让开发服务创新 社区贡献数据与智能化工具应用",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_010",
+        "slide_index": 10,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_011",
+      "type": "slide",
+      "start_ms": 824000,
+      "end_ms": 898500,
+      "title": "盘点社区成果，展望未来AI人才 AI挑战赛、人才培养与学术合作成果",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_011",
+        "slide_index": 11,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_012",
+      "type": "slide",
+      "start_ms": 899300,
+      "end_ms": 935000,
+      "title": "心之所向 素履以往 Where passion leads, every step forward counts.",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_012",
+        "slide_index": 12,
+        "offset_ms": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,443 @@
+{
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "p1",
+        "label": "背景与基础",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_1"
+          ],
+          "material_ids": [
+            "chunk_00/slide_002",
+            "chunk_00/slide_003",
+            "chunk_00/slide_004",
+            "chunk_00/slide_005",
+            "chunk_00/slide_006",
+            "chunk_00/slide_007",
+            "chunk_00/slide_008",
+            "chunk_00/slide_009",
+            "chunk_00/slide_010"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_002",
+            "primary_time_ts": "00:00:08,000",
+            "primary_time_ms": 8000
+          }
+        },
+        "parent": null,
+        "summary": "介绍JuiceFS文件系统和MLPerf Storage基准测试的背景。涵盖了JuiceFS的元数据与数据分离架构、MLPerf Storage的目标与工作原理，以及用于分析I/O路径的系统心智模型。"
+      },
+      {
+        "id": "p2",
+        "label": "性能测试与瓶颈分析",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_011",
+            "chunk_00/slide_013",
+            "chunk_00/slide_014",
+            "chunk_00/slide_015",
+            "chunk_00/slide_016",
+            "chunk_00/slide_017",
+            "chunk_00/slide_018",
+            "chunk_00/slide_019"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_011",
+            "primary_time_ts": "00:10:24,500",
+            "primary_time_ms": 624500
+          }
+        },
+        "parent": null,
+        "summary": "详细阐述了对unet3d和resnet50两个AI模型的性能测试过程与结果分析。通过测试，识别出不同场景下的性能瓶颈，并最终指向系统内存带宽是关键限制因素。"
+      },
+      {
+        "id": "p3",
+        "label": "关键发现与总结",
+        "category": "Pillar",
+        "references": {
+          "section_ids": [
+            "sec_3",
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_020",
+            "chunk_00/slide_021"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_020",
+            "primary_time_ts": "00:15:56,500",
+            "primary_time_ms": 956500
+          }
+        },
+        "parent": null,
+        "summary": "总结了本次性能评测的核心结论。强调了JuiceFS的吞吐带宽是决定其能支持GPU数量的关键，并从系统工程的角度提出了性能调优的考量，特别是针对内存拷贝和NUMA架构的观察。"
+      },
+      {
+        "id": "d1_1",
+        "label": "JuiceFS 架构",
+        "category": "Technology",
+        "references": {
+          "section_ids": [
+            "sec_1"
+          ],
+          "material_ids": [
+            "chunk_00/slide_004"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_004",
+            "primary_time_ts": "00:00:46,500",
+            "primary_time_ms": 46500
+          }
+        },
+        "parent": "p1",
+        "summary": "JuiceFS采用元数据与文件数据分离的架构。元数据存储在独立数据库，数据存放在对象存储中。这种解耦设计使其在云环境中部署简单高效。"
+      },
+      {
+        "id": "d1_2",
+        "label": "MLPerf Storage 基准测试",
+        "category": "Concept",
+        "references": {
+          "section_ids": [
+            "sec_1"
+          ],
+          "material_ids": [
+            "chunk_00/slide_005",
+            "chunk_00/slide_006",
+            "chunk_00/slide_007"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_005",
+            "primary_time_ts": "00:02:29,500",
+            "primary_time_ms": 149500
+          }
+        },
+        "parent": "p1",
+        "summary": "由MLCommons开发的存储性能基准测试，旨在识别AI工作负载的存储瓶颈。它通过模拟数据加载过程并用sleep操作替代实际计算，来专注于评估存储性能。"
+      },
+      {
+        "id": "d1_3",
+        "label": "系统工作流程",
+        "category": "Concept",
+        "references": {
+          "section_ids": [
+            "sec_1"
+          ],
+          "material_ids": [
+            "chunk_00/slide_008",
+            "chunk_00/slide_009"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_008",
+            "primary_time_ts": "00:07:26,500",
+            "primary_time_ms": 446500
+          }
+        },
+        "parent": "p1",
+        "summary": "描述了分布式训练中从存储读取数据的流程：数据集被分区，每个训练进程并行读取一个分区。MLPerf Storage是这一流程的具体实现，其Data Loader负责从JuiceFS读取数据。"
+      },
+      {
+        "id": "d2_1",
+        "label": "UNet3D 性能分析",
+        "category": "Result",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_014",
+            "chunk_00/slide_015"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_014",
+            "primary_time_ts": "00:11:39,500",
+            "primary_time_ms": 699500
+          }
+        },
+        "parent": "p2",
+        "summary": "UNet3D模型在5块GPU下达到98%利用率。当增加到6块GPU时，性能瓶颈出现，经分析为高并发Direct I/O下，CPU处理内存拷贝操作的能力达到极限（Memory Bound）。"
+      },
+      {
+        "id": "d2_2",
+        "label": "ResNet50 性能分析",
+        "category": "Result",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_017",
+            "chunk_00/slide_018"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_017",
+            "primary_time_ts": "00:14:14,500",
+            "primary_time_ms": 854500
+          }
+        },
+        "parent": "p2",
+        "summary": "ResNet50模型可支持50块GPU，利用率达95%。瓶颈在于JuiceFS的后端带宽。其最大带宽低于UNet3D场景，原因是Buffer IO模式下，应用与JuiceFS共同竞争有限的系统内存拷贝总带宽。"
+      },
+      {
+        "id": "d2_3",
+        "label": "跨NUMA性能问题",
+        "category": "Problem",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_016"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_016",
+            "primary_time_ts": "00:13:39,500",
+            "primary_time_ms": 819500
+          }
+        },
+        "parent": "p2",
+        "summary": "在UNet3D测试中，当CPU不绑核时，性能反而下降。原因是大量的跨NUMA节点内存访问带来了显著时延，成为新的瓶颈。"
+      },
+      {
+        "id": "d2_4",
+        "label": "内存拷贝带宽瓶颈",
+        "category": "Problem",
+        "references": {
+          "section_ids": [
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_015",
+            "chunk_00/slide_019"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_019",
+            "primary_time_ts": "00:15:29,500",
+            "primary_time_ms": 929500
+          }
+        },
+        "parent": "p2",
+        "summary": "综合两个模型的测试，核心瓶颈在于系统内存拷贝总带宽。JuiceFS的吞吐带宽与系统内存拷贝带宽强相关，这是影响AI训练I/O性能的关键因素。"
+      },
+      {
+        "id": "d3_1",
+        "label": "核心结论：吞吐带宽决定GPU数",
+        "category": "Result",
+        "references": {
+          "section_ids": [
+            "sec_3",
+            "sec_2"
+          ],
+          "material_ids": [
+            "chunk_00/slide_020"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_020",
+            "primary_time_ts": "00:15:56,500",
+            "primary_time_ms": 956500
+          }
+        },
+        "parent": "p3",
+        "summary": "MLPerf Storage测试表明，JuiceFS能支持的GPU数量直接取决于其提供的总读带宽，这主要考察了系统的文件并发和顺序读能力。"
+      },
+      {
+        "id": "d3_2",
+        "label": "系统工程调优视角",
+        "category": "Concept",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_020"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_020",
+            "primary_time_ts": "00:16:20,000",
+            "primary_time_ms": 980000
+          }
+        },
+        "parent": "p3",
+        "summary": "性能调优是一项系统工程，最终性能依赖于系统各组件的协同。系统内存、互联带宽和延迟都至关重要，特别是内存拷贝操作会大量消耗CPU和内存带宽。"
+      },
+      {
+        "id": "d3_3",
+        "label": "NUMA架构下的性能考量",
+        "category": "Problem",
+        "references": {
+          "section_ids": [
+            "sec_3"
+          ],
+          "material_ids": [
+            "chunk_00/slide_020"
+          ],
+          "highlight": {
+            "primary_material_id": "chunk_00/slide_020",
+            "primary_time_ts": "00:16:45,000",
+            "primary_time_ms": 1005000
+          }
+        },
+        "parent": "p3",
+        "summary": "Go语言运行时缺乏NUMA感知，可能导致在大规模核心系统上性能不佳。最佳实践是避免跨NUMA节点，特别是跨CPU插槽的内存访问。"
+      }
+    ],
+    "edges": [
+      {
+        "source": "p1",
+        "target": "p2",
+        "relation_type": "sequential",
+        "label": "进入测试分析"
+      },
+      {
+        "source": "p2",
+        "target": "p3",
+        "relation_type": "sequential",
+        "label": "得出结论"
+      },
+      {
+        "source": "d1_1",
+        "target": "d1_2",
+        "relation_type": "parallel",
+        "label": "并列介绍"
+      },
+      {
+        "source": "d1_2",
+        "target": "d1_3",
+        "relation_type": "compositional",
+        "label": "定义了"
+      },
+      {
+        "source": "d2_1",
+        "target": "d2_2",
+        "relation_type": "parallel",
+        "label": "并列测试案例"
+      },
+      {
+        "source": "d2_1",
+        "target": "d2_3",
+        "relation_type": "causal",
+        "label": "发现问题"
+      },
+      {
+        "source": "d2_1",
+        "target": "d2_4",
+        "relation_type": "causal",
+        "label": "揭示瓶颈"
+      },
+      {
+        "source": "d2_2",
+        "target": "d2_4",
+        "relation_type": "causal",
+        "label": "验证瓶颈"
+      },
+      {
+        "source": "d2_4",
+        "target": "d3_1",
+        "relation_type": "causal",
+        "label": "推导出"
+      },
+      {
+        "source": "d3_1",
+        "target": "d3_2",
+        "relation_type": "parallel",
+        "label": "并列要点"
+      },
+      {
+        "source": "d3_2",
+        "target": "d3_3",
+        "relation_type": "parallel",
+        "label": "并列要点"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec_1",
+      "index": 0,
+      "title": "背景介绍",
+      "time_range": "00:00:00,000 - 00:10:23,985",
+      "summary": "讲者首先介绍了JuiceFS，一个为AI领域设计的高性能分布式文件系统，及其元数据与数据分离的架构。接着，他详细阐述了MLPerf Storage v2.0基准测试的背景、目的和工作原理，该测试通过模拟AI训练中的数据加载来评估存储性能。最后，他展示了分布式训练和MLPerf Storage的内部流程，并提出了一个简化的系统心智模型以帮助分析I/O路径。",
+      "refined_script": "# JuiceFS MLPerf Storage v2.0 性能评测与调优\n\n## 1. 背景介绍\n\n### 1.1 JuiceFS 简介\n\nJuiceFS 是一款由 JuiceData 公司开源的高性能分布式文件系统，专为 AI 领域设计，基于对象存储实现，具备低成本优势。\n\n*   **核心特性**:\n    *   **多协议兼容**: 支持 POSIX、HDFS SDK、Python SDK 及 S3 接口。\n    *   **企业版功能**: 提供分布式数据缓存 (Distributed Data Cache) 等高级特性。\n    *   **云原生**: 适用于云原生环境。\n\n*   **主要应用场景**:\n    *   AI 训练与推理\n    *   大数据分析\n\n*   **同类系统**: Alluxio, S3FS\n\n*   **系统架构**:\n    JuiceFS 采用元数据与文件数据分离的典型架构。客户端位于计算节点上，元数据存储在独立的数据库中，而文件数据则存放在对象存储中。这种解耦设计允许复用现有的数据库和对象存储服务，使得在云环境中的部署和使用变得非常简单高效。\n\n### 1.2 MLPerf Storage 基准测试介绍\n\nMLPerf Storage 是由全球权威的 AI 工程联盟 MLCommons 开发的存储性能基准测试。MLCommons 还开发了包括自动驾驶 (Automotive)、训练 (Training)、推理 (Inference) 在内的其他 AI 基准测试。\n\n*   **测试目的**:\n    *   **识别瓶颈**: 了解并定位机器学习工作负载中的存储瓶颈。\n    *   **辅助决策**: 帮助 AI/ML 从业者做出明智的存储选型决策，例如选择何种存储系统以保证 GPU 利用率达到 90% 以上。\n    *   **推动优化**: 帮助存储供应商和 AI/ML 框架开发者针对机器学习工作负载进行优化。\n\n*   **工作原理**:\n    AI 训练的核心流程是从存储中读取数据集，加载到内存中进行预处理（如转换为张量），然后分批次送入 GPU/ASIC 进行模型训练。MLPerf Storage 基准测试专注于评估存储相关的部分，即数据如何被加载、转换并发送至计算单元。\n    为了简化测试，该基准测试通过一个等时的 `sleep` 操作来模拟实际的 GPU 训练过程，从而将测试重点完全放在数据加载路径上，大大降低了测试实现的复杂度。\n\n### 1.3 MLPerf Storage v2.0 详解\n\nv2.0 是该基准测试的最新版本，其工作负载模拟了 AI 训练中对存储系统的各种 I/O 模式。\n\n*   **支持的工作负载 (Task)**:\n    *   图像分割 (Image segmentation)\n    *   图像分类 (Image classification)\n    *   科学参数预测 (Scientific parameter prediction)\n    *   Llama3 Checkpointing\n\n    这些任务的样本大小和批次大小均基于对实际系统的测量得出，因此能真实反映实际应用场景。\n\n*   **评估的存储能力**:\n    *   带宽 (Bandwidth)\n    *   IOPS\n    *   时延 (Latency)\n    *   并发能力 (Concurrency)\n\n    其中，训练模型主要考察读性能，而 Checkpointing 则考察对超大文件的并发写性能。\n\n## 2. 系统工作流程与分析模型\n\n### 2.1 分布式训练与存储 I/O\n\n从存储角度看，分布式训练的基本流程如下：\n\n1.  **数据分区**: 完整的数据集 (Dataset) 被分割成多个分区 (Partition)。\n2.  **并行读取**: 每个训练进程 (通常对应一个 GPU) 负责读取其中一个数据分区。\n3.  **同步**: 各进程完成一轮训练后，在不同 GPU 之间（无论是机内还是跨机）进行同步。\n\n### 2.2 MLPerf Storage 内部流程\n\nMLPerf Storage 是上述分布式训练流程的具体实现。\n\n1.  **数据存储**: 分区后的数据集存储在 JuiceFS 中。\n2.  **任务执行**: 每个 GPU/Accelerator worker 的主线程运行一个 `benchmark runner`。\n3.  **数据加载**: `benchmark runner` 内部的 `Data Loader` 负责从 JuiceFS 读取指定的数据分区。`Data Loader` 以多线程方式，在每个步骤 (step/cycle) 中读取一个批次 (batch) 的样本数据，并将其转换为张量。\n4.  **计算模拟**: 数据加载完成后，通过 `sleep` 操作模拟实际的计算过程。\n\n在性能分析中，`Data Loader` 的行为是关键，因为它直接决定了系统所承受的 I/O 模式 (IO pattern)。\n\n### 2.3 I/O 路径分析的心智模型\n\n为了有效分析 I/O 路径上的问题，可以建立一个简化的系统心智模型，其层次结构如下：\n\n*   **应用层**: 包含多个 I/O 线程（`App Threads`），例如 `mlp-storage` 的 `dataloader threads`，它们是 I/O 请求的发起方。\n*   **JuiceFS FUSE 层**: 作为 FUSE 文件系统，其内部的主 `goroutines` 负责处理来自应用层的 I/O 请求。\n*   **后端客户端层**: JuiceFS 向后端的元数据客户端 (`Meta client`) 和对象存储客户端 (`ObjectStore client`) 发送请求。这些客户端内部也包含异步的 `goroutines` 来处理具体操作。\n\n在分析整个 I/O 路径时，需要关注其中的多个关键环节，包括同步与异步操作的交织，以及关键路径上的数据拷贝 (copy) 操作。",
+      "original_script": "下面有请Linaro的工程师刘新良先生，\n为我们带来JuiceFS MLPerf Storage v2.0性能评测与调优的分享。\n大家欢迎。\n大家下午好，我是来自Linaro的刘新良。\n今天给大家分享的主题是JuiceFS MLPerf Storage v2.0的性能评测与调优。\n今天分享的内容主要分为以下几部分。\n首先是介绍。\n第二部分是测试与分析。\n然后最后进行总结。\n我们首先介绍一下JuiceFS。它是什么东西呢？\n它是由JuiceData公司开源的一款高性能、基于对象存储、低成本的分布式文件系统，是现在AI领域可能用得比较多的一个文件系统。\n它的特性主要有支持POSIX、HDFS SDK、Python SDK，以及S3接口的兼容性。\n它的企业版还有更多的特性，比如分布式的Distributed Data Cache。\n它更多用于云原生的环境上。\n应用场景主要是AI训练、推理、大数据等。\n跟它有类似的些文件系统有Alluxio，还有S3FS。\n可以看一下右边这个图，它是一个典型的元数据与文件数据分离的架构。\n上面的大方框是在计算节点上。\n所以你看到它其实它的架构还是非常简单的。\n因为这个架构，数据库可以适配很多种，文件存储也可以适配很多种对象存储。\n这就说明我可以复用已有的一些数据库和对象存储，尤其你在云的环境上使用起来，你会发现它是非常好用、简单的架构。\n那么，什么是MLPerf Storage呢？\nMLPerf Storage是全球权威的AI工程联盟MLCommons开发的ML存储benchmark。\n他们开发的其他benchmark还包括自动驾驶(Automotive)、训练(Training)、推理(Inference)和安全(AILuminate)等。\nMLPerf Storage的目的是测量机器学习工作负载在存储方面的性能，包括数据摄取(中期目标)、训练(短期目标)和推理(长期目标)。目前，短期目标“训练”已经实现。\n那么为什么需要测量AI环境中的存储呢？\n因为我们要了解机器学习工作负载中的存储瓶颈是什么。\n还有就是帮助AI/ML从业者做出明智的存储决策。例如，选择何种存储系统能保证GPU利用率达到90%以上，达到资源的有效利用。\n还有帮助存储供应商、AI/ML框架优化者等针对机器学习工作负载进行优化。\n帮助AI/ML框架和系统获得更好的存储性能。\n右边的图是MLPerf Storage benchmark的一个简单框架。\nAI训练主要是从存储(Dataset)读取数据集，加载(Load)到内存(System Memory)中。在内存中可能会做一些预处理，比如转换为张量(tensors)。然后以批次(batch)的形式将数据发送到GPU/ASIC进行模型训练。\n对于存储的benchmark而言，我们主要关心左边的部分：数据如何加载、转换，并发送到GPU。GPU内部如何训练，我们不太关心。\n因此，在做benchmark时，可以简化GPU的训练过程。我们测量出实际训练所需的时间，然后用一个等时的sleep操作来模拟它。这样就大大简化了benchmark的实现工作。\n那么，这个v2.0是目前最新的一个版本。\n它支持的工作负载(Task)主要有：图像分割(Image segmentation)、图像分类(Image classification)、科学参数预测(Scientific parameter prediction)以及最新的Llama3 Checkpointing。\n这些任务模拟了AI训练中对存储系统的各种IO pattern。\n可以看到，不同的模型，其样本大小(Sample Size)和批次大小(Batch Size)各不相同。这些模拟数据的设置，都是基于对实际系统的测量得出的，因此非常贴合实际应用场景。\n它会评估存储系统的多方面能力(Evaluate Storage Capability)，比如：带宽、IOPS、时延、并发能力。训练模型主要考察读性能，而Checkpointing则考察对超大文件的并发写性能。\n接下来，我们从存储的角度看一下分布式训练的概览。\n首先，对于我们关心的存储，在分布式训练中，数据集(Dataset)会被分割成很多个分区(Partition)。每个进程(Process)，也就是每个GPU，会读取其中一个分区的数据进行训练。训练完成后，无论是同一台机器内的多块GPU，还是不同机器上的GPU，它们之间需要进行同步(Sync)。这大概就是其基本流程。\n这是MLPerf Storage的内部流程图，也是刚才流程的一个具体实现。\n右边的JuiceFS存储着被分区的Dataset。每个GPU/Accelerator worker的主线程会运行一个benchmark runner。它内部的Data Loader会从JuiceFS读取一个数据分区(Partition x)。Data Loader以多线程方式，在每个step/cycle中读取一个批次(batch)的样本数据，并转换为张量。之后，用一个sleep操作来模拟实际的计算(Accelerator compute)过程。因此，对于存储测试而言，我们主要关心Data Loader的行为，因为它决定了系统的IO pattern。\n为了分析问题，我们需要对整个系统有一个心智模型。\n这张图展示了一个简化的例子。可以看到，应用层有多个IO线程(App Threads)，比如mlp-storage dataloader threads。它们发起读写请求。JuiceFS是一个FUSE文件系统，它有处理IO请求的主goroutines。它会向后端的Meta client和ObjectStore client发送请求，这些client内部也有异步的goroutines。这个过程中涉及多个步骤，有些是同步的，有些是异步的，还有一些关键的数据拷贝(copy)操作。这些都是我们需要了解的。",
+      "start_ms": 0,
+      "end_ms": 623985,
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002",
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005",
+        "chunk_00/slide_006",
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "summary_hint": "讲者首先介绍了本次分享的议程，然后详细阐述了JuiceFS文件系统、MLPerf Storage基准测试的背景、架构、工作负载以及其内部工作流程和线程模型。",
+      "lead_text": "下面有请Linaro的工程师刘新良先生，",
+      "tail_text": "这张图展示了一个简化的例子。可以看到，应用层有多个IO线程(App Threads)，比如mlp-storage dataloader threads。它们发起读写请求。JuiceFS是一个FUSE文件系统，它有处理IO请求的主goroutines。它会向后端的Meta client和ObjectStore client发送请求，这些client内部也有异步的goroutines。这个过程中涉及多个步骤，有些是同步的，有些是异步的，还有一些关键的数据拷贝(copy)操作。这些都是我们需要了解的。",
+      "text_span": {
+        "start": 0,
+        "end": 44
+      }
+    },
+    {
+      "id": "sec_2",
+      "index": 1,
+      "title": "性能测试与分析",
+      "time_range": "00:10:26,320 - 00:15:56,730",
+      "summary": "讲者介绍了对 unet3d 和 resnet50 两个模型的性能测试与分析。测试发现，unet3d 的瓶颈在于高并发下的 CPU 内存拷贝，而 resnet50 的瓶颈在于 JuiceFS 自身受限于系统内存带宽的吞吐能力。最终结论指出，JuiceFS 的吞吐带宽与系统内存拷贝带宽强相关，这是影响 AI 训练 I/O 性能的关键。",
+      "refined_script": "## 性能测试与分析\n\n### 测试环境与数据准备\n\n**1. 测试环境**\n- **硬件**: [未在摘要中提供]\n- **软件**: openEuler 24.03 LTS SP2\n\n**2. 数据准备**\n- **数据量**: 为排除 Page Cache 对测试结果的干扰，生成的数据集总大小超过系统可用内存的 5 倍。\n- **数据预热**: 利用 JuiceFS 的数据预热功能，将数据提前缓存至本地，以加速后续的数据访问过程。\n\n### UNet3D 模型性能分析\n\n#### 最佳性能配置 (5 GPU)\n\n- **性能指标**:\n  - GPU 利用率: 98% (满足 >90% 的目标)\n  - I/O 带宽: 14.8 GB/s\n- **关键参数调优**:\n  - `reader.read_threads`: 从 4 增加到 16，以提高数据读取的并发度。\n  - `reader.odirect`: 设置为 `True`，启用直接 I/O (Direct IO)，以减少 Buffer IO 和额外的内存拷贝开销。\n\n#### 瓶颈分析 (6 GPU)\n\n当 GPU 数量增加到 6 块时，利用率下降至 83%，I/O 带宽在 15.1 GB/s 处达到瓶颈。使用 FIO 工具对 JuiceFS 进行基准测试，测得其极限带宽同样约为 15.1 GB/s，确认瓶颈在于 JuiceFS 的吞吐能力。\n\n**1. CPU 绑核场景分析**\n- **现象**: 48 核 CPU 资源被完全占满。\n- **诊断**: 使用 `top`、`devkit tuner numafast` 及 `devkit tuner memory/miss` 等工具分析，发现瓶颈为 **Memory Bound**。\n- **根因**: 高并发读取导致大量内存拷贝操作（如 `runtime.memove`, `arch_copy_to_user`），高 LLC Miss Rate 表明 CPU 因等待内存访问而耗时，最终限制了整体性能。\n\n**2. CPU 不绑核场景分析**\n- **现象**: CPU 资源未被占满，但 JuiceFS 带宽反而更低。\n- **诊断**: 使用 `top` 和 `devkit tuner numafast` 工具分析。\n- **根因**: **跨 NUMA 节点的内存访问**带来了显著时延。超过 80% 的内存访问为 remote 访问，其性能受限于跨芯片的物理带宽（约 60 GB/s），成为新的瓶颈。\n\n### ResNet50 模型性能分析\n\n#### 最佳性能配置 (50 GPU)\n\n- **性能指标**:\n  - GPU 利用率: 95% (满足 >90% 的目标)\n  - I/O 带宽: 9.2 GB/s\n- **关键参数调优**:\n  - `reader.read_threads`: 从 8 降为 1。由于 ResNet50 每次读取的 batch 数据量较小（58.5 MiB），单线程足以满足 I/O 需求。\n\n#### 瓶颈分析 (55 GPU)\n\n当 GPU 数量增加到 55 块时，利用率下降至 86%，I/O 带宽仍为 9.2 GB/s，表明瓶颈在于 JuiceFS 的后端带宽。\n\n#### 带宽差异分析\n\n- **问题**: 为何在 ResNet50 场景下，JuiceFS 的最大带宽（9.2 GB/s）远低于 UNet3D 场景（15.1 GB/s）？\n- **根因**: **系统内存拷贝总带宽的限制**。ResNet50 采用 Buffer IO，在数据读取和处理过程中会与 JuiceFS 竞争内存带宽。使用 `stream` 工具对不同机器的内存拷贝带宽进行基准测试，证实了 JuiceFS 的吞吐带宽与系统内存拷贝带宽存在强相关性。\n\n### 结论\n\n- **UNet3D 瓶颈**: 在高并发 Direct IO 场景下，性能瓶颈最终归结为 CPU 处理内存拷贝操作的能力。\n- **ResNet50 瓶颈**: 在 Buffer IO 场景下，JuiceFS 的吞吐能力直接受限于系统内存总带宽。\n- **核心发现**: JuiceFS 的吞吐带宽与系统内存拷贝带宽强相关。这是影响 AI 训练场景 I/O 性能的关键因素，在进行性能优化时必须予以考虑。",
+      "original_script": "接下来我们看一下性能测试与分析。这是我们的测试环境。\n包括硬件和软件。测试是在openEuler 24.03 LTS SP2版本上进行的。\n环境部署过程就不再赘述。\n首先，跑测试需要生成数据。\n数据的生成也是根据各种实际参数进行的。这里要注意，为了保证测试的公平性，数据量的大小要大于系统可用内存的5倍，以排除Page Cache的影响。\n另外，JuiceFS支持将数据预热到本地，这可以加快数据访问速度。\n首先看unet3d模型。\n我们测出的最好结果是单机最高支持5块GPU，满足GPU利用率大于90%的要求。\n其中GPU利用率为98%，带宽达到14.8 GB/s。关键的参数调整包括：将数据读取线程(reader.read_threads)从4加到16，以加大并发；以及启用直接IO(reader.odirect=True)，以减少buffer IO和内存拷贝的开销。\n为什么支持不到6块GPU呢？\n我们分析发现，当使用6块GPU时，其利用率降至83%，带宽为15.1 GB/s。我们用FIO测试JuiceFS的带宽，发现其极限也约为15.1 GB/s。因此，瓶颈在于JuiceFS的带宽。\n那为什么JuiceFS的带宽上不去呢？瓶颈在于CPU。\n通过绑核(CPU)和使用top、devkit tuner numafast等工具查看，发现48核CPU已被用满。通过devkit tuner的memory/miss工具查看，发现瓶颈是Memory Bound，主要耗时在内存copy。具体来说，是由于互联和内存的时延导致CPU级联。LLC Miss Rate很高，耗时主要在runtime.memove和arch_copy_to_user等内存拷贝函数上。\n不绑定CPU时，为什么JuiceFS带宽更上不去呢？\n瓶颈为跨NUMA内存访问带来的时延。用top工具查看，CPU未使用满。\n用devkit tuner numafast工具查看，发现remote内存访问比例较高，超过80%。而跨片物理带宽仅有60GB/s。因此，瓶颈在于跨NUMA内存访问的时延。\n接下来看resnet50模型。\n单机最高可支持50块GPU，满足GPU利用率大于90%的要求。此时GPU利用率为95%，带宽为9.2 GB/s。\n关键参数调整：由于每次读取的batch数据量为58.5MiB，相对较小，我们将读取线程(reader.read_threads)从8降为1，单线程足以应付。\n为什么支持不了更多的GPU呢？\n瓶颈为JuiceFS带宽。当增加到55块GPU时，利用率降至86%，带宽同样为9.2 GB/s。瓶颈依然是JuiceFS的后端带宽。\n为什么JuiceFS带宽从15.1GB/s掉到9.2GB/s了呢？\n瓶颈为内存copy总带宽。\nresnet50为Buffer IO，读取和处理dataset时会消耗一部分内存带宽。通过stream测算内存带宽发现，系统内存copy带宽越大，JuiceFS的吞吐带宽越大。\n我们测试了不同机器的stream单CPU内存copy带宽和JuiceFS单机部署的read带宽，发现JuiceFS吞吐带宽本身很取决于内存带宽大小。",
+      "start_ms": 626320,
+      "end_ms": 956730,
+      "material_ids": [
+        "chunk_00/slide_011",
+        "chunk_00/slide_012",
+        "chunk_00/slide_013",
+        "chunk_00/slide_014",
+        "chunk_00/slide_015",
+        "chunk_00/slide_016",
+        "chunk_00/slide_017",
+        "chunk_00/slide_018",
+        "chunk_00/slide_019"
+      ],
+      "summary_hint": "讲者介绍了测试环境和数据生成方法，并分别对unet3d和resnet50两个模型进行了性能测试。通过分析，指出了unet3d的瓶颈在于内存拷贝带宽，而resnet50的瓶颈在于JuiceFS自身吞吐带宽，并揭示了JuiceFS吞吐量与系统内存带宽的强相关性。",
+      "notes": "本章节详细分析了unet3d和resnet50两个模型在JuiceFS上的性能表现和瓶颈所在。",
+      "lead_text": "接下来我们看一下性能测试与分析。这是我们的测试环境。",
+      "tail_text": "我们测试了不同机器的stream单CPU内存copy带宽和JuiceFS单机部署的read带宽，发现JuiceFS吞吐带宽本身很取决于内存带宽大小。",
+      "text_span": {
+        "start": 45,
+        "end": 69
+      }
+    },
+    {
+      "id": "sec_3",
+      "index": 2,
+      "title": "总结",
+      "time_range": "00:15:56,730 - 00:18:09,190",
+      "summary": "讲者总结了 MLPerf Storage 测试的关键发现，指出 JuiceFS 的吞吐带宽是决定其能支持 GPU 数量的核心因素，这主要考察了并发、顺序读和总带宽能力。他进一步强调，性能调优是系统工程，系统内存、互联带宽、NUMA 架构等都会影响最终性能，并分享了内存拷贝、Go 语言 NUMA 感知等具体观察。",
+      "refined_script": "## 总结：MLPerf Storage 测试的关键发现与系统调优\n\n### 核心结论：吞吐带宽决定 GPU 支持数量\n\n在 MLPerf Storage 基准测试中，对于 U-Net 3D 和 ResNet-50 模型，JuiceFS 能够支持的 GPU 数量直接取决于其所能提供的吞吐带宽。这一测试场景主要考察了存储系统的以下几个核心能力：\n\n- **文件并发能力**：同时处理多个文件读写请求的能力。\n- **顺序读性能**：针对大/中型数据块的连续读取效率。\n- **总读带宽**：系统能够提供的整体读取带宽上限。\n\n### 系统工程视角下的性能调优\n\n基准测试是一项系统工程，其最终性能表现依赖于系统中各个组件的协同工作。为了达到最优性能，需要关注以下关键因素：\n\n- **系统资源**：系统内存、互联带宽及其延迟对整体吞吐性能至关重要。JuiceFS 的吞吐带宽表现与底层硬件的内存带宽大小直接相关。\n- **内存拷贝开销**：内存拷贝操作会大量消耗 CPU 和内存带宽。同时，由于系统互联和内存访问的延迟，可能导致 CPU 等待，影响整体效率。\n\n### NUMA 架构下的性能考量\n\n在多核、多处理器的现代服务器架构中，非统一内存访问（NUMA）对性能有显著影响。\n\n- **Go 语言的局限性**：Go 语言的运行时目前缺乏对 NUMA 架构的感知（NUMA-awareness）。这可能导致在拥有大规模核心数的系统上，其性能表现不如在核心数较少的系统上理想。\n- **最佳实践**：对于多 NUMA 节点的系统，应尽量避免跨 NUMA 节点，尤其是跨 CPU 插槽（Socket）的内存访问，以防止因延迟增加而导致的性能下降。",
+      "original_script": "最后总结一下。\nMLPerf Storage unet3d和resnet50模型支持的GPU数量取决于JuiceFS吞吐带宽。这主要考察了文件并发、大/中块顺序读能力，以及提供的总读带宽。\nBenchmark是个系统工程，需要系统各个部件配合好，以达到最优性能。\n系统内存和互联带宽和时延对系统的吞吐性能至关重要。\n内存copy比较消耗内存带宽。\n内存copy比较消耗CPU，由于互联和内存的时延导致CPU级联。\nJuiceFS吞吐带宽取决于内存带宽大小。\nGo没有numa awareness感知，对于跑大规模CPU核数，性能可能没有小规模核数好。\n对于多numa系统来说，尽量避免跨numa尤其是跨CPU socket。\n谢谢大家，我的分享完了。\n非常感谢刘老师的精彩分享。\n这个分享很有感触，除了性能评测，还给出了针对性的、专业的分析，以及对workload的建模分析，非常好。\n这套工程化的思想和思路，除了JuiceFS，应该也能用于其他场景。感谢。\n这也填补了我们社区在相关工具链上的一些空白，后续我们会联系您，获得更多相关的处理方法。好，下面...",
+      "start_ms": 956730,
+      "end_ms": 1089190,
+      "material_ids": [
+        "chunk_00/slide_020",
+        "chunk_00/slide_021"
+      ],
+      "summary_hint": "讲者总结了MLPerf Storage测试中的关键发现，强调了JuiceFS吞吐带宽是决定支持GPU数量的关键，并指出性能调优是一个系统工程。最后主持人致谢并结束分享。",
+      "notes": "规划的首句是上一段的尾句，已根据语义将本段起始时间校准为紧随其后的“最后总结一下。”。",
+      "lead_text": "我们测试了不同机器的stream单CPU内存copy带宽和JuiceFS单机部署的read带宽，发现JuiceFS吞吐带宽本身很取决于内存带宽大小。",
+      "tail_text": "这也填补了我们社区在相关工具链上的一些空白，后续我们会联系您，获得更多相关的处理方法。好，下面...",
+      "text_span": {
+        "start": 69,
+        "end": 83
+      }
+    }
+  ]
+}

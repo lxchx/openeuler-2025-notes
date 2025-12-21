@@ -1,0 +1,128 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "开场与主题介绍",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "start_ms": 0,
+      "end_ms": 41405,
+      "summary_hint": "主持人开场，演讲者介绍本次分享的主题：CTyunOS智能安全中心，以及AI与操作系统安全结合的背景。",
+      "text_span": {
+        "start": 0,
+        "end": 7
+      },
+      "lead_text": "下面有请天翼云科技有限公司的后端开发工程师",
+      "tail_text": "如何将AI和我们的操作系统安全结合，这是一个很有趣的话题。"
+    },
+    {
+      "id": "sec_2",
+      "title": "CTyunOS智能安全中心概览",
+      "material_ids": [
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005"
+      ],
+      "start_ms": 42860,
+      "end_ms": 179000,
+      "summary_hint": "从系统定义、技术架构和功能架构三个方面，对CTyunOS智能安全中心进行总体介绍。",
+      "text_span": {
+        "start": 8,
+        "end": 29
+      },
+      "lead_text": "首先介绍一下CTyunOS智能安全中心。",
+      "tail_text": "实现对漏洞从感知、分析到修复、公告的智能化一体化管理。"
+    },
+    {
+      "id": "sec_3",
+      "title": "漏洞全生命周期管理流程",
+      "material_ids": [
+        "chunk_00/slide_006"
+      ],
+      "start_ms": 179440,
+      "end_ms": 348700,
+      "summary_hint": "详细阐述了CTyunOS智能安全中心如何对漏洞进行从感知、播报、分析、修复、测试到公告的全生命周期闭环管控。",
+      "text_span": {
+        "start": 30,
+        "end": 61
+      },
+      "lead_text": "CTyunOS智能安全中心对漏洞感知、播报、分析、修复、测试和公告安全生命周期都进行了闭环管控。",
+      "tail_text": "同时也会通过邮件通知外部客户漏洞修复情况。"
+    },
+    {
+      "id": "sec_4",
+      "title": "AI赋能的漏洞分析能力",
+      "material_ids": [
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "start_ms": 348700,
+      "end_ms": 481330,
+      "summary_hint": "详细介绍系统如何利用AI进行漏洞影响分析和源码分析，并展示了用于信息查询的AI聊天引擎及其界面。",
+      "notes": "首句与上一节尾句重合，已根据语义将本节起始时间校准为 00:05:48,700。",
+      "text_span": {
+        "start": 62,
+        "end": 87
+      },
+      "lead_text": "同时也会通过邮件通知外部客户漏洞修复情况。",
+      "tail_text": "您可以直接对漏洞问题进行提问。"
+    },
+    {
+      "id": "sec_5",
+      "title": "核心功能展示",
+      "material_ids": [
+        "chunk_00/slide_011",
+        "chunk_00/slide_012",
+        "chunk_00/slide_013",
+        "chunk_00/slide_014"
+      ],
+      "start_ms": 484130,
+      "end_ms": 580710,
+      "summary_hint": "展示了系统的几项核心功能，包括AI辅助的漏洞评分、自动化的AI分析、漏洞修复进度追踪以及安全加固能力。",
+      "text_span": {
+        "start": 88,
+        "end": 104
+      },
+      "lead_text": "在漏洞评分环节，",
+      "tail_text": "同时，安全加固项设置了校验，如果被篡改则无法执行。"
+    },
+    {
+      "id": "sec_6",
+      "title": "研发规划与总结",
+      "material_ids": [
+        "chunk_00/slide_015"
+      ],
+      "start_ms": 580710,
+      "end_ms": 615855,
+      "summary_hint": "介绍已开源和计划开源的模块，阐述未来的研发规划，重点是进一步深化AI在漏洞修复中的应用。",
+      "text_span": {
+        "start": 105,
+        "end": 111
+      },
+      "lead_text": "下面介绍我们的研发规划。",
+      "tail_text": "以上就是我今天的演讲，谢谢大家。"
+    },
+    {
+      "id": "sec_7",
+      "title": "致谢与结束",
+      "material_ids": [
+        "chunk_00/slide_016",
+        "chunk_00/slide_017"
+      ],
+      "start_ms": 616780,
+      "end_ms": 652774,
+      "summary_hint": "演讲者结束分享，主持人致谢并宣布分论坛结束。",
+      "notes": "首句与上一节尾句重合，已根据语义将本节起始时间校准为 00:10:16,780。",
+      "text_span": {
+        "start": 111,
+        "end": 119
+      },
+      "lead_text": "以上就是我今天的演讲，谢谢大家。",
+      "tail_text": "谢谢大家，我们中场休息一会。"
+    }
+  ]
+}

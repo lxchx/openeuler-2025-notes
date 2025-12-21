@@ -24,6 +24,7 @@
 - `data/manifest.json`：站点清单（会场列表、索引/总览 JSON 路径、part 包路径前缀、视频路径前缀）
 - `data/sessions/<session>/session_index.json`、`data/sessions/<session>/session_overview.json`：从 session bundle 抽取的总览/索引
 - `packages/parts-lite/*.tkd.zip`：各 part 的轻量包（**不含视频**，供 show.html 优先按需加载，避免 zip 内视频阻塞解析）
+- `packages/parts-web/<session>/part_XX/`：各 part 的“解包目录”（**按文件直出**，show.html 会优先使用它以避免“必须先把整个 zip 下载完才能开始渲染”）
 - `packages/videos/<session>/part_XX_low.mp4`：独立视频文件（浏览器可 Range/流式加载，不阻塞其它数据渲染）
 - `packages/parts/*.tkd.zip`：从 session bundle 抽取的各 part 原始包（保留作为来源/兜底）
 
@@ -55,6 +56,18 @@
 - `--force`：覆盖已有输出
 
 注意：GitHub 仓库对大文件有体积限制，独立 mp4 仍可能需要 Git LFS / Release / 外部对象存储。
+
+## 解包 parts-lite（避免必须整包下载 zip）
+
+在 `openeuler-2025-notes/` 目录下执行：
+
+- `python3 tools/export_parts_web.py --root .`
+
+它会把 `packages/parts-lite/*.tkd.zip` 导出到：
+
+- `packages/parts-web/<session>/part_XX/manifest.json` + 所需的 `srt/json/md/png`
+
+`show.html` 在加载某个 part 时会先尝试读取 `packages/parts-web/.../manifest.json`，存在则走“按需加载文件”模式，否则回退到 zip（worker 解析）。
 
 ## 部署到 GitHub Pages
 

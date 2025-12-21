@@ -2223,6 +2223,11 @@
             if (!resp.ok) throw new Error(`读取失败：${url}（HTTP ${resp.status}）`);
             return await resp.json();
         },
+        fetchText: async function(url) {
+            const resp = await fetch(url);
+            if (!resp.ok) throw new Error(`读取失败：${url}（HTTP ${resp.status}）`);
+            return await resp.text();
+        },
         fetchArrayBuffer: async function(url) {
             const resp = await fetch(url);
             if (!resp.ok) throw new Error(`下载失败：${url}（HTTP ${resp.status}）`);
@@ -2250,6 +2255,7 @@
                 id: sid,
                 file_name: String(sess.title || sid),
                 zip: null,
+                parts_web_base_url: sess.parts_web_base_url ? String(sess.parts_web_base_url) : 'packages/parts-web/',
                 videos_base_url: sess.videos_base_url ? String(sess.videos_base_url) : null,
                 index: null,
                 overview: null,
@@ -2362,8 +2368,6 @@
             const preserveSec = opts && typeof opts.preserveSec === 'boolean' ? opts.preserveSec : false;
             const idx = Number(partIndex);
             if (!Number.isFinite(idx)) throw new Error("part 索引非法");
-            const entryInfo = (Store.session.part_archives || []).find((p) => Number(p.index) === idx);
-            if (!entryInfo || !entryInfo.name) throw new Error("未找到该 part 的归档文件");
 
             const zipSpan = DOM.btns.zip ? DOM.btns.zip.querySelector('span') : null;
             const zipOrigText = zipSpan ? zipSpan.textContent : '📦 导入 .tkd.zip';
@@ -2371,7 +2375,25 @@
 
             Store.resetPartView();
             UI.enterPartView();
-            this._resetPartUi('正在解析…');
+            this._resetPartUi('正在加载…');
+
+            Store.session.current_part = idx;
+
+            // Prefer: web manifest (no need to download the entire zip before rendering)
+            const webLoaded = await this.tryLoadPartWeb(idx, { zipOrigText, showAlert: false });
+            if (webLoaded) {
+                Utils.setZipLoading(false, zipOrigText);
+                try {
+                    const cur = Router.read();
+                    if (cur && cur.session) {
+                        Router.set({ part: idx, sec: preserveSec ? (cur.sec ?? null) : null }, { replace: true });
+                    }
+                } catch (e) {}
+                return;
+            }
+
+            const entryInfo = (Store.session.part_archives || []).find((p) => Number(p.index) === idx);
+            if (!entryInfo || !entryInfo.name) throw new Error("未找到该 part 的归档文件");
 
             let buf = null;
             if (entryInfo.url) {
@@ -2383,7 +2405,6 @@
                 buf = await entry.async("arraybuffer");
             }
 
-            Store.session.current_part = idx;
             await this.loadPartZipBuffer(buf, { zipOrigText, zipLabel: entryInfo.name, showAlert: false });
             Utils.setZipLoading(false, zipOrigText);
 
@@ -2393,6 +2414,160 @@
                     Router.set({ part: idx, sec: preserveSec ? (cur.sec ?? null) : null }, { replace: true });
                 }
             } catch (e) {}
+        },
+
+        tryLoadPartWeb: async function(partIndex, opts = {}) {
+            try {
+                const sid = Store.session && Store.session.id ? String(Store.session.id) : '';
+                if (!sid) return false;
+                const idx = Number(partIndex);
+                if (!Number.isFinite(idx)) return false;
+
+                const base0 = Store.session && Store.session.parts_web_base_url ? String(Store.session.parts_web_base_url) : 'packages/parts-web/';
+                const base = base0.endsWith('/') ? base0 : (base0 + '/');
+                const idx2 = String(idx).padStart(2, '0');
+                const manifestUrl = `${base}${sid}/part_${idx2}/manifest.json`;
+
+                const resp = await fetch(manifestUrl, { cache: 'no-cache' });
+                if (!resp.ok) return false;
+                const manifest = await resp.json();
+                if (!manifest || String(manifest.format || '') !== 'talkdistill_part_web_v1') return false;
+
+                const absManifest = new URL(manifestUrl, window.location.href);
+                const partBaseUrl = new URL('./', absManifest).toString();
+                await this.loadPartWebManifest(manifest, { ...opts, partBaseUrl, manifestUrl });
+                return true;
+            } catch (e) {
+                console.warn('loadPart web failed:', e);
+                return false;
+            }
+        },
+
+        loadPartWebManifest: async function(manifest, opts = {}) {
+            const zipOrigText = (opts && opts.zipOrigText) ? opts.zipOrigText : '📦 导入 .tkd.zip';
+            const showAlert = !!(opts && opts.showAlert);
+            const partBaseUrl = String(opts && opts.partBaseUrl ? opts.partBaseUrl : '');
+            if (!partBaseUrl) throw new Error('partBaseUrl missing');
+
+            Store.resetPartView();
+            Store.zip = null;
+            Store.zipWorker = null;
+            Store.zipWorkerZipId = null;
+            UI.enterPartView();
+
+            this._resetPartUi('正在加载（web）…');
+
+            const resolveUrl = (p) => {
+                if (!p) return null;
+                try { return new URL(String(p), partBaseUrl).toString(); } catch (e) { return null; }
+            };
+
+            const files = (manifest && manifest.files && typeof manifest.files === 'object') ? manifest.files : {};
+            const srtUrl = resolveUrl(files.srt);
+            const secUrl = resolveUrl(files.section_manifest);
+            const materialsUrl = resolveUrl(files.materials) || resolveUrl(files.material_manifest);
+            const graphUrl = resolveUrl(files.graph);
+            const refinedFiles = (files.refined && typeof files.refined === 'object') ? files.refined : {};
+            const narrativeFiles = (files.narratives && typeof files.narratives === 'object') ? files.narratives : {};
+            const captureFiles = (files.captures && typeof files.captures === 'object') ? files.captures : {};
+
+            if (!srtUrl) throw new Error('web manifest missing srt');
+            if (!secUrl) throw new Error('web manifest missing section_manifest');
+
+            const [srtText, secJson] = await Promise.all([
+                this.fetchText(srtUrl),
+                this.fetchJson(secUrl),
+            ]);
+
+            Store.raw.sections = Array.isArray(secJson && secJson.sections) ? secJson.sections : [];
+            Store.raw.timeline = [];
+            Store.raw.crops = {};
+
+            // Materials (optional)
+            Store.raw.materialsById = {};
+            if (materialsUrl) {
+                try {
+                    const mjson = await this.fetchJson(materialsUrl);
+                    const items = Array.isArray(mjson && mjson.materials) ? mjson.materials : (Array.isArray(mjson) ? mjson : []);
+                    items.forEach((m) => {
+                        if (m && m.id) Store.raw.materialsById[String(m.id)] = m;
+                    });
+                } catch (e) {
+                    console.warn('materials.json parse failed:', materialsUrl, e);
+                }
+            }
+
+            // Refined scripts / narratives (optional)
+            Store.raw.refined = {};
+            Store.raw.narratives = {};
+            await Promise.all([
+                ...Object.entries(refinedFiles).map(async ([sid, rel]) => {
+                    const u = resolveUrl(rel);
+                    if (!u) return;
+                    try { Store.raw.refined[String(sid)] = await this.fetchText(u); } catch (e) {}
+                }),
+                ...Object.entries(narrativeFiles).map(async ([sid, rel]) => {
+                    const u = resolveUrl(rel);
+                    if (!u) return;
+                    try { Store.raw.narratives[String(sid)] = await this.fetchJson(u); } catch (e) {}
+                }),
+            ]);
+
+            // Captures: direct URL mapping (no zip extraction)
+            Store.raw.captures = {};
+            for (const [mid, rel] of Object.entries(captureFiles)) {
+                const u = resolveUrl(rel);
+                if (!u) continue;
+                Store.raw.captures[String(mid)] = { url: u, type: 'image', zip_path: null };
+            }
+            if (Object.keys(Store.raw.captures).length) Utils.markLoaded('imgs');
+
+            Store.srt = Utils.parseSRT(String(srtText || ''));
+            UI.renderSrt();
+            Utils.markLoaded('srt');
+
+            // Graph (optional)
+            if (graphUrl) {
+                try {
+                    const gjson = await this.fetchJson(graphUrl);
+                    Store.graph = (gjson && gjson.graph_data) ? gjson.graph_data : gjson;
+                    if (Store.graph && typeof Store.graph === 'object') {
+                        Utils.buildMapping();
+                        Utils.markLoaded('graph');
+                        const init = () => { try { UI.initGraph(); } catch (e) { console.error(e); } };
+                        if (typeof requestIdleCallback === 'function') requestIdleCallback(init, { timeout: 800 });
+                        else setTimeout(init, 60);
+                    }
+                } catch (e) {
+                    console.warn('Graph load failed:', graphUrl, e);
+                }
+            }
+
+            // Ensure main layout visible
+            UI.enterPartView();
+
+            // Video：独立 mp4（不要阻塞主渲染）
+            const externalVideoUrl = (() => {
+                try {
+                    if (!Store.session || !Number.isFinite(Number(Store.session.current_part))) return null;
+                    const idx = Number(Store.session.current_part);
+                    const info = (Store.session.part_archives || []).find((p) => Number(p && p.index) === idx);
+                    return info && info.video_url ? String(info.video_url) : null;
+                } catch (e) { return null; }
+            })();
+            if (externalVideoUrl) {
+                DOM.video.src = externalVideoUrl;
+                Utils.markLoaded('video');
+            }
+
+            Loader.rebuildTimeline();
+            if (Store.slides.length) Utils.markLoaded('feed');
+            Utils.markLoaded('zip');
+            Utils.setZipLoading(false, zipOrigText);
+
+            await Utils.nextFrame();
+            UI.updateHighlights(0, true);
+            if (showAlert) setTimeout(() => alert("导入成功！"), 0);
         },
 
         loadPartZipBuffer: async function(buf, opts) {

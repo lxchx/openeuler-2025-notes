@@ -1,0 +1,97 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "开场：软硬协同，效能飞跃",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "start_ms": 500,
+      "end_ms": 98000,
+      "summary_hint": "讲者孙亚楠开场，介绍本次分享的主题是关于在昇腾平台上，针对FP8精度算子的调优工作。",
+      "text_span": {
+        "start": 0,
+        "end": 13
+      },
+      "lead_text": "下面，有请河南昆仑技术有限公司算子开发高级工程师孙亚楠先生，",
+      "tail_text": "下面我将从三个部分为大家分享。"
+    },
+    {
+      "id": "sec_2",
+      "title": "技术概述：FP8及其应用价值",
+      "material_ids": [
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005",
+        "chunk_00/slide_006",
+        "chunk_00/slide_007"
+      ],
+      "start_ms": 100000,
+      "end_ms": 516000,
+      "summary_hint": "介绍FP8技术概念，它能缓解显存压力、提供更高推理精度。并阐述了昆仑基于昇腾研发的软FP8解决方案及其在不同硬件上的应用价值。",
+      "notes": "讲者首先介绍了团队构建的整体软件栈，然后重点阐述了FP8技术的概念、优势，以及昆仑基于昇腾平台推出的软FP8解决方案及其应用价值。",
+      "text_span": {
+        "start": 13,
+        "end": 51
+      },
+      "lead_text": "下面我将从三个部分为大家分享。",
+      "tail_text": "右侧是软浮点推理精度测试结果，相较于DeepSeek-R1的原始格式测试结果，FP8与INT8+INT4的精度相当。"
+    },
+    {
+      "id": "sec_3",
+      "title": "算子调优：FP8 Matmul/GroupedMatmul 优化实践",
+      "material_ids": [
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010",
+        "chunk_00/slide_011",
+        "chunk_00/slide_012",
+        "chunk_00/slide_013"
+      ],
+      "start_ms": 518500,
+      "end_ms": 994000,
+      "summary_hint": "详细介绍FP8算子的三项核心优化技术：基于专家激活信息的选择性反量化、针对大Shape的带宽优化、以及针对特定模型的Shape亲和优化，并展示了超过25%的性能提升。",
+      "notes": "讲者详细介绍了针对FP8 Matmul/GroupedMatmul算子的三项核心优化技术，并展示了最终的性能提升数据。",
+      "text_span": {
+        "start": 52,
+        "end": 95
+      },
+      "lead_text": "下面，我将汇报我们团队关于软FP8软浮点算子的设计。",
+      "tail_text": "在普通Matmul gate和up层，吞吐量相比开源版本平均提升25%。"
+    },
+    {
+      "id": "sec_4",
+      "title": "未来探索方向",
+      "material_ids": [
+        "chunk_00/slide_014",
+        "chunk_00/slide_015"
+      ],
+      "start_ms": 996500,
+      "end_ms": 1035000,
+      "summary_hint": "讲者分享了团队未来的三个探索方向：软FP4技术研发、深度挖掘昇腾芯片算力潜力以及生态扩展。",
+      "text_span": {
+        "start": 96,
+        "end": 102
+      },
+      "lead_text": "最后，我将汇报我们团队未来的探索方向。",
+      "tail_text": "我们将与生态产生更紧密的联系，做出更多贡献。我的分享到此结束，谢谢大家。"
+    },
+    {
+      "id": "sec_5",
+      "title": "结束语",
+      "material_ids": [
+        "chunk_00/slide_016"
+      ],
+      "start_ms": 1038000,
+      "end_ms": 1067000,
+      "summary_hint": "主持人总结分享内容并致谢。",
+      "text_span": {
+        "start": 103,
+        "end": 104
+      },
+      "lead_text": "非常感谢孙老师的精彩分享。通过FP8技术，降低了显存占用，同时对特定Shape的张量进行亲和处理，带来了高达500%的性能提升，效果非常震撼。",
+      "tail_text": "这是一个令人期待的技术，谢谢。"
+    }
+  ]
+}

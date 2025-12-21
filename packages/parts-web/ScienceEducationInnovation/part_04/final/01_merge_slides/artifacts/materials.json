@@ -1,0 +1,454 @@
+{
+  "materials": [
+    {
+      "id": "chunk_00/slide_001",
+      "type": "slide",
+      "start_ms": 15500,
+      "end_ms": 54000,
+      "title": "异构融合的 AI Infra 系统软件资源管理与可靠性保障 封面页，包含演讲标题及讲者信息。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_001",
+        "slide_index": 1,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_002",
+      "type": "slide",
+      "start_ms": 55500,
+      "end_ms": 74500,
+      "title": "云原生技术和生态日趋成熟 展示云原生技术发展的时间线（2010-2024）及体系架构演进。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_002",
+        "slide_index": 2,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_003",
+      "type": "slide",
+      "start_ms": 76000,
+      "end_ms": 106500,
+      "title": "AI 进入大模型时代 展示 AI 模型发展时间线，从单模态到多模态，参数量及算力需求激增。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_003",
+        "slide_index": 3,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_004",
+      "type": "slide",
+      "start_ms": 108000,
+      "end_ms": 146500,
+      "title": "新型模型架构：MoE 大模型架构 介绍混合专家系统（MoE）架构，通过稀疏激活保持推理效率。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_004",
+        "slide_index": 4,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_005",
+      "type": "slide",
+      "start_ms": 148000,
+      "end_ms": 197500,
+      "title": "新型模型架构：生成式模型 展示深度推荐模型（DLRMs）及生成式推荐在互联网场景的应用。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_005",
+        "slide_index": 5,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_006",
+      "type": "slide",
+      "start_ms": 199500,
+      "end_ms": 240500,
+      "title": "硬件环境：AI 进入了超异构计算时代 展示多样化异构算力（CPU/GPU/NPU）及软硬件全栈感知需求。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_006",
+        "slide_index": 6,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_007",
+      "type": "slide",
+      "start_ms": 242000,
+      "end_ms": 284500,
+      "title": "异构智算基础设施建设 展示我国智算中心建设数据及算力资源利用率现状。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_007",
+        "slide_index": 7,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_008",
+      "type": "slide",
+      "start_ms": 286500,
+      "end_ms": 350500,
+      "title": "AI Infra 系统软件 对比传统 OS、云 OS 与 AI Infra 系统软件的层级架构与功能。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_008",
+        "slide_index": 8,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_009",
+      "type": "slide",
+      "start_ms": 352500,
+      "end_ms": 379500,
+      "title": "AI 基础设施系统软件：训推框架和运行时系统 分析现有框架（Kubernetes, Ray）在资源利用率和服务质量保障上的问题。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_009",
+        "slide_index": 9,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_010",
+      "type": "slide",
+      "start_ms": 381500,
+      "end_ms": 409500,
+      "title": "AI 基础设施可靠性与训推任务稳定性 探讨大规模集群下的故障检测、定位、诊断及失效恢复挑战。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_010",
+        "slide_index": 10,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_011",
+      "type": "slide",
+      "start_ms": 411500,
+      "end_ms": 451500,
+      "title": "整体思路：异构融合的算力资源管理与可靠性保障 展示从异构资源管理到大规模训推任务调度的整体技术架构图。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_011",
+        "slide_index": 11,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_012",
+      "type": "slide",
+      "start_ms": 453500,
+      "end_ms": 551500,
+      "title": "探索方向 1：异构融合运行时调度与配置优化 分析不同模型在异构卡上的性能差异及 CPU/NPU 互补特性。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_012",
+        "slide_index": 12,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_013",
+      "type": "slide",
+      "start_ms": 553500,
+      "end_ms": 616500,
+      "title": "工作 1：异构感知的多训推作业封装与混部（问题与思路） 介绍多作业混部中的异构性、潮汐现象及截止时间（Deadline）约束。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_013",
+        "slide_index": 13,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_014",
+      "type": "slide",
+      "start_ms": 618000,
+      "end_ms": 659500,
+      "title": "工作 1：异构感知的多训推作业封装与混部（方案与结果） 展示基于图匹配的作业调度算法及在快手集群的实验结果（JCT 缩短）。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_014",
+        "slide_index": 14,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_015",
+      "type": "slide",
+      "start_ms": 661500,
+      "end_ms": 744500,
+      "title": "工作 2：面向 LLM 推理的异构算力调度（背景与动机） 分析推理阶段 Prefill 和 Decode 的算力需求差异及成本效率问题。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_015",
+        "slide_index": 15,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_016",
+      "type": "slide",
+      "start_ms": 746500,
+      "end_ms": 770500,
+      "title": "工作 2：面向 LLM 推理的异构算力调度（核心思路） 提出 GPU Combo 资源套餐概念，实现 PD 分离与动态部署。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_016",
+        "slide_index": 16,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_017",
+      "type": "slide",
+      "start_ms": 772000,
+      "end_ms": 787500,
+      "title": "工作 2：面向 LLM 推理的异构算力调度（实验结果） 展示性能提升数据（24.9%-38.3%）及 QoS 满足情况。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_017",
+        "slide_index": 17,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_018",
+      "type": "slide",
+      "start_ms": 789500,
+      "end_ms": 860500,
+      "title": "工作 3：Expert Kit - 以 Expert 为中心异构融合推理解系统 介绍 Expert Kit 系统架构，利用 CPU/NPU 互补处理 MoE 模型。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_018",
+        "slide_index": 18,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_019",
+      "type": "slide",
+      "start_ms": 862000,
+      "end_ms": 915500,
+      "title": "Controller 架构与 Expert Router 详细展示 Expert Kit 中的 Controller 模块及 Expert 动态调度机制。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_019",
+        "slide_index": 19,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_020",
+      "type": "slide",
+      "start_ms": 917500,
+      "end_ms": 1017500,
+      "title": "探索方向 2：AI 基础设施稳定性和可靠性 概述故障检测、定位、诊断及恢复的整体技术路径。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_020",
+        "slide_index": 20,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_021",
+      "type": "slide",
+      "start_ms": 1019500,
+      "end_ms": 1057500,
+      "title": "工作 1：AI Infra 异常检测与根因分析（问题） 分析训练过程中的慢节点（Straggler）识别与根因分析难点。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_021",
+        "slide_index": 21,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_022",
+      "type": "slide",
+      "start_ms": 1059500,
+      "end_ms": 1091500,
+      "title": "工作 1：AI Infra 异常检测与根因分析（技术） 介绍基于 GraphRAG 的分布式异常检测与根因定位技术。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_022",
+        "slide_index": 22,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_023",
+      "type": "slide",
+      "start_ms": 1093000,
+      "end_ms": 1130500,
+      "title": "工作 2：面向大规模推荐模型训练的 Checkpoint 优化 提出 Just-in-Time Checkpointing 技术，解决冷热数据存储问题。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_023",
+        "slide_index": 23,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_024",
+      "type": "slide",
+      "start_ms": 1132000,
+      "end_ms": 1156500,
+      "title": "工作 3：基于动态重建链的快速失效恢复技术 介绍 Device Proxy 和 Flexible CCL 技术，加速通信故障恢复。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_024",
+        "slide_index": 24,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_025",
+      "type": "slide",
+      "start_ms": 1158500,
+      "end_ms": 1176500,
+      "title": "正在开展的相关课题研究 列出国家重点研发计划及与企业合作的科研项目。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_025",
+        "slide_index": 25,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_026",
+      "type": "slide",
+      "start_ms": 1178000,
+      "end_ms": 1187500,
+      "title": "AI Infra 平台解决方案 总结首创的异构集群引导与资源管理系统及多维监控方案。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_026",
+        "slide_index": 26,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_027",
+      "type": "slide",
+      "start_ms": 1189000,
+      "end_ms": 1199500,
+      "title": "Crater - 多租户异构集群智能调度与资源管理系统 展示 Crater 系统架构图及核心功能模块。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_027",
+        "slide_index": 27,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_028",
+      "type": "slide",
+      "start_ms": 1201000,
+      "end_ms": 1231500,
+      "title": "Crater 系统介绍：多类型作业多维监控&数据管理 展示系统界面截图，包括 IDE 集成、任务监控及性能分析。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_028",
+        "slide_index": 28,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_029",
+      "type": "slide",
+      "start_ms": 1233000,
+      "end_ms": 1251500,
+      "title": "致谢 感谢核心团队成员（RAIDS Lab）及主要合作伙伴。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_029",
+        "slide_index": 29,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_030",
+      "type": "slide",
+      "start_ms": 1253000,
+      "end_ms": 1293000,
+      "title": "谢谢聆听 敬请批评指正 结束页，包含讲者联系方式及二维码。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_030",
+        "slide_index": 30,
+        "offset_ms": 0
+      }
+    }
+  ]
+}

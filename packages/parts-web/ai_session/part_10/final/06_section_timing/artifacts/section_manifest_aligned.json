@@ -1,0 +1,105 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "ANNC：加速深度学习模型推理的AI编译器",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "start_ms": 0,
+      "end_ms": 40205,
+      "summary_hint": "讲者介绍了本次分享的主题 ANNC，一款面向CPU、加速深度学习模型推理的AI编译器。",
+      "text_span": {
+        "start": 0,
+        "end": 5
+      },
+      "lead_text": "下面有请华为技术有限公司的软件工程师郑晨卉女士，",
+      "tail_text": "这是一款面向CPU的，加速深度学习模型推理的一款AI编译器。"
+    },
+    {
+      "id": "sec_2",
+      "title": "为何在CPU上进行AI推理？",
+      "material_ids": [
+        "chunk_00/slide_003"
+      ],
+      "start_ms": 41290,
+      "end_ms": 155662,
+      "summary_hint": "从性能和成本两个方面分析了在CPU上进行AI推理的优势，特别是在搜推、广告等场景。",
+      "text_span": {
+        "start": 6,
+        "end": 17
+      },
+      "lead_text": "首先让我们从一个简单的问题作为导入。",
+      "tail_text": "然后基于此，我们也发现，很多的互联网公司，尤其是在搜推、粗排以及广告等这些核心的业务中，普遍都有一些非常可观的纯CPU的算力部署。"
+    },
+    {
+      "id": "sec_3",
+      "title": "ANNC 整体架构与关键技术",
+      "material_ids": [
+        "chunk_00/slide_004",
+        "chunk_00/slide_005",
+        "chunk_00/slide_006"
+      ],
+      "start_ms": 156390,
+      "end_ms": 450745,
+      "summary_hint": "介绍了ANNC的整体架构，并详细阐述了其关键技术，包括图优化、高性能算子库、GEMM算子数据布局优化以及CPU感知的自适应算子优化。",
+      "text_span": {
+        "start": 18,
+        "end": 49
+      },
+      "lead_text": "基于这样的一个背景，我们就构建了一套面向CPU的神经网络推理加速编译器ANNC。",
+      "tail_text": "那未来我们这个相关的些pass也会在openEuler社区开源，然后下一步的话我们也是计划去结合Triton去提供一个更强的算子生成能力。"
+    },
+    {
+      "id": "sec_4",
+      "title": "客户模型调优案例分享",
+      "material_ids": [
+        "chunk_00/slide_007",
+        "chunk_00/slide_008"
+      ],
+      "start_ms": 452950,
+      "end_ms": 644255,
+      "summary_hint": "分享了两个在客户场景中成功落地的优化案例：针对搜推场景的Embedding融合算子优化，以及针对BatchNorm层的常量折叠优化。",
+      "text_span": {
+        "start": 50,
+        "end": 66
+      },
+      "lead_text": "然后接下来我将结合具体的一个场景，就是分享几个我们在客户场景中成功落地的两个案例。",
+      "tail_text": "那这个优化的话是最终在单个模型上的推理时延降低了10%左右。"
+    },
+    {
+      "id": "sec_5",
+      "title": "下一步工作方向",
+      "material_ids": [
+        "chunk_00/slide_009"
+      ],
+      "start_ms": 646140,
+      "end_ms": 739515,
+      "summary_hint": "阐述了ANNC未来的重点工作方向，包括从手工融合走向自动融合、支持动态Batch以及并行优化。",
+      "text_span": {
+        "start": 67,
+        "end": 74
+      },
+      "lead_text": "那基于客户的反馈以及实际落地中的痛点，我们也梳理了下一步的重点的一个工作方向。",
+      "tail_text": "然后最后在量化方面的话，我们也是计划去打造一套面向CPU的高精度搜推场景的自动PTQ工具链。"
+    },
+    {
+      "id": "sec_6",
+      "title": "总结与资源获取",
+      "material_ids": [
+        "chunk_00/slide_010",
+        "chunk_00/slide_011"
+      ],
+      "start_ms": 742360,
+      "end_ms": 791750,
+      "summary_hint": "总结分享内容，并提供了ANNC在openEuler社区的开源代码和文档资源。",
+      "text_span": {
+        "start": 75,
+        "end": 79
+      },
+      "lead_text": "最后的话就是我们ANNC的源代码以及相关的文档已经在openEuler社区开源了，然后欢迎大家去下载使用，也给我们提出一些宝贵的意见，那我们未来后续的一些优化也会继续贡献到openEuler社区。",
+      "tail_text": "那包括刚才提到的那个融合算子、常量折叠的两个相关案例，给我们得到那个吞吐的提升，非常棒的一个分享啊。像，好。"
+    }
+  ]
+}

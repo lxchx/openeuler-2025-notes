@@ -1,0 +1,319 @@
+{
+  "materials": [
+    {
+      "id": "chunk_00/slide_001",
+      "type": "slide",
+      "start_ms": 500,
+      "end_ms": 7000,
+      "title": "AI分论坛开场 屏幕显示“AI分论坛”主视觉画面。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_001",
+        "slide_index": 1,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_002",
+      "type": "slide",
+      "start_ms": 8000,
+      "end_ms": 31000,
+      "title": "演讲封面：JuiceFS MLPerf Storage v2.0 性能测评与调优 演讲者刘昕良开始介绍。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_002",
+        "slide_index": 2,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_003",
+      "type": "slide",
+      "start_ms": 32000,
+      "end_ms": 45000,
+      "title": "目录 包含介绍、测试与分析、总结三个部分。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_003",
+        "slide_index": 3,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_004",
+      "type": "slide",
+      "start_ms": 46500,
+      "end_ms": 148000,
+      "title": "JuiceFS是什么？ 介绍JuiceFS的架构特性，包含架构图。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_004",
+        "slide_index": 4,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_005",
+      "type": "slide",
+      "start_ms": 149500,
+      "end_ms": 280000,
+      "title": "MLPerf Storage介绍 解释MLPerf Storage的目的和测量内容。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_005",
+        "slide_index": 5,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_006",
+      "type": "slide",
+      "start_ms": 281500,
+      "end_ms": 360000,
+      "title": "MLPerf Storage 架构图 展示Storage resources到Compute resources的数据流向。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_006",
+        "slide_index": 6,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_007",
+      "type": "slide",
+      "start_ms": 361500,
+      "end_ms": 445000,
+      "title": "MLPerf Storage v2.0 benchmarks 表格展示不同任务（如图像分割、分类）的基准测试参数。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_007",
+        "slide_index": 7,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_008",
+      "type": "slide",
+      "start_ms": 446500,
+      "end_ms": 498000,
+      "title": "分布式训练overview 展示数据分区、模型训练与同步的流程图。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_008",
+        "slide_index": 8,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_009",
+      "type": "slide",
+      "start_ms": 499500,
+      "end_ms": 559000,
+      "title": "MLPerf Storage 流程图 展示GPU worker线程与JuiceFS数据分区的交互流程。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_009",
+        "slide_index": 9,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_010",
+      "type": "slide",
+      "start_ms": 560500,
+      "end_ms": 623000,
+      "title": "线程模型 详细展示JuiceFS客户端的IO请求处理流程图。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_010",
+        "slide_index": 10,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_011",
+      "type": "slide",
+      "start_ms": 624500,
+      "end_ms": 643000,
+      "title": "测试环境 - 硬件配置 列出Arm/x86 CPU、磁盘、网络等硬件参数。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_011",
+        "slide_index": 11,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_012",
+      "type": "slide",
+      "start_ms": 644500,
+      "end_ms": 650000,
+      "title": "环境部署 Redis和MinIO的部署步骤。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_012",
+        "slide_index": 12,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_013",
+      "type": "slide",
+      "start_ms": 651500,
+      "end_ms": 698000,
+      "title": "数据生成 展示生成测试数据的脚本和参数。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_013",
+        "slide_index": 13,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_014",
+      "type": "slide",
+      "start_ms": 699500,
+      "end_ms": 749000,
+      "title": "unet3d模型测试结果 展示unet3d模型的吞吐量数据，单机跑满5 GPUs。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_014",
+        "slide_index": 14,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_015",
+      "type": "slide",
+      "start_ms": 750500,
+      "end_ms": 818000,
+      "title": "unet3d模型性能瓶颈分析 分析为何带宽受限，指出瓶颈为内存copy带宽。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_015",
+        "slide_index": 15,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_016",
+      "type": "slide",
+      "start_ms": 819500,
+      "end_ms": 853000,
+      "title": "unet3d模型跨NUMA性能分析 分析不绑定CPU时的性能下降原因，指出跨NUMA内存copy耗时。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_016",
+        "slide_index": 16,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_017",
+      "type": "slide",
+      "start_ms": 854500,
+      "end_ms": 901000,
+      "title": "resnet50模型测试结果 展示resnet50模型的测试数据，单机跑满50 GPUs。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_017",
+        "slide_index": 17,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_018",
+      "type": "slide",
+      "start_ms": 902500,
+      "end_ms": 928000,
+      "title": "resnet50模型性能瓶颈分析 通过火焰图分析，指出瓶颈为JuiceFS带宽。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_018",
+        "slide_index": 18,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_019",
+      "type": "slide",
+      "start_ms": 929500,
+      "end_ms": 955000,
+      "title": "内存带宽与JuiceFS吞吐量对比 对比不同机器的内存带宽与JuiceFS吞吐量，解释性能差异。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_019",
+        "slide_index": 19,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_020",
+      "type": "slide",
+      "start_ms": 956500,
+      "end_ms": 1043000,
+      "title": "总结 总结MLPerf Storage测试中的发现和优化建议。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_020",
+        "slide_index": 20,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_021",
+      "type": "slide",
+      "start_ms": 1044500,
+      "end_ms": 1089000,
+      "title": "AI分论坛结束页 主持人上台致谢，屏幕显示主视觉画面。",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_021",
+        "slide_index": 21,
+        "offset_ms": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "开场与议程介绍",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002",
+        "chunk_00/slide_003"
+      ],
+      "start_ms": 0,
+      "end_ms": 112516,
+      "summary_hint": "讲者首先介绍了CDSS（临床决策辅助智能系统）的定义，并概述了本次分享将围绕医疗场景的困局、新一代CDSS的构想以及基于openEuler和自研引擎的实践展开。",
+      "text_span": {
+        "start": 0,
+        "end": 12
+      },
+      "lead_text": "下面有请北京惠每云科技有限公司的高级后端工程师冯焱先生，给我们带来",
+      "tail_text": "第四部分IntelliCore是我们自研的决策引擎，主要应对的是电子病历五级、六级、七级乃至八级这种高级的决策场景。"
+    },
+    {
+      "id": "sec_2",
+      "title": "困局：“医疗孤岛”的桎梏",
+      "material_ids": [
+        "chunk_00/slide_004"
+      ],
+      "start_ms": 114521,
+      "end_ms": 247301,
+      "summary_hint": "讲者分析了传统CDSS面临的四大核心困难：数据之困、算法之困、协同之困和算力之困，这些共同构成了“医疗孤岛”现象。",
+      "notes": "为避免与下一章节重叠，尾句提前至 '...我们的算法、模型推理和业务系统之间的资源协调也会产生很多问题。' 结束处。",
+      "text_span": {
+        "start": 13,
+        "end": 25
+      },
+      "lead_text": "第一个问题，传统的CDSS，在大模型出现之前，为什么会失灵呢？它有以下几个核心的困难。",
+      "tail_text": "那基于以上这些困难，我们能不能产生一些新的构想？"
+    },
+    {
+      "id": "sec_3",
+      "title": "破局：新一代CDSS智能引擎构想",
+      "material_ids": [
+        "chunk_00/slide_005",
+        "chunk_00/slide_006"
+      ],
+      "start_ms": 247541,
+      "end_ms": 420946,
+      "summary_hint": "针对传统困境，讲者提出了新一代CDSS智能引擎的构想，展示了从孤岛式架构向整合式架构演进的思路，并介绍了基于openEuler Intelligence和惠每IntelliCore的新系统架构。",
+      "text_span": {
+        "start": 25,
+        "end": 36
+      },
+      "lead_text": "那基于以上这些困难，我们能不能产生一些新的构想？",
+      "tail_text": "就是一块大的NPU设备，一张卡可以切分成多张卡的场景，达到资源之间不会互相抢占的模型加速作用。"
+    },
+    {
+      "id": "sec_4",
+      "title": "实践：基于openEuler Intelligence的知识库",
+      "material_ids": [
+        "chunk_00/slide_007",
+        "chunk_00/slide_008"
+      ],
+      "start_ms": 422931,
+      "end_ms": 655616,
+      "summary_hint": "讲者详细介绍了基于openEuler Intelligence的知识库核心架构，并通过医学循证问答、文献分析等商业化落地案例，展示了其在满足电子病历评级四级标准场景下的应用效果。",
+      "text_span": {
+        "start": 37,
+        "end": 58
+      },
+      "lead_text": "接下来简单介绍一下openEuler的Intelligence知识库的核心架构。",
+      "tail_text": "微调后的模型可以针对更专业的场景给出回答。"
+    },
+    {
+      "id": "sec_5",
+      "title": "实践：HM IntelliCore决策引擎",
+      "material_ids": [
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "start_ms": 658751,
+      "end_ms": 787081,
+      "summary_hint": "讲者介绍了自研的HM IntelliCore决策引擎，其核心在于通过“文本转规则”等技术应对高级决策场景，并展示了其在国内外智能推荐和用药场景的商业化落地案例。",
+      "notes": "为避免与下一章节重叠，尾句提前至 '...以IntelliCore为核心，这部分已在商业化落地中。' 结束处。",
+      "text_span": {
+        "start": 59,
+        "end": 71
+      },
+      "lead_text": "最后是IntelliCore的核心架构。它相较于传统架构有几大变更：一是文本转规则，二是文本转SQL，以满足报表类需求。",
+      "tail_text": "以上就是我分享的全部内容，谢谢。"
+    },
+    {
+      "id": "sec_6",
+      "title": "总结与致谢",
+      "material_ids": [
+        "chunk_00/slide_011"
+      ],
+      "start_ms": 788951,
+      "end_ms": 826401,
+      "summary_hint": "讲者总结分享内容并致谢。",
+      "notes": "本章节包含演讲者总结、掌声及主持人致谢。",
+      "text_span": {
+        "start": 71,
+        "end": 72
+      },
+      "lead_text": "以上就是我分享的全部内容，谢谢。",
+      "tail_text": "(掌声)"
+    }
+  ]
+}

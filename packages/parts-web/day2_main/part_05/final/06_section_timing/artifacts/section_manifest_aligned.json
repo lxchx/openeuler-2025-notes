@@ -1,0 +1,96 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "openEuler打造智能操作系统，加速企业AI应用开发",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "start_ms": 380,
+      "end_ms": 189165,
+      "summary_hint": "讲者介绍了openEuler在AI领域的整体架构与布局，强调其作为一个智能操作系统，致力于加速企业AI应用的开发。",
+      "notes": "The planned end sentence '而且在本次会议之前...' (line 78) overlaps with the start of the next section's content. The end time is adjusted to the end of the previous speaker's main content (line 59) to maintain a clean semantic break.",
+      "text_span": {
+        "start": 0,
+        "end": 79
+      },
+      "lead_text": "刚才联盟的成立，相信一定为异构融合系统软件释放超强算力，指明方向，也能够凝聚合力。",
+      "tail_text": "而且在本次会议之前，这个洞察工具的DSL文件和刚才模型部署的所有脚本已经在社区开源了。"
+    },
+    {
+      "id": "sec_2",
+      "title": "演示：openEuler智能调优",
+      "material_ids": [
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005"
+      ],
+      "start_ms": 190890,
+      "end_ms": 339475,
+      "summary_hint": "现场演示了openEuler的智能调优能力，通过领域模型在纯CPU环境下进行部署和调优，并展示了其在多种应用上的泛化能力验证结果。",
+      "notes": "第一位演示嘉宾上台，展示了openEuler智能调优工具在鲲鹏服务器上的实际操作和效果。",
+      "text_span": {
+        "start": 77,
+        "end": 162
+      },
+      "lead_text": "而且在本次会议之前，这个洞察工具的DSL文件和刚才模型部署的所有脚本已经在社区开源了。",
+      "tail_text": "关于领域模型的演示到此结束，谢谢大家。"
+    },
+    {
+      "id": "sec_3",
+      "title": "推出开源AI解决方案：Intelligence BoM",
+      "material_ids": [
+        "chunk_00/slide_006",
+        "chunk_00/slide_007"
+      ],
+      "start_ms": 342410,
+      "end_ms": 546095,
+      "summary_hint": "讲者介绍了Intelligence BoM（AI解决方案），一个旨在通过云边协同和端侧具身智能软件栈对接，构建全新AI机器人框架的方案。",
+      "notes": "The planned start sentence '所以通过Intelligence BoM...' (line 160) is actually part of the next speaker's content. The start time is adjusted to the actual beginning of this section's speaker (line 164 '谢谢树源的介绍').",
+      "text_span": {
+        "start": 159,
+        "end": 181
+      },
+      "lead_text": "所以通过Intelligence BoM在云边协同和端侧的具身智能的软件栈的这个对接，我们希望能够去构建一种全新的AI机器人的框架，通过数据感知层来采集数据、筛选数据，通过基础框架和AI栈在云边的协同和联动，实现高效的推理和精准的控制，并且能够针对异构加速、多模型性能调优这些场景去做针对性的优化。",
+      "tail_text": "然后我们下面的话，其实就希望通过小伙伴的演示给大家更直观地了解一下，我们这样一个开源全栈到底怎么能够让Agentic AI的软件生态触手可及、开箱即用。有请。"
+    },
+    {
+      "id": "sec_4",
+      "title": "演示：基于Dify的Agent开发",
+      "material_ids": [
+        "chunk_00/slide_008",
+        "chunk_00/slide_009"
+      ],
+      "start_ms": 548260,
+      "end_ms": 771919,
+      "summary_hint": "现场演示了如何使用Dify等开源项目，结合昇腾和GPU环境下的模型推理服务，快速搭建和开发一个AI Agent智能体。",
+      "notes": "The planned start sentence '在正式开始之前...' (line 185) is preceded by the speaker's self-introduction. The start time is adjusted to the speaker's first words (line 183 '好的，大家好') for better accuracy.",
+      "text_span": {
+        "start": 184,
+        "end": 223
+      },
+      "lead_text": "在正式开始之前，我们可以一块想一个问题，那就是DeepSeek-V2是什么时候发布的？",
+      "tail_text": "好，谢谢大家。"
+    },
+    {
+      "id": "sec_5",
+      "title": "Intelligence BoM Robot：具身智能机器人软件栈",
+      "material_ids": [
+        "chunk_00/slide_010",
+        "chunk_00/slide_011",
+        "chunk_00/slide_012"
+      ],
+      "start_ms": 775160,
+      "end_ms": 932549,
+      "summary_hint": "讲者介绍了Intelligence BoM Robot，一个开箱即用的具身智能机器人软件栈，展示了openEuler从云到端全场景支持AI应用的能力。",
+      "notes": "在第二次演示后，讲者将话题从云和服务器扩展到了端侧的具身智能机器人。",
+      "text_span": {
+        "start": 224,
+        "end": 238
+      },
+      "lead_text": "好，谢谢小伙伴的分享。",
+      "tail_text": "好。"
+    }
+  ]
+}

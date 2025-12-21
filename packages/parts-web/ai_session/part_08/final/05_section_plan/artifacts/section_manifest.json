@@ -1,0 +1,91 @@
+{
+  "sections": [
+    {
+      "id": "sec_1",
+      "title": "开场与议程介绍",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002",
+        "chunk_00/slide_003"
+      ],
+      "start_ms": 500,
+      "end_ms": 58500,
+      "summary_hint": "讲者进行自我介绍，并概述了本次分享的三个主要部分：AI通信技术趋势、灵雀通信软件UMDK架构，以及昇腾亲和的通信加速库CAM关键技术。",
+      "text_span": {
+        "start": 0,
+        "end": 9
+      },
+      "lead_text": "下面有请华为技术有限公司AI通信专家韩远坤先生，",
+      "tail_text": "最后一部分是昇腾亲和的通信加速库CAM的关键技术介绍。"
+    },
+    {
+      "id": "sec_2",
+      "title": "AI通信技术趋势演进和通信诉求",
+      "material_ids": [
+        "chunk_00/slide_004"
+      ],
+      "start_ms": 60500,
+      "end_ms": 272500,
+      "summary_hint": "讲者分析了AI通信技术随AI负载变化的趋势，指出从文本LLM向多模态及Agent场景演进，对底层通信提出了超低时延等新挑战。",
+      "text_span": {
+        "start": 10,
+        "end": 39
+      },
+      "lead_text": "我们可以看到，AI通信技术与AI负载强相关，",
+      "tail_text": "在生态与应用性上，我们强调开箱即用，让vLLM、SGLang等主流社区可以无缝使用我们的通信加速库。"
+    },
+    {
+      "id": "sec_3",
+      "title": "灵雀通信软件UMDK总体架构",
+      "material_ids": [
+        "chunk_00/slide_005"
+      ],
+      "start_ms": 274000,
+      "end_ms": 324500,
+      "summary_hint": "介绍了灵雀的高性能通信基础底座UMDK，它基于URMA统一内存语义，南向屏蔽硬件差异，并支持CAM、DeepEP、Mooncake等，实现AI框架的无缝使用。",
+      "text_span": {
+        "start": 40,
+        "end": 44
+      },
+      "lead_text": "UMDK是灵雀的高性能通信基础底座，基于URMA统一内存语义来构建。",
+      "tail_text": "在生态上，UMDK支持DeepEP、Mooncake等主流社区接口，能让AI框架在不修改代码的情况下，无缝使用灵雀超异构通信加速的能力。"
+    },
+    {
+      "id": "sec_4",
+      "title": "昇腾亲和的通信加速库CAM关键技术介绍",
+      "material_ids": [
+        "chunk_00/slide_006",
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "start_ms": 326000,
+      "end_ms": 910500,
+      "summary_hint": "详细介绍昇腾亲和的通信加速库CAM的总体架构和各项关键技术，旨在构建不同场景下的通信加速能力。",
+      "notes": "本部分详细介绍了CAM的四项关键技术：大EP通信优化、通算融合的FusedDeepMoE、AFD分离场景的M2N通信加速，以及PD分离场景下利用MIXL技术加速KV Cache传输。",
+      "text_span": {
+        "start": 45,
+        "end": 106
+      },
+      "lead_text": "通信加速库CAM的定位是做昇腾亲和的通信加速库，构建不同场景的通信加速能力。",
+      "tail_text": "基于这种多路径传输，提升整体传输效率。"
+    },
+    {
+      "id": "sec_5",
+      "title": "总结与Q&A",
+      "material_ids": [
+        "chunk_00/slide_011"
+      ],
+      "start_ms": 912500,
+      "end_ms": 1001500,
+      "summary_hint": "讲者总结分享内容，并提供社区和微信群联系方式。主持人对分享内容进行了回顾。",
+      "text_span": {
+        "start": 107,
+        "end": 116
+      },
+      "lead_text": "以上是我的分享，谢谢大家。",
+      "tail_text": "后面也希望跟这个SIG组，结合之前刘宇振老师交流的能力，可能会变成一个更有性价比的推理方案。好，谢谢。"
+    }
+  ]
+}

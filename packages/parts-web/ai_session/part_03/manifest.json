@@ -1,0 +1,54 @@
+{
+  "format": "talkdistill_part_web_v1",
+  "session": "ai_session",
+  "index": 3,
+  "generated_at": "2025-12-21T17:07:12.078862+00:00",
+  "source_zip": "packages/parts-lite/ai_session_part_03.tkd.zip",
+  "files": {
+    "srt": "final/02_merge_subtitles/artifacts/part_subtitles_aligned.srt",
+    "section_manifest": "final/06_section_timing/artifacts/section_manifest_aligned.json",
+    "section_manifest_plan": "final/05_section_plan/artifacts/section_manifest.json",
+    "materials": "final/01_merge_slides/artifacts/materials.json",
+    "material_manifest": null,
+    "graph": "final/09_graph_gen/artifacts/section_graph.json",
+    "refined": {
+      "sec_1": "final/08_script_refine/0/artifacts/section_sec_1_refined.md",
+      "sec_2": "final/08_script_refine/1/artifacts/section_sec_2_refined.md",
+      "sec_3": "final/08_script_refine/2/artifacts/section_sec_3_refined.md"
+    },
+    "narratives": {
+      "sec_1": "final/07_narrative_gen/0/artifacts/section_sec_1_narrative.json",
+      "sec_2": "final/07_narrative_gen/1/artifacts/section_sec_2_narrative.json",
+      "sec_3": "final/07_narrative_gen/2/artifacts/section_sec_3_narrative.json"
+    },
+    "captures": {
+      "chunk_00/slide_001": "chunk_00/07_capture_frame/slide_001/artifacts/slide_001.png",
+      "chunk_00/slide_002": "chunk_00/07_capture_frame/slide_002/artifacts/slide_002.png",
+      "chunk_00/slide_003": "chunk_00/07_capture_frame/slide_003/artifacts/slide_003.png",
+      "chunk_00/slide_004": "chunk_00/07_capture_frame/slide_004/artifacts/slide_004.png",
+      "chunk_00/slide_005": "chunk_00/07_capture_frame/slide_005/artifacts/slide_005.png",
+      "chunk_00/slide_006": "chunk_00/07_capture_frame/slide_006/artifacts/slide_006.png",
+      "chunk_00/slide_007": "chunk_00/07_capture_frame/slide_007/artifacts/slide_007.png",
+      "chunk_00/slide_008": "chunk_00/07_capture_frame/slide_008/artifacts/slide_008.png",
+      "chunk_00/slide_009": "chunk_00/07_capture_frame/slide_009/artifacts/slide_009.png",
+      "chunk_00/slide_010": "chunk_00/07_capture_frame/slide_010/artifacts/slide_010.png",
+      "chunk_00/slide_011": "chunk_00/07_capture_frame/slide_011/artifacts/slide_011.png",
+      "chunk_00/slide_012": "chunk_00/07_capture_frame/slide_012/artifacts/slide_012.png",
+      "chunk_00/slide_013": "chunk_00/07_capture_frame/slide_013/artifacts/slide_013.png",
+      "chunk_00/slide_014": "chunk_00/07_capture_frame/slide_014/artifacts/slide_014.png",
+      "chunk_00/slide_015": "chunk_00/07_capture_frame/slide_015/artifacts/slide_015.png",
+      "chunk_00/slide_016": "chunk_00/07_capture_frame/slide_016/artifacts/slide_016.png",
+      "chunk_00/slide_017": "chunk_00/07_capture_frame/slide_017/artifacts/slide_017.png",
+      "chunk_00/slide_018": "chunk_00/07_capture_frame/slide_018/artifacts/slide_018.png",
+      "chunk_00/slide_019": "chunk_00/07_capture_frame/slide_019/artifacts/slide_019.png",
+      "chunk_00/slide_020": "chunk_00/07_capture_frame/slide_020/artifacts/slide_020.png",
+      "chunk_00/slide_021": "chunk_00/07_capture_frame/slide_021/artifacts/slide_021.png"
+    }
+  },
+  "_meta": {
+    "sections": 3,
+    "refined_sections": 3,
+    "captures": 21,
+    "materials": 21
+  }
+}

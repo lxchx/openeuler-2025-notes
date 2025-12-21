@@ -1,0 +1,8 @@
+{
+  "id": "sec_2",
+  "index": 1,
+  "title": "性能测试与分析",
+  "time_range": "00:10:26,320 - 00:15:56,730",
+  "script": "接下来我们看一下性能测试与分析。这是我们的测试环境。\n包括硬件和软件。测试是在openEuler 24.03 LTS SP2版本上进行的。\n环境部署过程就不再赘述。\n首先，跑测试需要生成数据。\n数据的生成也是根据各种实际参数进行的。这里要注意，为了保证测试的公平性，数据量的大小要大于系统可用内存的5倍，以排除Page Cache的影响。\n另外，JuiceFS支持将数据预热到本地，这可以加快数据访问速度。\n首先看unet3d模型。\n我们测出的最好结果是单机最高支持5块GPU，满足GPU利用率大于90%的要求。\n其中GPU利用率为98%，带宽达到14.8 GB/s。关键的参数调整包括：将数据读取线程(reader.read_threads)从4加到16，以加大并发；以及启用直接IO(reader.odirect=True)，以减少buffer IO和内存拷贝的开销。\n为什么支持不到6块GPU呢？\n我们分析发现，当使用6块GPU时，其利用率降至83%，带宽为15.1 GB/s。我们用FIO测试JuiceFS的带宽，发现其极限也约为15.1 GB/s。因此，瓶颈在于JuiceFS的带宽。\n那为什么JuiceFS的带宽上不去呢？瓶颈在于CPU。\n通过绑核(CPU)和使用top、devkit tuner numafast等工具查看，发现48核CPU已被用满。通过devkit tuner的memory/miss工具查看，发现瓶颈是Memory Bound，主要耗时在内存copy。具体来说，是由于互联和内存的时延导致CPU级联。LLC Miss Rate很高，耗时主要在runtime.memove和arch_copy_to_user等内存拷贝函数上。\n不绑定CPU时，为什么JuiceFS带宽更上不去呢？\n瓶颈为跨NUMA内存访问带来的时延。用top工具查看，CPU未使用满。\n用devkit tuner numafast工具查看，发现remote内存访问比例较高，超过80%。而跨片物理带宽仅有60GB/s。因此，瓶颈在于跨NUMA内存访问的时延。\n接下来看resnet50模型。\n单机最高可支持50块GPU，满足GPU利用率大于90%的要求。此时GPU利用率为95%，带宽为9.2 GB/s。\n关键参数调整：由于每次读取的batch数据量为58.5MiB，相对较小，我们将读取线程(reader.read_threads)从8降为1，单线程足以应付。\n为什么支持不了更多的GPU呢？\n瓶颈为JuiceFS带宽。当增加到55块GPU时，利用率降至86%，带宽同样为9.2 GB/s。瓶颈依然是JuiceFS的后端带宽。\n为什么JuiceFS带宽从15.1GB/s掉到9.2GB/s了呢？\n瓶颈为内存copy总带宽。\nresnet50为Buffer IO，读取和处理dataset时会消耗一部分内存带宽。通过stream测算内存带宽发现，系统内存copy带宽越大，JuiceFS的吞吐带宽越大。\n我们测试了不同机器的stream单CPU内存copy带宽和JuiceFS单机部署的read带宽，发现JuiceFS吞吐带宽本身很取决于内存带宽大小。",
+  "summary": "讲者介绍了对 unet3d 和 resnet50 两个模型的性能测试与分析。测试发现，unet3d 的瓶颈在于高并发下的 CPU 内存拷贝，而 resnet50 的瓶颈在于 JuiceFS 自身受限于系统内存带宽的吞吐能力。最终结论指出，JuiceFS 的吞吐带宽与系统内存拷贝带宽强相关，这是影响 AI 训练 I/O 性能的关键。"
+}

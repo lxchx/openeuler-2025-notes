@@ -1,0 +1,154 @@
+{
+  "sections": [
+    {
+      "id": "sec_001",
+      "title": "开场与讲者介绍：人工智能端到端的复杂攻击检测技术研究报告分享者李锭老师介绍及主题开场。介绍北京大学李锭老师及其演讲主题《人工智能端到端的复杂攻击检测技术研究》。",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002",
+        "chunk_00/slide_003"
+      ],
+      "start_ms": 0,
+      "end_ms": 61505,
+      "notes": "Covers speaker introduction and the announcement of the presentation title.",
+      "text_span": {
+        "start": 0,
+        "end": 5
+      },
+      "lead_text": "接下来让我们有请北京大学的李锭老师，为我们带来《人工智能端到端的复杂攻击检测技术研究》的主题分享。",
+      "tail_text": "今天的主题是《人工智能端到端的复杂攻击检测技术研究》。"
+    },
+    {
+      "id": "sec_002",
+      "title": "研究背景：APT攻击的威胁与现状分析分析APT攻击的复杂性、隐蔽性及技术多变特征，指出当前基于规则的检测技术在人力成本和可观测性上的局限。",
+      "material_ids": [
+        "chunk_00/slide_004",
+        "chunk_00/slide_005",
+        "chunk_00/slide_006"
+      ],
+      "start_ms": 62270,
+      "end_ms": 194590,
+      "notes": "Analyzes the background of APT attacks, ending before the transition to the core research question.",
+      "text_span": {
+        "start": 6,
+        "end": 21
+      },
+      "lead_text": "我们的研究背景是防御目前非常复杂的 APT（高级持续性威胁）攻击。",
+      "tail_text": "因此，我们的研究试图回答一个问题：能否排除人工干预，实现端到端的 AI 检测？"
+    },
+    {
+      "id": "sec_003",
+      "title": "科学问题与三大关键挑战探讨实现端到端AI检测的可能性，并详细分析数据质量差、语义理解难、成本损耗大这三个核心挑战。",
+      "material_ids": [
+        "chunk_00/slide_007",
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010"
+      ],
+      "start_ms": 194950,
+      "end_ms": 437275,
+      "notes": "Starts with the core research question and details the three major challenges (data quality, semantics, cost).",
+      "text_span": {
+        "start": 21,
+        "end": 44
+      },
+      "lead_text": "因此，我们的研究试图回答一个问题：能否排除人工干预，实现端到端的 AI 检测？",
+      "tail_text": "在数据规模巨大、成本受限的情况下，实现及时检测面临巨大挑战。"
+    },
+    {
+      "id": "sec_004",
+      "title": "研究方法与核心思路：溯源分析提出系统、算法、硬件协同优化策略，核心在于利用溯源图模型表征系统资源依赖关系。",
+      "material_ids": [
+        "chunk_00/slide_011",
+        "chunk_00/slide_012"
+      ],
+      "start_ms": 438040,
+      "end_ms": 529315,
+      "notes": "Introduces the core methodology of provenance graph analysis, ending before the specific technical details of log filtering.",
+      "text_span": {
+        "start": 45,
+        "end": 55
+      },
+      "lead_text": "针对这些问题，我们在过去三年中进行了一系列系统、算法和硬件的协同优化。",
+      "tail_text": "在这张图上，我们利用无监督学习主动挖掘异常特征，自动找出与攻击相关的部分。"
+    },
+    {
+      "id": "sec_005",
+      "title": "关键技术一：无监督快速日志过滤介绍利用无监督学习和在线斯坦纳树算法过滤海量日志，通过两阶段检测流程大幅降低误报并提升性能。",
+      "material_ids": [
+        "chunk_00/slide_013",
+        "chunk_00/slide_014",
+        "chunk_00/slide_015",
+        "chunk_00/slide_016"
+      ],
+      "start_ms": 530030,
+      "end_ms": 706610,
+      "notes": "Details the first key technology: unsupervised log filtering and the Steiner Tree algorithm.",
+      "text_span": {
+        "start": 55,
+        "end": 72
+      },
+      "lead_text": "在这张图上，我们利用无监督学习主动挖掘异常特征，自动找出与攻击相关的部分。",
+      "tail_text": "我们还与深信服合作，在其实际系统中发现了七个真实的攻击。"
+    },
+    {
+      "id": "sec_006",
+      "title": "关键技术二：基于大语言模型的攻击理解与报告生成阐述利用gIoC中间表示弥合语义鸿沟，结合逻辑推理框架自动生成人类可读的APT攻击报告。",
+      "material_ids": [
+        "chunk_00/slide_017",
+        "chunk_00/slide_018",
+        "chunk_00/slide_019",
+        "chunk_00/slide_020"
+      ],
+      "start_ms": 707530,
+      "end_ms": 907760,
+      "notes": "Details the second key technology: LLM-based attack understanding and gIoC intermediate representation.",
+      "text_span": {
+        "start": 73,
+        "end": 88
+      },
+      "lead_text": "第二步是理解。虽然检测出了攻击，但底层图结构对人类来说并不直观。",
+      "tail_text": "结果显示，我们不仅能自动生成自然语言报告，且误报率比现有方法降低了一个数量级。"
+    },
+    {
+      "id": "sec_007",
+      "title": "系统优化：软件隔离与硬件加速介绍分片式监控架构实现软件隔离，以及利用DPU硬件加速日志拉取，将性能损耗控制在3%以内。",
+      "material_ids": [
+        "chunk_00/slide_021",
+        "chunk_00/slide_022",
+        "chunk_00/slide_023",
+        "chunk_00/slide_024",
+        "chunk_00/slide_025",
+        "chunk_00/slide_026"
+      ],
+      "start_ms": 907760,
+      "end_ms": 1017580,
+      "notes": "Discusses system-level optimizations including software isolation and DPU hardware acceleration.",
+      "text_span": {
+        "start": 89,
+        "end": 97
+      },
+      "lead_text": "第三部分是系统层面的工作。监控系统通常开销巨大。",
+      "tail_text": "相比 Sysdig 或 Linux Audit 等主流工具，开销降低了一个数量级。"
+    },
+    {
+      "id": "sec_008",
+      "title": "原型系统SysArmor与未来展望展示开源原型系统SysArmor及相关研究成果，并对未来社区建设、数据共享及应用扩展进行展望。",
+      "material_ids": [
+        "chunk_00/slide_027",
+        "chunk_00/slide_028",
+        "chunk_00/slide_029",
+        "chunk_00/slide_030"
+      ],
+      "start_ms": 1018040,
+      "end_ms": 1225000,
+      "notes": "Introduces the SysArmor prototype system and provides future outlook and concluding remarks.",
+      "text_span": {
+        "start": 97,
+        "end": 108
+      },
+      "lead_text": "相比 Sysdig 或 Linux Audit 等主流工具，开销降低了一个数量级。",
+      "tail_text": "[掌声]"
+    }
+  ]
+}

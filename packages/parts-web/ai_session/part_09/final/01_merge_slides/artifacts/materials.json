@@ -1,0 +1,244 @@
+{
+  "materials": [
+    {
+      "id": "chunk_00/slide_001",
+      "type": "slide",
+      "start_ms": 500,
+      "end_ms": 7500,
+      "title": "AI分论坛 开场背景页",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_001",
+        "slide_index": 1,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_002",
+      "type": "slide",
+      "start_ms": 9000,
+      "end_ms": 98000,
+      "title": "软硬协同，效能飞跃：昇腾平台上的FP8极致优化之道 演讲标题页，演讲者：孙亚楠",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_002",
+        "slide_index": 2,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_003",
+      "type": "slide",
+      "start_ms": 100000,
+      "end_ms": 123000,
+      "title": "CONTENTS 目录页：1.技术概述 2.算子调优 3.未来探索",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_003",
+        "slide_index": 3,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_004",
+      "type": "slide",
+      "start_ms": 125500,
+      "end_ms": 210000,
+      "title": "软件栈：五层架构贯通软硬件 展示模型层、推理框架层、算子层、操作系统层、硬件层",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_004",
+        "slide_index": 4,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_005",
+      "type": "slide",
+      "start_ms": 213000,
+      "end_ms": 336000,
+      "title": "FP8技术概述 大幅缓解显存压力、更高推理精度、效率与精度平衡",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_005",
+        "slide_index": 5,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_006",
+      "type": "slide",
+      "start_ms": 339000,
+      "end_ms": 460000,
+      "title": "昆仑于昇腾异构推出软FP8解决方案 软FP8算子适配及优化、算子粒度、链接库形式",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_006",
+        "slide_index": 6,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_007",
+      "type": "slide",
+      "start_ms": 463000,
+      "end_ms": 516000,
+      "title": "FP8技术应用价值 释放异构算力潜力，展示KunLun G8600等设备参数",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_007",
+        "slide_index": 7,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_008",
+      "type": "slide",
+      "start_ms": 518500,
+      "end_ms": 524000,
+      "title": "CONTENTS 目录过渡页，高亮第二部分：FP8软FP8算子调优设计",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_008",
+        "slide_index": 8,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_009",
+      "type": "slide",
+      "start_ms": 526500,
+      "end_ms": 631000,
+      "title": "FP8 Matmul/GroupedMatmul 整体方案设计 展示整体架构图与优化点概览",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_009",
+        "slide_index": 9,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_010",
+      "type": "slide",
+      "start_ms": 634000,
+      "end_ms": 777000,
+      "title": "优化一：基于专家激活信息的选择性反量化 展示group_list参数与反量化逻辑",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_010",
+        "slide_index": 10,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_011",
+      "type": "slide",
+      "start_ms": 780000,
+      "end_ms": 867000,
+      "title": "优化二：针对大 Shape 的带宽优化 设置更大的基本块，列优先调度策略",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_011",
+        "slide_index": 11,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_012",
+      "type": "slide",
+      "start_ms": 870000,
+      "end_ms": 973000,
+      "title": "优化三：Qwen3-32B-FP8 Shape 亲和优化 代数等价替换，适合利用优化策略",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_012",
+        "slide_index": 12,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_013",
+      "type": "slide",
+      "start_ms": 976000,
+      "end_ms": 994000,
+      "title": "自研FP8算子相对开源版本性能提升25%以上 性能对比柱状图",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_013",
+        "slide_index": 13,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_014",
+      "type": "slide",
+      "start_ms": 996500,
+      "end_ms": 999000,
+      "title": "CONTENTS 目录过渡页，高亮第三部分：未来探索方向",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_014",
+        "slide_index": 14,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_015",
+      "type": "slide",
+      "start_ms": 1001500,
+      "end_ms": 1035000,
+      "title": "未来探索方向 软FP4技术研发、异构芯片算力潜力挖掘、生态扩展",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_015",
+        "slide_index": 15,
+        "offset_ms": 0
+      }
+    },
+    {
+      "id": "chunk_00/slide_016",
+      "type": "slide",
+      "start_ms": 1038000,
+      "end_ms": 1067000,
+      "title": "AI分论坛 结束背景页",
+      "description": "",
+      "kept": true,
+      "attributes": {
+        "chunk": 0,
+        "slide_id": "slide_016",
+        "slide_index": 16,
+        "offset_ms": 0
+      }
+    }
+  ]
+}

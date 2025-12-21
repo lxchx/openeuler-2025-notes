@@ -1,0 +1,158 @@
+{
+  "sections": [
+    {
+      "id": "sec_001",
+      "title": "报告开场与讲者介绍个人背景及研究方向介绍，包括面向 AI 的存储（Storage for AI）领域的工作总览。介绍报告题目《面向推荐大模型的参数存储系统研究》及讲者谢明晖老师的学术背景与研究方向。",
+      "material_ids": [
+        "chunk_00/slide_001",
+        "chunk_00/slide_002"
+      ],
+      "start_ms": 15500,
+      "end_ms": 86500,
+      "text_span": {
+        "start": 1,
+        "end": 8
+      },
+      "lead_text": "接下来，让我们有请中国人民大学的谢明晖老师，带来《面向推荐大模型的参数存储系统研究》的分享。",
+      "tail_text": "我的研究方向主要围绕机器学习系统，具体涉及存储系统与机器学习系统的交叉领域，即面向 AI 的存储（Storage for AI）。"
+    },
+    {
+      "id": "sec_002",
+      "title": "研究背景：推荐模型的结构与存储困境阐述推荐模型中嵌入层（Embedding Layer）的重要性，以及当前面临的容量墙和带宽墙挑战。阐述推荐模型中嵌入层（Embedding Layer）的重要性，以及当前面临的容量墙和带宽墙挑战。",
+      "material_ids": [
+        "chunk_00/slide_003",
+        "chunk_00/slide_004",
+        "chunk_00/slide_005",
+        "chunk_00/slide_006",
+        "chunk_00/slide_007"
+      ],
+      "start_ms": 87300,
+      "end_ms": 335500,
+      "text_span": {
+        "start": 9,
+        "end": 27
+      },
+      "lead_text": "我们目前的工作主要围绕参数存储、向量存储和记忆存储三个层次展开。",
+      "tail_text": "因此，存储系统已成为制约推荐模型发展的核心因素。"
+    },
+    {
+      "id": "sec_003",
+      "title": "硬件趋势与核心科学问题分析多层级存储（HBM, PM, SSD）的特性，指出软件在利用这些硬件时存在的交互效率低、延迟高及读放大等问题。分析多层级存储（HBM, PM, SSD）的特性，指出软件在利用这些硬件时存在的交互效率低、延迟高及读放大等问题。",
+      "material_ids": [
+        "chunk_00/slide_008",
+        "chunk_00/slide_009",
+        "chunk_00/slide_010",
+        "chunk_00/slide_011",
+        "chunk_00/slide_012",
+        "chunk_00/slide_013"
+      ],
+      "start_ms": 336300,
+      "end_ms": 510500,
+      "text_span": {
+        "start": 28,
+        "end": 39
+      },
+      "lead_text": "幸运的是，随着硬件发展，出现了不同层次的存储。在性能层，有集成在 GPU 或新一代 CPU 中的 HBM。",
+      "tail_text": "首先是 GPU 层的工作 Fleche，解决软硬交互开销大的问题。"
+    },
+    {
+      "id": "sec_004",
+      "title": "GPU层参数存储：Fleche查询融合针对GPU片上内存软硬交互开销大的问题，提出自识别Kernel融合方法，减少零碎小Kernel产生的开销。针对GPU片上内存软硬交互开销大的问题，提出自识别Kernel融合方法，减少零碎小Kernel产生的开销。",
+      "material_ids": [
+        "chunk_00/slide_014",
+        "chunk_00/slide_015",
+        "chunk_00/slide_016",
+        "chunk_00/slide_017",
+        "chunk_00/slide_018",
+        "chunk_00/slide_019",
+        "chunk_00/slide_020"
+      ],
+      "start_ms": 511300,
+      "end_ms": 711500,
+      "text_span": {
+        "start": 39,
+        "end": 52
+      },
+      "lead_text": "首先是 GPU 层的工作 Fleche，解决软硬交互开销大的问题。",
+      "tail_text": "小结一下，针对 GPU 片上内存软硬交互开销大的问题，我们的核心思想是查询融合。"
+    },
+    {
+      "id": "sec_005",
+      "title": "PM层参数存储：PetPS网卡聚集机制利用网卡的SG-DMA功能代替CPU完成参数序列化，规避持久性内存（PM）的高延迟导致的CPU瓶颈。利用网卡的SG-DMA功能代替CPU完成参数序列化，规避持久性内存（PM）的高延迟导致的CPU瓶颈。",
+      "material_ids": [
+        "chunk_00/slide_021",
+        "chunk_00/slide_022",
+        "chunk_00/slide_023",
+        "chunk_00/slide_024",
+        "chunk_00/slide_025",
+        "chunk_00/slide_026",
+        "chunk_00/slide_027",
+        "chunk_00/slide_028",
+        "chunk_00/slide_029"
+      ],
+      "start_ms": 712300,
+      "end_ms": 931500,
+      "text_span": {
+        "start": 53,
+        "end": 65
+      },
+      "lead_text": "在 PM 层，第二个工作 PetPS 针对参数服务器换用 PM 后的 CPU 瓶颈问题。",
+      "tail_text": "小结：针对 PM 延迟导致的 CPU 瓶颈，我们利用网卡 DMA 能力实现了协同访存。"
+    },
+    {
+      "id": "sec_006",
+      "title": "SSD层参数存储：MaxEmbed选择性副本针对SSD读放大问题，通过热点参数的选择性副本策略，利用空间换带宽，提升硬件利用率。针对SSD读放大问题，通过热点参数的选择性副本策略，利用空间换带宽，提升硬件利用率。",
+      "material_ids": [
+        "chunk_00/slide_030",
+        "chunk_00/slide_031",
+        "chunk_00/slide_032",
+        "chunk_00/slide_033",
+        "chunk_00/slide_034",
+        "chunk_00/slide_035",
+        "chunk_00/slide_036",
+        "chunk_00/slide_037",
+        "chunk_00/slide_038"
+      ],
+      "start_ms": 932300,
+      "end_ms": 1197500,
+      "text_span": {
+        "start": 66,
+        "end": 83
+      },
+      "lead_text": "最后来到 SSD 层的工作 MaxEmbed，解决粒度不匹配导致的读放大问题。",
+      "tail_text": "小结：针对磁盘读放大，我们采取了选择性副本策略。"
+    },
+    {
+      "id": "sec_007",
+      "title": "RecStore系统研发与产业落地介绍整合三层优化工作的RecStore系统及其在快手等企业的实际应用效果。介绍整合三层优化工作的RecStore系统及其在快手等企业的实际应用效果。",
+      "material_ids": [
+        "chunk_00/slide_039",
+        "chunk_00/slide_040"
+      ],
+      "start_ms": 1198300,
+      "end_ms": 1228500,
+      "text_span": {
+        "start": 84,
+        "end": 85
+      },
+      "lead_text": "我们将这三个层次的工作整合为 RecStore 系统并已开源。我们希望实现各层次的统一管理，并向上支持多个框架。",
+      "tail_text": "部分工作已在快手落地，帮助其节省了约一亿元成本，稳定服务了亿级用户。Intel 公司也对此进行了报道。"
+    },
+    {
+      "id": "sec_008",
+      "title": "未来展望与总结探讨生成式推荐模型（GR）带来的新挑战，并对全篇内容进行总结及现场问答。探讨生成式推荐模型（GR）带来的新挑战，并对全篇内容进行总结及现场问答。",
+      "material_ids": [
+        "chunk_00/slide_041",
+        "chunk_00/slide_042"
+      ],
+      "start_ms": 1229300,
+      "end_ms": 1482840,
+      "text_span": {
+        "start": 85,
+        "end": 100
+      },
+      "lead_text": "部分工作已在快手落地，帮助其节省了约一亿元成本，稳定服务了亿级用户。Intel 公司也对此进行了报道。",
+      "tail_text": "再次感谢谢老师。参数存储系统的优化不仅提升了大模型的运行效率，更为人机智能技术的落地提供了坚实支撑。"
+    }
+  ]
+}
