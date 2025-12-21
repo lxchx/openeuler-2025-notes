@@ -963,6 +963,8 @@
 		        zip: null,
                 session: null, // { zip, file_name, index, overview, part_archives: [{index,name}], active_common_tags:Set<string>, current_part:number|null }
                 site: { manifest: null },
+                zipWorker: null,
+                zipWorkerZipId: null,
 		        _objectUrls: new Set(),
 		        trackUrl: function(url) { if (url) this._objectUrls.add(url); return url; },
 		        revokeTrackedUrls: function() {
@@ -983,6 +985,8 @@
                     this.graph = null;
                     this.sectionToNodes = {};
                     this.zip = null;
+                    this.zipWorker = null;
+                    this.zipWorkerZipId = null;
                 },
 		        resetAll: function() {
 		            this.resetPartView();
@@ -2379,10 +2383,8 @@
                 buf = await entry.async("arraybuffer");
             }
 
-            const inner = new JSZip();
-            const contents = await inner.loadAsync(buf);
             Store.session.current_part = idx;
-            await this.loadPartZipContents(contents, { zipOrigText, zipLabel: entryInfo.name, showAlert: false });
+            await this.loadPartZipBuffer(buf, { zipOrigText, zipLabel: entryInfo.name, showAlert: false });
             Utils.setZipLoading(false, zipOrigText);
 
             try {
@@ -2391,6 +2393,84 @@
                     Router.set({ part: idx, sec: preserveSec ? (cur.sec ?? null) : null }, { replace: true });
                 }
             } catch (e) {}
+        },
+
+        loadPartZipBuffer: async function(buf, opts) {
+            const zipOrigText = (opts && opts.zipOrigText) ? opts.zipOrigText : '📦 导入 .tkd.zip';
+            const showAlert = !!(opts && opts.showAlert);
+
+            Store.resetPartView();
+            Store.zip = null;
+            UI.enterPartView();
+
+            const zipId = `${Date.now()}_${Math.random().toString(16).slice(2)}`;
+            Store.zipWorkerZipId = zipId;
+            Store.zipWorker = ZipWorkerClient;
+
+            UI.showLanding({ primary: '正在解析…', secondary: '正在解析压缩包目录并读取关键产物（worker）。' });
+            let parsed = null;
+            try {
+                parsed = await ZipWorkerClient.parsePartZip(buf, zipId);
+            } catch (e) {
+                console.warn('Zip worker parse failed, fallback to main thread JSZip:', e);
+                Store.zipWorker = null;
+                Store.zipWorkerZipId = null;
+                const inner = new JSZip();
+                const contents = await inner.loadAsync(buf);
+                Store.zip = contents;
+                await this.loadPartZipContents(contents, { zipOrigText, zipLabel: (opts && opts.zipLabel) ? opts.zipLabel : '', showAlert });
+                return;
+            }
+
+            Store.raw.sections = Array.isArray(parsed.sections) ? parsed.sections : [];
+            Store.raw.narratives = (parsed.narratives && typeof parsed.narratives === 'object') ? parsed.narratives : {};
+            Store.raw.refined = (parsed.refined && typeof parsed.refined === 'object') ? parsed.refined : {};
+            Store.raw.crops = (parsed.crops && typeof parsed.crops === 'object') ? parsed.crops : {};
+            Store.raw.materialsById = (parsed.materialsById && typeof parsed.materialsById === 'object') ? parsed.materialsById : {};
+
+            Store.raw.timeline = [];
+
+            Store.raw.captures = {};
+            const capMap = (parsed.captures && typeof parsed.captures === 'object') ? parsed.captures : {};
+            for (const [id, p] of Object.entries(capMap)) {
+                Store.raw.captures[id] = { url: null, type: 'image', zip_path: p };
+            }
+
+            Store.srt = Utils.parseSRT(String(parsed.srtText || ''));
+            UI.renderSrt();
+            Utils.markLoaded('srt');
+
+            if (parsed.graph && typeof parsed.graph === 'object') {
+                Store.graph = parsed.graph;
+                Utils.buildMapping();
+                Utils.markLoaded('graph');
+                const init = () => { try { UI.initGraph(); } catch (e) { console.error(e); } };
+                if (typeof requestIdleCallback === 'function') requestIdleCallback(init, { timeout: 800 });
+                else setTimeout(init, 60);
+            }
+
+            // Video：独立 mp4（不要阻塞主解析）
+            const externalVideoUrl = (() => {
+                try {
+                    if (!Store.session || !Number.isFinite(Number(Store.session.current_part))) return null;
+                    const idx = Number(Store.session.current_part);
+                    const info = (Store.session.part_archives || []).find((p) => Number(p && p.index) === idx);
+                    return info && info.video_url ? String(info.video_url) : null;
+                } catch (e) { return null; }
+            })();
+            if (externalVideoUrl) {
+                DOM.video.src = externalVideoUrl;
+                Utils.markLoaded('video');
+            }
+
+            Loader.rebuildTimeline();
+            if (Store.slides.length) Utils.markLoaded('feed');
+            Utils.markLoaded('zip');
+            Utils.setZipLoading(false, zipOrigText);
+
+            await Utils.nextFrame();
+            UI.updateHighlights(0, true);
+            if (showAlert) setTimeout(() => alert("导入成功！"), 0);
         },
 
         loadPartZipContents: async function(contents, opts) {
@@ -2639,7 +2719,28 @@
             if (!cap) return null;
             if (cap.url) return cap.url;
             if (cap._promise) return cap._promise;
-            if (!Store.zip || !cap.zip_path) return null;
+            if (!cap.zip_path) return null;
+
+            // Preferred: zip worker (keeps UI responsive)
+            if (Store.zipWorker && Store.zipWorkerZipId) {
+                const zipId = Store.zipWorkerZipId;
+                cap._promise = Store.zipWorker
+                    .getEntryBlob(cap.zip_path, zipId)
+                    .then((blob) => {
+                        if (!blob) return null;
+                        const url = Store.trackUrl(URL.createObjectURL(blob));
+                        cap.url = url;
+                        return url;
+                    })
+                    .catch((err) => {
+                        console.warn("Failed to load capture (worker)", materialId, err);
+                        return null;
+                    });
+                return cap._promise;
+            }
+
+            // Fallback: main-thread zip (legacy/manual import)
+            if (!Store.zip) return null;
             const entry = Store.zip.file(cap.zip_path);
             if (!entry) return null;
             cap._promise = entry.async("blob")
@@ -2834,6 +2935,63 @@
             }
         },
     };
+
+    const ZipWorkerClient = (function() {
+        let worker = null;
+        let seq = 1;
+        const pending = new Map();
+
+        function ensure() {
+            if (worker) return worker;
+            try {
+                worker = new Worker('zip_worker.js');
+            } catch (e) {
+                console.warn('Failed to create zip worker', e);
+                worker = null;
+                return null;
+            }
+            worker.onmessage = (evt) => {
+                const msg = evt && evt.data ? evt.data : null;
+                if (!msg || typeof msg.id !== 'number') return;
+                const item = pending.get(msg.id);
+                if (!item) return;
+                pending.delete(msg.id);
+                if (msg.ok) item.resolve(msg.payload);
+                else item.reject(new Error(msg.error || 'worker error'));
+            };
+            worker.onerror = (err) => {
+                console.warn('Zip worker error', err);
+            };
+            return worker;
+        }
+
+        function call(type, payload, transfer) {
+            const w = ensure();
+            if (!w) return Promise.reject(new Error('zip worker unavailable'));
+            const id = seq++;
+            const msg = Object.assign({ id, type }, payload || {});
+            return new Promise((resolve, reject) => {
+                pending.set(id, { resolve, reject });
+                try {
+                    if (Array.isArray(transfer) && transfer.length) w.postMessage(msg, transfer);
+                    else w.postMessage(msg);
+                } catch (e) {
+                    pending.delete(id);
+                    reject(e);
+                }
+            });
+        }
+
+        return {
+            parsePartZip: async function(buf, zipId) {
+                return await call('parse_part_zip', { buf, zipId }, [buf]);
+            },
+            getEntryBlob: async function(path, zipId) {
+                const res = await call('get_entry_blob', { path, zipId });
+                return res && res.blob ? res.blob : null;
+            },
+        };
+    })();
 
     const Player = {
         seek: function(t) { DOM.video.currentTime = t; DOM.video.play(); }
