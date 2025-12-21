@@ -2449,6 +2449,9 @@
                 else setTimeout(init, 60);
             }
 
+            // Switch to main layout after parsing (we showed landing during worker parse)
+            UI.enterPartView();
+
             // Video：独立 mp4（不要阻塞主解析）
             const externalVideoUrl = (() => {
                 try {
