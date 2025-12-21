@@ -40,6 +40,26 @@ def should_drop_from_lite(path: str) -> bool:
     return lower.endswith(".mp4") or lower.endswith(".mov") or lower.endswith(".mkv") or lower.endswith(".webm")
 
 
+KEEP_FOR_VIEWER: list[re.Pattern[str]] = [
+    re.compile(r"(^|/)part_subtitles(_aligned)?\.srt$", re.IGNORECASE),
+    re.compile(r"(^|/)chunk_subtitles(_aligned)?\.srt$", re.IGNORECASE),
+    re.compile(r"(^|/)section_manifest(_aligned)?\.json$", re.IGNORECASE),
+    re.compile(r"(^|/)section_graph\.json$", re.IGNORECASE),
+    re.compile(r"(^|/)materials\.json$", re.IGNORECASE),
+    re.compile(r"(^|/)material_manifest\.json$", re.IGNORECASE),
+    re.compile(r"(^|/)section_.+_narrative\.json$", re.IGNORECASE),
+    re.compile(r"(^|/)section_.+_refined\.md$", re.IGNORECASE),
+    re.compile(
+        r"/\d+_capture_frame/slide_\d+/artifacts/slide_\d+\.(?:png|jpg|jpeg|webp)$",
+        re.IGNORECASE,
+    ),
+]
+
+
+def should_keep_for_viewer(path: str) -> bool:
+    return any(p.search(path) for p in KEEP_FOR_VIEWER)
+
+
 def pick_part_low_video(members: list[str]) -> str | None:
     lowers = [(m, m.lower()) for m in members]
     candidates = [m for (m, l) in lowers if l.endswith("part_low.mp4")]
@@ -64,7 +84,10 @@ def refuse_overwrite(path: Path, force: bool) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Split TalkDistill part archives for GH Pages: create lite zip (no video) + export mp4."
+        description=(
+            "Split TalkDistill part archives for GH Pages: create lite zip (no video) + export mp4. "
+            "Optionally build a viewer-only lite zip that keeps only files required by show.html."
+        )
     )
     parser.add_argument("--root", default=".", help="Site root (default: current dir)")
     parser.add_argument("--parts-dir", default="packages/parts", help="Full part zips dir (default: packages/parts)")
@@ -77,6 +100,21 @@ def main() -> int:
         "--out-video-dir",
         default="packages/videos",
         help="Output base dir for videos (default: packages/videos)",
+    )
+    parser.add_argument(
+        "--no-video",
+        action="store_true",
+        help="Do not export mp4 (only build lite zips)",
+    )
+    parser.add_argument(
+        "--viewer-only",
+        action="store_true",
+        help="Keep only minimal files for show.html (reduces zip size further)",
+    )
+    parser.add_argument(
+        "--only",
+        default="",
+        help="Optional regex filter on part zip filename (case-insensitive)",
     )
     parser.add_argument("--force", action="store_true", help="Overwrite existing outputs")
     args = parser.parse_args()
@@ -98,6 +136,14 @@ def main() -> int:
         print(f"[ERR] no part zips found under: {parts_dir}", file=sys.stderr)
         return 2
 
+    only_re: re.Pattern[str] | None = None
+    if args.only:
+        only_re = re.compile(str(args.only), re.IGNORECASE)
+        zips = [p for p in zips if only_re.search(p.name)]
+        if not zips:
+            print(f"[ERR] no part zips matched --only={args.only!r}", file=sys.stderr)
+            return 2
+
     for src in zips:
         pid = parse_part_id(src.name)
         if not pid:
@@ -109,25 +155,32 @@ def main() -> int:
 
         video_rel = Path(pid.session) / f"part_{pid.index2}_low.mp4"
         video_path = out_video_dir / video_rel
-        refuse_overwrite(video_path, args.force)
-        safe_mkdir(video_path.parent)
+        if not args.no_video:
+            refuse_overwrite(video_path, args.force)
+            safe_mkdir(video_path.parent)
 
-        print(f"[INFO] {src.name} -> {lite_path.relative_to(root)} + {video_path.relative_to(root)}")
+        if args.no_video:
+            print(f"[INFO] {src.name} -> {lite_path.relative_to(root)}")
+        else:
+            print(f"[INFO] {src.name} -> {lite_path.relative_to(root)} + {video_path.relative_to(root)}")
 
         with zipfile.ZipFile(src, "r") as zin:
             members = [zi.filename for zi in zin.infolist() if not zi.is_dir()]
-            video_member = pick_part_low_video(members)
-            if not video_member:
-                print(f"[WARN] no mp4 found in {src.name}", file=sys.stderr)
-            else:
-                with zin.open(video_member, "r") as fsrc, open(video_path, "wb") as fdst:
-                    fdst.write(fsrc.read())
+            if not args.no_video:
+                video_member = pick_part_low_video(members)
+                if not video_member:
+                    print(f"[WARN] no mp4 found in {src.name}", file=sys.stderr)
+                else:
+                    with zin.open(video_member, "r") as fsrc, open(video_path, "wb") as fdst:
+                        fdst.write(fsrc.read())
 
             with zipfile.ZipFile(lite_path, "w", compression=zipfile.ZIP_DEFLATED) as zout:
                 for zi in zin.infolist():
                     if zi.is_dir():
                         continue
                     if should_drop_from_lite(zi.filename):
+                        continue
+                    if args.viewer_only and not should_keep_for_viewer(zi.filename):
                         continue
                     data = zin.read(zi.filename)
                     zout.writestr(zi, data)
@@ -138,4 +191,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

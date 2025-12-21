@@ -45,8 +45,14 @@
 
 它会从 `packages/parts/*.tkd.zip` 生成：
 
-- `packages/parts-lite/*.tkd.zip`（去掉 `.mp4/.mov/...`）
+- `packages/parts-lite/*.tkd.zip`（默认去掉 `.mp4/.mov/...`；可加 `--viewer-only` 进一步去掉 show.html 不使用的产物，仅保留渲染必需文件）
 - `packages/videos/<session>/part_XX_low.mp4`（导出 `part_low.mp4`，若找不到则兜底导出任意 `.mp4`）
+
+常用参数：
+
+- `--only '<regex>'`：只处理匹配文件名的 part 包
+- `--no-video`：只生成 zip，不导出 mp4
+- `--force`：覆盖已有输出
 
 注意：GitHub 仓库对大文件有体积限制，独立 mp4 仍可能需要 Git LFS / Release / 外部对象存储。
 
