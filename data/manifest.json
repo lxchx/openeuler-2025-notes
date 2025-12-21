@@ -25,7 +25,7 @@
       "id": "ScienceEducationInnovation",
       "title": "Day 1 科教创新会场",
       "kicker": "分会场",
-      "parts_count": 2,
+      "parts_count": 3,
       "index_json": "data/sessions/ScienceEducationInnovation/session_index.json",
       "overview_json": "data/sessions/ScienceEducationInnovation/session_overview.json",
       "parts_base_url": "packages/parts-lite/",

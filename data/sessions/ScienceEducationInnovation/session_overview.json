@@ -2,121 +2,181 @@
   "parts": [
     {
       "index": 2,
-      "type_tag": "技术研究报告",
-      "summary": "针对推荐大模型嵌入层面临的容量墙与带宽墙挑战，本报告深入分析了多层级存储（HBM/PM/SSD）在软硬交互中的效率瓶颈。提出了Fleche自识别Kernel融合、PetPS网卡聚集机制及MaxEmbed选择性副本布局三项核心技术，分别解决了GPU交互开销大、PM访问延迟高及SSD读放大严重的问题。基于此研发的RecStore系统已在快手等企业落地，显著降低硬件成本并提升服务吞吐，同时探讨了生成式推荐（GR）带来的新挑战。",
+      "type_tag": "AI存储系统研究",
+      "summary": "针对推荐大模型嵌入层面临的容量墙与带宽墙挑战，报告深入分析了多层级存储（GPU/PM/SSD）的硬件特性与软件瓶颈。讲者提出了Fleche自识别Kernel融合、PetPS网卡聚集机制及MaxEmbed选择性副本策略，分别解决了GPU交互开销、PM访问延迟及SSD读放大问题。基于上述技术研发的RecStore系统已在快手等企业落地，显著降低了存储成本并提升了吞吐率，最后展望了生成式推荐带来的新挑战。",
       "common_tags": [
-        "软硬协同优化",
-        "系统架构创新",
-        "AI落地实践"
+        "Heterogeneous Computing",
+        "System Optimization",
+        "Large Model Tech"
       ],
       "domain_tags": [
-        "AI基础设施",
-        "存储系统",
-        "推荐系统"
+        "AI基础架构",
+        "推荐系统",
+        "存储技术"
       ],
       "tech_tags": [
-        "推荐大模型",
-        "Embedding Layer",
-        "参数存储",
-        "HBM",
+        "推荐模型",
+        "嵌入层",
+        "存储系统",
+        "GPU",
         "持久性内存",
         "SSD",
         "Kernel Fusion",
         "SG-DMA",
         "RecStore",
-        "Fleche",
-        "PetPS",
-        "MaxEmbed"
+        "参数服务器"
       ],
-      "title": "面向推荐大模型的参数存储系统研究与RecStore落地"
+      "title": "面向推荐大模型的参数存储系统优化与RecStore实践"
     },
     {
       "index": 3,
-      "type_tag": "技术研究报告",
-      "summary": "针对APT攻击隐蔽性强及规则检测局限，李锭老师分享了端到端AI检测系统SysArmor。该方案通过溯源图建模系统行为，利用在线斯坦纳树算法实现无监督日志过滤，并结合大模型与gIoC中间表示自动生成攻击报告。通过分片式架构与DPU硬件加速，系统将性能损耗控制在3%以内，实现了低开销、高精度的自动化检测，目前已在openEuler社区开源。",
+      "type_tag": "AI安全检测技术",
+      "summary": "北京大学李锭老师分享了针对APT攻击的端到端AI检测技术。针对现有规则检测面临的数据质量差、语义理解难及性能损耗大等挑战，提出了SysArmor系统。该方案利用溯源图建模系统行为，结合无监督斯坦纳树算法快速过滤日志，并引入大语言模型与gIoC中间表示生成可读攻击报告。通过DPU硬件加速与分片式架构，系统将性能损耗控制在3%以内，实现了低成本、高精度的自动化攻击检测。",
       "common_tags": [
-        "软硬协同优化",
-        "系统架构创新",
-        "AI落地实践"
+        "Heterogeneous Computing",
+        "System Optimization",
+        "Large Model Tech"
       ],
       "domain_tags": [
         "网络安全",
-        "入侵检测",
+        "人工智能",
         "系统安全",
-        "AI安全"
+        "智能运维"
       ],
       "tech_tags": [
-        "APT攻击",
+        "APT检测",
+        "端到端AI",
         "溯源图",
         "无监督学习",
-        "在线斯坦纳树",
-        "VAE",
+        "斯坦纳树算法",
         "大语言模型",
         "gIoC",
-        "DPU硬件加速",
+        "DPU加速",
         "SysArmor",
         "openEuler"
       ],
       "title": "AI端到端复杂攻击检测技术与SysArmor系统实践"
+    },
+    {
+      "index": 4,
+      "type_tag": "AI 基础设施架构",
+      "summary": "本环节探讨大模型时代 AI 基础设施面临的超异构计算挑战，提出“AI 系统软件（Cloud OS）”理念以提升资源利用率与稳定性。重点介绍了异构融合调度技术，包括面向 LLM 推理的 GPU Combo 资源套餐与 Expert Kit 系统，有效解决了 PD 分离与 MoE 调度难题。同时构建了全链路可靠性保障体系，利用 GraphRAG 进行异常检测与根因分析，并通过 Checkpoint 优化与快速失效恢复技术，最终落地为 Crater 多租户智能调度平台。",
+      "common_tags": [
+        "Heterogeneous Computing",
+        "System Optimization",
+        "Large Model Tech"
+      ],
+      "domain_tags": [
+        "云原生",
+        "大模型",
+        "系统软件",
+        "智算中心"
+      ],
+      "tech_tags": [
+        "AI Infra",
+        "异构计算",
+        "资源调度",
+        "MoE",
+        "GPU Combo",
+        "Expert Kit",
+        "异常检测",
+        "根因分析",
+        "Checkpoint",
+        "失效恢复",
+        "Crater"
+      ],
+      "title": "异构融合的 AI Infra 系统软件资源管理与可靠性保障"
     }
   ],
   "common_tags": [
     {
-      "tag": "软硬协同优化",
+      "tag": "Heterogeneous Computing",
       "parts": [
         2,
-        3
+        3,
+        4
       ],
-      "description": "结合硬件特性（如SSD/PM/DPU）与软件算法优化，突破系统性能瓶颈。"
+      "description": "涉及利用不同类型的硬件（GPU, DPU, NPU, SSD, PM）进行协同计算或加速的系统设计。"
     },
     {
-      "tag": "系统架构创新",
+      "tag": "System Optimization",
       "parts": [
         2,
-        3
+        3,
+        4
       ],
-      "description": "针对特定场景痛点（推荐存储/安全检测）提出的端到端系统设计方案。"
+      "description": "关注在底层系统软件层面进行性能调优、资源调度或开销降低的技术实践。"
     },
     {
-      "tag": "AI落地实践",
+      "tag": "Large Model Tech",
       "parts": [
         2,
-        3
+        3,
+        4
       ],
-      "description": "涉及AI模型在实际生产环境中的部署、支撑或应用（如推荐模型支撑或LLM辅助检测）。"
+      "description": "围绕大语言模型（LLM）或推荐大模型的训练、推理、应用及相关基础设施支持。"
     }
   ],
   "learning_path": [
     {
-      "title": "系统创新与软硬协同",
+      "title": "AI 基础设施全景",
       "parts": [
-        2,
+        4
+      ],
+      "reason": "首先了解 AI Infra 的宏观架构、资源调度与异构计算挑战，建立全局视角。"
+    },
+    {
+      "title": "存储系统专项突破",
+      "parts": [
+        2
+      ],
+      "reason": "深入了解基础设施中的关键一环——存储系统，特别是针对推荐大模型的具体优化实践。"
+    },
+    {
+      "title": "安全与运维保障",
+      "parts": [
         3
       ],
-      "reason": "先了解支撑大规模AI推荐系统的存储优化技术，再学习利用AI与硬件加速解决网络安全问题的实践，全面掌握系统级创新思路。"
+      "reason": "最后关注系统的安全防护与智能检测，学习如何利用 AI 技术反哺系统安全。"
     }
   ],
   "relations": [
     {
+      "source": 4,
+      "target": 2,
+      "relation_type": "parallel",
+      "label": "算力与存力",
+      "reason": "Part 4 侧重计算资源的调度与管理，Part 2 侧重参数存储的优化，两者共同构成 AI 基础设施的核心支柱。"
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "relation_type": "related",
+      "label": "图技术应用",
+      "reason": "Part 4 利用 GraphRAG 进行异常检测，Part 3 利用溯源图进行攻击检测，两者都采用图技术解决系统诊断问题。"
+    },
+    {
       "source": 2,
       "target": 3,
-      "relation_type": "parallel",
-      "label": "跨领域系统实践",
-      "reason": "两者均展示了在不同领域（推荐系统vs网络安全）利用软硬协同技术解决性能与效率问题的创新实践。"
+      "relation_type": "related",
+      "label": "硬件卸载",
+      "reason": "Part 2 利用网卡 SG-DMA 卸载 CPU 负载，Part 3 利用 DPU 加速检测，均涉及硬件卸载技术以提升系统效率。"
     }
   ],
   "session": "ScienceEducationInnovation",
-  "session_summary": "本场会议聚焦于计算机系统领域的科研创新与落地实践。报告涵盖了面向推荐大模型的高效参数存储系统RecStore，通过多层级存储与软硬协同解决容量带宽瓶颈；以及基于溯源图与AI的端到端攻击检测系统SysArmor，利用DPU加速实现低开销的高精度防护。两个报告共同展示了如何通过架构创新与硬件优化解决工业界的实际挑战。",
-  "session_title": "AI基础设施与安全系统创新实践",
+  "session_summary": "本场 Session 聚焦于 AI 时代的系统软件创新，涵盖了从异构计算资源调度、推荐大模型存储优化到端到端 AI 安全检测的全栈技术。内容深入探讨了如何利用软硬协同（如 GPU、DPU、异构存储）解决性能瓶颈，以及如何利用 AI 技术（如 LLM、GraphRAG）反哺系统的可靠性与安全性。",
+  "session_title": "AI 系统基础设施与安全创新",
   "_meta": {
-    "generated_at": "2025-12-19T03:06:53.729545",
+    "generated_at": "2025-12-21T15:56:56.322469",
     "expected_parts": [
       2,
-      3
+      3,
+      4
     ],
     "available_parts": [
       2,
-      3
+      3,
+      4
     ],
     "missing_parts": [],
     "is_partial": false,
