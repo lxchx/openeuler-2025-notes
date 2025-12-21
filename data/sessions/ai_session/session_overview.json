@@ -1,0 +1,480 @@
+{
+  "parts": [
+    {
+      "index": 0,
+      "type_tag": "行业案例分享",
+      "summary": "探讨在AI Agent时代，利用openEuler intelligence应对操作系统维护挑战。通过MCP协议与多Agent协同，实现补丁合并效率从周级提升至小时级，准确率达93%，构建了人机协同的自动化运维体系。",
+      "common_tags": [
+        "openEuler Ecosystem",
+        "AIOps & Intelligent Agents"
+      ],
+      "domain_tags": [
+        "操作系统",
+        "智能运维",
+        "软件工程",
+        "开源社区"
+      ],
+      "tech_tags": [
+        "AI Agent",
+        "MCP",
+        "openEuler intelligence",
+        "Patch Merging",
+        "Vmcore Analysis",
+        "LLM",
+        "Workflow",
+        "VS Code"
+      ],
+      "title": "基于AI Agent的操作系统开发与运维自动化实践"
+    },
+    {
+      "index": 1,
+      "type_tag": "医疗AI技术实践",
+      "summary": "针对CDSS数据孤岛与算力受限问题，提出基于openEuler Intelligence的一体化架构。利用向量化检索构建临床知识库，结合“文本转规则”技术与GoRules引擎，实现高效、实时的临床决策支持。",
+      "common_tags": [
+        "openEuler Ecosystem"
+      ],
+      "domain_tags": [
+        "智慧医疗",
+        "临床决策",
+        "医疗信息化",
+        "人工智能"
+      ],
+      "tech_tags": [
+        "CDSS",
+        "openEuler",
+        "openEuler Intelligence",
+        "IntelliCore",
+        "NPU加速",
+        "向量化检索",
+        "GoRules",
+        "文本转规则",
+        "规则引擎",
+        "NLP"
+      ],
+      "title": "破局医疗孤岛：基于openEuler的新一代CDSS智能引擎实践"
+    },
+    {
+      "index": 2,
+      "type_tag": "智能运维实践",
+      "summary": "分享招商证券在信创背景下，利用LLM进行核心系统全栈调优的实践。通过RAG、模型微调与MCP多模型协作，构建“通用+领域”模型机制，有效解决幻觉问题并提升网关吞吐量13.6%。",
+      "common_tags": [
+        "openEuler Ecosystem",
+        "AIOps & Intelligent Agents",
+        "RAG & Knowledge Base"
+      ],
+      "domain_tags": [
+        "金融科技",
+        "信创",
+        "AIOps",
+        "核心系统",
+        "DevOps"
+      ],
+      "tech_tags": [
+        "LLM",
+        "RAG",
+        "模型微调",
+        "模型蒸馏",
+        "贝叶斯优化",
+        "MCP",
+        "openEuler",
+        "AITune",
+        "全栈调优"
+      ],
+      "title": "信创背景下基于LLM的核心系统全栈智能调优实践"
+    },
+    {
+      "index": 3,
+      "type_tag": "性能测评与调优",
+      "summary": "深入解析JuiceFS在MLPerf Storage v2.0下的性能表现。揭示内存拷贝带宽与跨NUMA访问延迟是高并发I/O瓶颈，分享了针对Direct I/O、Buffer I/O及NUMA架构的系统级调优经验。",
+      "common_tags": [],
+      "domain_tags": [
+        "AI Infrastructure",
+        "Storage Systems",
+        "High Performance Computing",
+        "System Performance"
+      ],
+      "tech_tags": [
+        "JuiceFS",
+        "MLPerf Storage",
+        "UNet3D",
+        "ResNet50",
+        "NUMA",
+        "Memory Copy",
+        "Direct I/O",
+        "Buffer I/O",
+        "Redis",
+        "MinIO",
+        "Go",
+        "Distributed Training"
+      ],
+      "title": "JuiceFS MLPerf Storage v2.0 性能测评与调优分析"
+    },
+    {
+      "index": 4,
+      "type_tag": "行业解决方案分享",
+      "summary": "宝德联合openEuler推出基于昇腾310 Duo的“宝智灵”RAG一体机。通过软硬协同与LMCache优化，大幅降低中小企业大模型部署成本，同时保证了高并发下的推理性能。",
+      "common_tags": [
+        "openEuler Ecosystem",
+        "Heterogeneous & Inference Optimization",
+        "RAG & Knowledge Base"
+      ],
+      "domain_tags": [
+        "大模型应用",
+        "企业数字化转型",
+        "AI基础设施",
+        "成本控制"
+      ],
+      "tech_tags": [
+        "RAG一体机",
+        "大模型推理",
+        "openEuler",
+        "昇腾310 Duo",
+        "LMCache",
+        "软硬协同优化",
+        "异构并行",
+        "组合量化",
+        "DeepInsight"
+      ],
+      "title": "宝德“宝智灵”RAG一体机推理优化与低成本落地实践"
+    },
+    {
+      "index": 5,
+      "type_tag": "异构推理优化",
+      "summary": "提出CPU+XPU异构算力协同方案，采用PD分离策略将Decode任务卸载至CPU。通过异构调度引擎、NUMA亲和及SIMD优化，解决显存瓶颈并显著提升推理并发量与吞吐量。",
+      "common_tags": [
+        "Heterogeneous & Inference Optimization"
+      ],
+      "domain_tags": [
+        "大模型推理",
+        "异构计算",
+        "算力优化",
+        "人工智能"
+      ],
+      "tech_tags": [
+        "CPU+XPU协同",
+        "PD分离",
+        "异构算力调度",
+        "vLLM",
+        "KV Cache",
+        "NUMA亲和",
+        "SIMD指令集",
+        "算子优化",
+        "MoE模型",
+        "多线程并行"
+      ],
+      "title": "通算/智算大模型推理加速协同探索与实践"
+    },
+    {
+      "index": 6,
+      "type_tag": "行业解决方案分享",
+      "summary": "凝思软件推出基于openEuler intelligence的智能运维平台，采用“大模型指挥+小模型执行”的双模型协同架构。融合eBPF与RAG技术，实现从故障预测、根因分析到自愈的自治闭环。",
+      "common_tags": [
+        "openEuler Ecosystem",
+        "AIOps & Intelligent Agents",
+        "RAG & Knowledge Base"
+      ],
+      "domain_tags": [
+        "运维管理",
+        "混合云",
+        "微服务",
+        "能源行业",
+        "金融科技"
+      ],
+      "tech_tags": [
+        "AIOps",
+        "智能运维",
+        "双模型协同",
+        "大模型",
+        "小模型",
+        "根因分析",
+        "故障自愈",
+        "openEuler intelligence",
+        "eBPF",
+        "RAG",
+        "智能体"
+      ],
+      "title": "凝思软件智能运维平台实践：双模型协同与自治闭环"
+    },
+    {
+      "index": 7,
+      "type_tag": "智能运维产品发布",
+      "summary": "东方通发布中间件智能体TongAgents，采用多智能体架构解决运维难题。具备智能规划、配置与测试能力，支持自然语言交互与一键部署，旨在降低运维门槛并实现故障自愈。",
+      "common_tags": [
+        "AIOps & Intelligent Agents"
+      ],
+      "domain_tags": [
+        "基础软件",
+        "智能运维",
+        "云计算"
+      ],
+      "tech_tags": [
+        "中间件",
+        "智能体",
+        "多智能体架构",
+        "AIOps",
+        "智能规划",
+        "智能配置",
+        "故障自愈",
+        "TongAgents",
+        "自动化运维"
+      ],
+      "title": "东方通中间件智能体：AI驱动的全生命周期自动化运维"
+    },
+    {
+      "index": 8,
+      "type_tag": "AI通信加速技术",
+      "summary": "介绍昇腾亲和通信加速库CAM，基于灵雀UMDK底座，解决MoE与PD分离架构下的通信瓶颈。通过FusedDeepMoE、M2N异步通信及MIXL等技术，实现计算通信深度重叠与多径聚合传输。",
+      "common_tags": [
+        "Heterogeneous & Inference Optimization"
+      ],
+      "domain_tags": [
+        "AI通信",
+        "大模型推理",
+        "异构计算",
+        "分布式系统",
+        "高性能计算"
+      ],
+      "tech_tags": [
+        "CAM",
+        "UMDK",
+        "URMA",
+        "MoE",
+        "FusedDeepMoE",
+        "M2N通信",
+        "MIXL",
+        "KV Cache",
+        "NPU直驱",
+        "流水并行",
+        "异构多径聚合",
+        "DeepEP"
+      ],
+      "title": "昇腾亲和通信加速库CAM关键技术与生态"
+    },
+    {
+      "index": 9,
+      "type_tag": "算子调优实践",
+      "summary": "介绍基于Ascend C的“软FP8”解决方案，在不支持原生FP8的硬件上通过动态反量化实现高效推理。结合MoE选择性计算与Shape亲和性调度，端到端推理效率提升32%。",
+      "common_tags": [
+        "Heterogeneous & Inference Optimization"
+      ],
+      "domain_tags": [
+        "大模型推理",
+        "AI基础设施",
+        "异构计算",
+        "性能优化"
+      ],
+      "tech_tags": [
+        "FP8",
+        "软FP8",
+        "Ascend C",
+        "动态反量化",
+        "MoE",
+        "GroupedMatmul",
+        "算子调优",
+        "Vector Core",
+        "Cube Core",
+        "BF16"
+      ],
+      "title": "昇腾平台软FP8算子极致调优与效能飞跃"
+    },
+    {
+      "index": 10,
+      "type_tag": "AI编译器架构",
+      "summary": "介绍面向CPU的深度学习推理编译器ANNC，针对搜推稀疏场景优化。通过GEMM数据布局优化与自适应算子生成消除运行时开销，Embedding融合与常量折叠显著提升了推理性能。",
+      "common_tags": [
+        "openEuler Ecosystem",
+        "Heterogeneous & Inference Optimization"
+      ],
+      "domain_tags": [
+        "深度学习",
+        "模型推理",
+        "搜推系统",
+        "计算广告",
+        "高性能计算"
+      ],
+      "tech_tags": [
+        "ANNC",
+        "AI编译器",
+        "CPU推理",
+        "图算融合",
+        "算子生成",
+        "数据布局优化",
+        "常量折叠",
+        "Embedding融合",
+        "XLA",
+        "PTQ量化",
+        "openEuler"
+      ],
+      "title": "ANNC：加速CPU深度学习推理的AI编译器"
+    },
+    {
+      "index": 11,
+      "type_tag": "系统架构与实践",
+      "summary": "CTyunOS智能安全中心融合DeepSeek大模型与知识图谱，构建漏洞全生命周期管理平台。实现漏洞感知、分析、修复闭环，通过AI智能体辅助评分与防篡改加固，提升操作系统安全性。",
+      "common_tags": [
+        "openEuler Ecosystem",
+        "AIOps & Intelligent Agents",
+        "RAG & Knowledge Base"
+      ],
+      "domain_tags": [
+        "操作系统安全",
+        "漏洞管理",
+        "云安全",
+        "AIOps"
+      ],
+      "tech_tags": [
+        "CTyunOS",
+        "AI大模型",
+        "DeepSeek",
+        "知识图谱",
+        "智能体",
+        "CVE-ease",
+        "openEuler",
+        "Vue.js",
+        "Flask",
+        "PostgreSQL"
+      ],
+      "title": "CTyunOS智能安全中心：AI赋能的漏洞全生命周期管理"
+    }
+  ],
+  "common_tags": [
+    {
+      "tag": "openEuler Ecosystem",
+      "parts": [
+        0,
+        1,
+        2,
+        4,
+        6,
+        10,
+        11
+      ],
+      "description": "基于 openEuler 操作系统生态构建的解决方案，涵盖内核、工具链及行业应用。"
+    },
+    {
+      "tag": "AIOps & Intelligent Agents",
+      "parts": [
+        0,
+        2,
+        6,
+        7,
+        11
+      ],
+      "description": "利用 AI 智能体（Agents）和大模型技术实现自动化运维、故障自愈及系统调优。"
+    },
+    {
+      "tag": "Heterogeneous & Inference Optimization",
+      "parts": [
+        4,
+        5,
+        8,
+        9,
+        10
+      ],
+      "description": "针对 CPU、NPU（昇腾）等异构硬件的推理加速、算子调优及通信优化技术。"
+    },
+    {
+      "tag": "RAG & Knowledge Base",
+      "parts": [
+        2,
+        4,
+        6,
+        11
+      ],
+      "description": "应用检索增强生成（RAG）与知识图谱技术，提升大模型在垂直领域的准确性与实用性。"
+    }
+  ],
+  "learning_path": [
+    {
+      "title": "AI Infrastructure & Optimization",
+      "parts": [
+        3,
+        10,
+        9,
+        8,
+        5,
+        4
+      ],
+      "reason": "从底层存储、编译器、算子优化到异构计算调度，了解支撑 AI 的基础设施技术。"
+    },
+    {
+      "title": "AI for System & Ops (AIOps)",
+      "parts": [
+        0,
+        11,
+        6,
+        7,
+        2
+      ],
+      "reason": "探索 AI 如何反哺系统，实现操作系统、中间件及全栈场景的智能运维与调优。"
+    },
+    {
+      "title": "Industry Applications",
+      "parts": [
+        1
+      ],
+      "reason": "了解上述技术在医疗等具体垂直行业的综合落地应用。"
+    }
+  ],
+  "relations": [
+    {
+      "source": 3,
+      "target": 5,
+      "relation_type": "prerequisite",
+      "label": "Data to Compute",
+      "reason": "存储系统的 I/O 性能直接决定了推理/训练集群的数据供给效率。"
+    },
+    {
+      "source": 8,
+      "target": 5,
+      "relation_type": "related",
+      "label": "Comm & Compute",
+      "reason": "CAM 通信库为异构推理中的分布式通信提供底层加速支持。"
+    },
+    {
+      "source": 9,
+      "target": 5,
+      "relation_type": "related",
+      "label": "Operator Support",
+      "reason": "软 FP8 算子优化技术可被集成到异构推理流程中以提升计算效率。"
+    },
+    {
+      "source": 10,
+      "target": 5,
+      "relation_type": "contrast",
+      "label": "CPU vs Heterogeneous",
+      "reason": "前者专注纯 CPU 推理优化，后者探索 CPU 与 XPU 的协同调度。"
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "relation_type": "parallel",
+      "label": "OS vs General Ops",
+      "reason": "分别展示了 OS 社区内部开发运维与通用企业级智能运维平台的实践。"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "relation_type": "related",
+      "label": "Platform & Component",
+      "reason": "一个是综合运维平台，一个是专注于中间件领域的运维智能体。"
+    },
+    {
+      "source": 0,
+      "target": 11,
+      "relation_type": "parallel",
+      "label": "DevOps & SecOps",
+      "reason": "分别利用 AI 解决 OS 的开发/运维效率问题与安全/漏洞治理问题。"
+    },
+    {
+      "source": 2,
+      "target": 0,
+      "relation_type": "parallel",
+      "label": "Tuning Layers",
+      "reason": "都涉及系统调优，前者侧重业务核心系统全栈，后者侧重 OS 补丁与内核。"
+    }
+  ],
+  "session": "ai_session",
+  "session_summary": "本场次深入探讨了 AI 与基础软件的深度融合。一方面展示了通过底层算子、通信库、编译器及异构调度（System for AI）极致压榨硬件性能；另一方面展示了利用 AI Agent、RAG 等技术重塑操作系统开发、运维、安全及行业应用（AI for System），构建自动化、智能化的新一代软件生态。",
+  "session_title": "openEuler与AI深度融合：从基础设施优化到智能运维实践"
+}

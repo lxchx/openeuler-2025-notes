@@ -1,0 +1,2864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalkDistill Viewer</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/golden-layout@1.5.9/src/css/goldenlayout-base.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/golden-layout@1.5.9/src/css/goldenlayout-dark-theme.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/golden-layout@1.5.9/dist/goldenlayout.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+    
+    <style>
+        :root {
+            /* macOS-ish dark glass theme */
+            --bg-color: #070a12;
+            --header-height: 40px;
+            --panel-header-height: 32px;
+            --panel-bg: rgba(255, 255, 255, 0.055);
+            --panel-bg-strong: rgba(255, 255, 255, 0.075);
+            --panel-bg-weak: rgba(255, 255, 255, 0.035);
+            --window-radius: 0px;
+            --card-radius: 0px;
+
+            --highlight: #0a84ff; /* macOS accent blue */
+            --secondary: #34c759; /* macOS green */
+            --accent-violet: rgba(175, 82, 222, 0.85);
+
+            --text-main: rgba(255, 255, 255, 0.92);
+            --text-muted: rgba(255, 255, 255, 0.66);
+            --text-faint: rgba(255, 255, 255, 0.48);
+
+            --border-color: rgba(255, 255, 255, 0.12);
+            --border-color-strong: rgba(255, 255, 255, 0.18);
+            --border-hairline: rgba(255, 255, 255, 0.10);
+
+            --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.25);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.34);
+            --shadow-lg: 0 18px 60px rgba(0, 0, 0, 0.45);
+
+            --radius-sm: 10px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --blur: 18px;
+            --ring: 0 0 0 3px rgba(10, 132, 255, 0.26), 0 0 0 1px rgba(10, 132, 255, 0.28) inset;
+        }
+
+        * { box-sizing: border-box; outline: none; }
+        ::selection { background: rgba(10, 132, 255, 0.28); color: rgba(255, 255, 255, 0.96); }
+        body {
+            font-family:
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "SF Pro Display",
+                "SF Pro Text",
+                "PingFang SC",
+                "Microsoft YaHei",
+                "Segoe UI",
+                sans-serif;
+            background:
+                radial-gradient(1200px 760px at 20% 0%, rgba(255,255,255,0.05), transparent 62%),
+                radial-gradient(1000px 720px at 80% 100%, rgba(255,255,255,0.03), transparent 62%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 38%),
+                var(--bg-color);
+            color: var(--text-main);
+            height: 100vh; width: 100vw;
+            margin: 0; padding: 0;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            color-scheme: dark;
+            position: relative;
+        }
+
+        /* subtle texture + vignette for a more “material” feel */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.035;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+            background-size: 160px 160px;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: -30px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.55;
+            background:
+                radial-gradient(1200px 740px at 50% -10%, rgba(255,255,255,0.06), transparent 55%),
+                radial-gradient(900px 900px at 50% 60%, transparent 40%, rgba(0,0,0,0.52) 78%, rgba(0,0,0,0.78) 100%);
+        }
+
+        #app-header {
+            height: var(--header-height);
+            background: rgba(10, 12, 16, 0.70);
+            backdrop-filter: blur(var(--blur)) saturate(180%);
+            -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 10px;
+            z-index: 100;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+        }
+        .brand {
+            font-weight: 760;
+            color: rgba(255, 255, 255, 0.92);
+            letter-spacing: 0.4px;
+            margin-right: 10px;
+            font-size: 14px;
+            user-select: none;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.35);
+        }
+        .file-btn {
+            padding: 6px 12px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+            border: 1px solid var(--border-hairline);
+            color: var(--text-muted);
+            border-radius: 999px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+            backdrop-filter: blur(12px) saturate(160%);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 6px 18px rgba(0,0,0,0.18);
+        }
+        .file-btn:hover { border-color: var(--border-color-strong); background: rgba(255, 255, 255, 0.10); color: rgba(255, 255, 255, 0.92); transform: translateY(-1px); }
+        .file-btn:active { transform: translateY(0px); }
+        .file-btn:focus-visible { box-shadow: var(--ring), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 8px 20px rgba(0,0,0,0.25); border-color: rgba(10, 132, 255, 0.55); }
+        .file-btn.loaded { border-color: rgba(52, 199, 89, 0.55); background: rgba(52, 199, 89, 0.12); color: rgba(235, 255, 242, 0.92); }
+        .file-btn.loading { opacity: 0.78; pointer-events: none; }
+        .file-btn.loading::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.24);
+            border-top-color: rgba(10, 132, 255, 0.90);
+            border-radius: 999px;
+            margin-left: 6px;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #btn-zip { border-color: rgba(10, 132, 255, 0.55); color: rgba(10, 132, 255, 0.92); font-weight: 750; background: rgba(10, 132, 255, 0.12); }
+        #btn-zip:hover { background: rgba(10, 132, 255, 0.22); color: rgba(255, 255, 255, 0.95); }
+        input[type="file"] { display: none; }
+        #layout-root { width: 100%; height: calc(100vh - var(--header-height)); background: transparent; position: relative; z-index: 1; }
+
+        .lm_root { background: transparent !important; }
+        .lm_header {
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)) !important;
+            backdrop-filter: blur(var(--blur)) saturate(170%);
+            -webkit-backdrop-filter: blur(var(--blur)) saturate(170%);
+            height: var(--panel-header-height) !important;
+            border-bottom: 1px solid var(--border-hairline) !important;
+            padding-left: 6px !important;
+            box-shadow: none !important;
+        }
+        .lm_tab {
+            background: transparent !important;
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 14px !important;
+            height: var(--panel-header-height) !important;
+            line-height: var(--panel-header-height) !important;
+            color: rgba(255, 255, 255, 0.58) !important;
+            font-family: "PingFang SC", system-ui, -apple-system, sans-serif;
+            font-size: 12px;
+            font-weight: 650;
+            box-shadow: none !important;
+            transition: color 0.12s ease, background 0.12s ease;
+            border-radius: 0 !important;
+        }
+        .lm_tab:hover { color: rgba(255, 255, 255, 0.82) !important; background: rgba(255,255,255,0.03) !important; }
+        .lm_tab.lm_active {
+            background: var(--panel-bg) !important;
+            color: rgba(255, 255, 255, 0.92) !important;
+            border-bottom: none !important;
+            position: relative;
+            box-shadow: inset 0 -2px 0 rgba(10, 132, 255, 0.85) !important;
+        }
+        .lm_close_tab { display: none !important; } 
+        .lm_controls { top: 3px !important; right: 5px !important; }
+        .lm_controls > li { width: 16px !important; height: 16px !important; opacity: 0.4; }
+        .lm_controls > li:hover { opacity: 1; }
+        .lm_splitter { background: rgba(255, 255, 255, 0.06) !important; width: 4px !important; opacity: 1; border: none !important; }
+        .lm_splitter:hover, .lm_splitter.lm_dragging { background: rgba(10, 132, 255, 0.65) !important; }
+        .lm_content {
+            background: var(--panel-bg) !important;
+            border: 1px solid var(--border-hairline) !important;
+            border-top: none !important;
+            border-radius: var(--window-radius) !important;
+            overflow: hidden !important;
+            box-shadow: none !important;
+            backdrop-filter: blur(var(--blur)) saturate(160%);
+            -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
+        }
+        .lm_dropTargetIndicator { border: 2px dashed rgba(10, 132, 255, 0.85) !important; background: rgba(10, 132, 255, 0.06) !important; box-shadow: none !important; }
+
+        .component-wrapper { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; background: transparent; }
+        .video-container { width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; }
+        video { width: 100%; height: 100%; object-fit: contain; }
+        .scroll-area { flex: 1; overflow-y: auto; padding: 12px; position: relative; }
+        .scroll-area::-webkit-scrollbar { width: 8px; }
+        .scroll-area::-webkit-scrollbar-track { background: transparent; }
+        .scroll-area::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.16); border-radius: 999px; border: 2px solid transparent; background-clip: content-box; }
+        .scroll-area::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.22); background-clip: content-box; }
+
+        .srt-item {
+            padding: 8px 10px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.62);
+            cursor: pointer;
+            border-radius: var(--card-radius);
+            margin-bottom: 6px;
+            line-height: 1.45;
+            transition: background 0.12s ease, color 0.12s ease, transform 0.12s ease;
+            border: 1px solid transparent;
+        }
+        .srt-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.78); border-color: rgba(255,255,255,0.10); }
+        .srt-item.active {
+            color: rgba(255, 255, 255, 0.92);
+            background: rgba(10, 132, 255, 0.14);
+            font-weight: 650;
+            box-shadow: inset 0 0 0 1px rgba(10, 132, 255, 0.22);
+        }
+        #gap-bar { height: 4px; background: linear-gradient(90deg, rgba(10, 132, 255, 0.85), rgba(52, 199, 89, 0.65)); box-shadow: 0 0 10px rgba(10, 132, 255, 0.35); border-radius: 999px; margin: 15px 0; display: none; animation: pulse 1.5s infinite ease-in-out; pointer-events: none; transition: all 0.3s ease; }
+        @keyframes pulse { 0% { opacity: 0.3; width: 90%; margin-left: 5%; } 50% { opacity: 1; width: 100%; margin-left: 0%; } 100% { opacity: 0.3; width: 90%; margin-left: 5%; } }
+        #gap-bar.paused { animation: none; opacity: 0.6; width: 95%; margin-left: 2.5%; box-shadow: 0 0 5px var(--highlight); }
+
+        .feed-card {
+            background:
+                radial-gradient(900px 220px at 25% 0%, rgba(255,255,255,0.06), transparent 55%),
+                radial-gradient(900px 260px at 85% 35%, rgba(10,132,255,0.06), transparent 58%),
+                rgba(255, 255, 255, 0.045);
+            border-radius: var(--card-radius);
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            opacity: 0.82;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+            cursor: default;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+        }
+        .feed-card:hover { opacity: 0.92; transform: translateY(-1px); border-color: rgba(255,255,255,0.12); box-shadow: 0 18px 46px rgba(0,0,0,0.30); }
+        .feed-card.active {
+            opacity: 1;
+            border-color: rgba(10, 132, 255, 0.55);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 18px 46px rgba(0,0,0,0.35), 0 0 0 1px rgba(10, 132, 255, 0.18) inset;
+        }
+        .card-top {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-title { font-weight: 750; color: rgba(255,255,255,0.92); font-size: 13px; letter-spacing: 0.1px; }
+        .card-time {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.82);
+            background: rgba(0,0,0,0.22);
+            padding: 3px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+            border: 1px solid rgba(255,255,255,0.10);
+            user-select: none;
+            white-space: nowrap;
+        }
+        .card-time:hover { background: rgba(10, 132, 255, 0.18); border-color: rgba(10, 132, 255, 0.35); transform: translateY(-1px); }
+        .card-time:active { transform: translateY(1px); }
+        .feed-card.active .card-time { border-color: rgba(10, 132, 255, 0.35); }
+        .card-content { padding: 12px; }
+
+        /* Carousel Wrapper */
+        .media-wrapper { position: relative; }
+
+        /* Carousel Count Indicator */
+        .carousel-counter {
+            position: absolute; top: -25px; right: 5px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.75);
+            background: rgba(0,0,0,0.22);
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.10);
+            display: none; /* Hidden by default, shown on active */
+        }
+        .feed-card.active .carousel-counter { display: block; }
+
+        .media-carousel { 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-start; 
+            overflow-x: auto; 
+            overflow-y: hidden; 
+            gap: 10px; 
+            padding: 10px 5px; 
+            margin-bottom: 10px; 
+            height: 90px; /* Default compact height */
+            scroll-behavior: smooth; 
+            scrollbar-width: none; 
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .media-carousel::-webkit-scrollbar { display: none; }
+        
+        .media-item { 
+            flex: 0 0 140px; height: 80px; 
+            position: relative; 
+            border: 2px solid transparent; 
+            border-radius: var(--card-radius); 
+            overflow: hidden; 
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); 
+            background: rgba(0,0,0,0.72); 
+            cursor: pointer; 
+            margin: 0; 
+            transform: none; 
+            opacity: 0.62; 
+            filter: grayscale(0.55) saturate(0.9); 
+            box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+        }
+        
+        .media-item:hover { opacity: 1; filter: grayscale(0) saturate(1); border-color: rgba(255,255,255,0.35); }
+
+        /* Active Card: Expanded Carousel */
+        .feed-card.active .media-carousel {
+            height: 180px; 
+            gap: 20px;
+            padding: 15px calc(50% - 110px); /* Center padding */
+        }
+        
+        .feed-card.active .media-item {
+            flex: 0 0 220px; height: 130px;
+            transform: scale(0.85);
+            opacity: 0.62; 
+            filter: grayscale(0.82) saturate(0.85);
+        }
+        
+        .feed-card.active .media-item.active { 
+            transform: scale(1.15); 
+            opacity: 1; 
+            filter: grayscale(0) saturate(1.05); 
+            border-color: var(--highlight); 
+            box-shadow: 0 16px 42px rgba(10, 132, 255, 0.22), 0 0 0 1px rgba(10,132,255,0.20) inset; 
+            z-index: 10; 
+            cursor: default; 
+        }
+
+        .media-thumb-box { width: 100%; height: 100%; overflow: hidden; position: relative; }
+        .media-content { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+        
+        /* Smart Crop Implementation */
+        .media-item[data-cropped="true"] .media-content { 
+            object-fit: fill; /* Fill the space calculated by vars */
+            width: var(--z-width); 
+            height: var(--z-height); 
+            max-width: none; max-height: none; 
+            position: absolute; 
+            left: var(--z-left); 
+            top: var(--z-top); 
+        }
+        
+        .media-badge {
+            position: absolute;
+            bottom: 6px;
+            left: 6px;
+            background: rgba(14, 16, 22, 0.68);
+            color: rgba(255,255,255,0.92);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            pointer-events: none;
+            z-index: 5;
+            border: 1px solid rgba(255,255,255,0.16);
+            backdrop-filter: blur(12px) saturate(160%);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+        }
+        .media-zoom {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(14, 16, 22, 0.60);
+            color: rgba(255,255,255,0.92);
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: zoom-in;
+            opacity: 0;
+            transition: 0.2s;
+            z-index: 20;
+            border: 1px solid rgba(255,255,255,0.16);
+            backdrop-filter: blur(12px) saturate(160%);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+        }
+        .media-item:hover .media-zoom { opacity: 1; }
+        .media-zoom:hover { background: var(--highlight); color: #000; transform: scale(1.1); }
+
+        .md-script { font-size: 13px; color: rgba(255,255,255,0.78); line-height: 1.65; }
+        .md-script h1, .md-script h2 { color: rgba(255,255,255,0.92); margin: 15px 0 8px; font-weight: 750; font-size: 1.1em; border-bottom: 1px dashed rgba(255,255,255,0.14); }
+        .md-script ul { padding-left: 20px; }
+        .summary-block { background: rgba(0,0,0,0.20); border-left: 3px solid rgba(52,199,89,0.75); padding: 10px; font-size: 12px; color: rgba(255,255,255,0.84); margin-bottom: 10px; border-radius: var(--card-radius); }
+        .md-script a { color: rgba(10,132,255,0.92); text-decoration: none; border-bottom: 1px solid rgba(10,132,255,0.20); }
+        .md-script a:hover { border-bottom-color: rgba(10,132,255,0.55); color: rgba(120,190,255,0.95); }
+        .md-script code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            padding: 0.12em 0.42em;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+            color: rgba(255,255,255,0.92);
+        }
+        .md-script pre {
+            padding: 10px 12px;
+            background: rgba(0,0,0,0.26);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 14px;
+            overflow: auto;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        .md-script pre code { display: block; padding: 0; background: transparent; border: none; }
+        .md-script table {
+            width: 100%;
+            margin: 10px 0 14px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: rgba(0,0,0,0.18);
+            overflow: hidden;
+        }
+        .md-script th,
+        .md-script td {
+            padding: 10px 12px;
+            vertical-align: top;
+            line-height: 1.5;
+            border-right: 1px solid rgba(255,255,255,0.10);
+            border-bottom: 1px solid rgba(255,255,255,0.10);
+            word-break: break-word;
+        }
+        .md-script th {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.92);
+            font-weight: 780;
+        }
+        .md-script td { color: rgba(255,255,255,0.80); }
+        .md-script tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+        .md-script th:last-child,
+        .md-script td:last-child { border-right: none; }
+        .md-script tr:last-child td { border-bottom: none; }
+        .md-script blockquote {
+            margin: 10px 0;
+            padding: 8px 12px;
+            border-left: 3px solid rgba(10,132,255,0.55);
+            background: rgba(10,132,255,0.08);
+            border-radius: 12px;
+            color: rgba(255,255,255,0.80);
+        }
+        .md-skeleton { color: rgba(255,255,255,0.46); font-size: 12px; padding: 8px 0; }
+        .media-content.is-placeholder { filter: grayscale(1) saturate(0.5); opacity: 0.85; }
+
+        #cy-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: transparent;
+        }
+        #cy { width: 100%; height: 100%; display: block; }
+        .cy-tools { position: absolute; top: 10px; right: 10px; z-index: 10; }
+        .cy-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.88);
+            cursor: pointer;
+            padding: 6px 10px;
+            font-size: 12px;
+            border-radius: 999px;
+            backdrop-filter: blur(12px) saturate(160%);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+            transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+        }
+        .cy-btn:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.18); transform: translateY(-1px); }
+        .cy-btn:active { transform: translateY(0px); }
+        .cy-tip { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #555; pointer-events: none; }
+
+        #cy-tooltip {
+            position: fixed;
+            display: none;
+            background: rgba(14, 16, 22, 0.82);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 14px;
+            padding: 0;
+            z-index: 99999;
+            box-shadow: var(--shadow-lg);
+            width: 260px;
+            max-height: 340px;
+            overflow-y: auto;
+            pointer-events: auto;
+            backdrop-filter: blur(var(--blur)) saturate(180%);
+            -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+        }
+        #cy-tooltip::-webkit-scrollbar { width: 8px; }
+        #cy-tooltip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 999px; border: 2px solid transparent; background-clip: content-box; }
+        .tooltip-header { padding: 10px 12px; background: rgba(10, 132, 255, 0.12); border-bottom: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.92); font-weight: 750; font-size: 12px; }
+        .tooltip-item { display: block; padding: 10px 12px; color: rgba(255,255,255,0.78); font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .tooltip-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.92); }
+
+        .lightbox { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); backdrop-filter: blur(var(--blur)) saturate(160%); -webkit-backdrop-filter: blur(var(--blur)) saturate(160%); align-items: center; justify-content: center; flex-direction: column; }
+        .lightbox-content { position: relative; max-width: 95%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
+        .lightbox-img, .lightbox-video { max-width: 100%; max-height: 85vh; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 0 40px rgba(0,0,0,0.65); border-radius: 14px; display: none; outline: none; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 16px; right: 20px; color: rgba(255,255,255,0.9); font-size: 38px; font-weight: 700; cursor: pointer; transition: 0.2s; z-index: 10001; user-select: none; }
+        .lightbox-close:hover { color: rgba(10,132,255,0.92); transform: scale(1.05); }
+        .lightbox-btn { margin-top: 14px; padding: 10px 18px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.92); text-decoration: none; border-radius: 999px; font-size: 13px; font-weight: 750; display: flex; align-items: center; gap: 8px; transition: 0.12s; cursor: pointer; border: 1px solid rgba(255,255,255,0.14); backdrop-filter: blur(12px) saturate(160%); -webkit-backdrop-filter: blur(12px) saturate(160%); }
+        .lightbox-btn:hover { background: rgba(10,132,255,0.18); border-color: rgba(10,132,255,0.35); }
+
+        /* === Session overview === */
+        #session-overview {
+            position: absolute;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: auto;
+            padding: 16px 16px 24px 16px;
+            background: transparent;
+        }
+        .session-wrap { max-width: 1400px; margin: 0 auto; }
+        .session-head { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; padding: 6px 2px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .session-title { font-weight: 850; font-size: 16px; letter-spacing: 0.2px; }
+        .session-sub { color: var(--text-muted); font-size: 12px; line-height: 1.45; max-width: 980px; }
+        .session-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; margin-top: 12px; }
+        @media (max-width: 980px) { .session-grid { grid-template-columns: 1fr; } }
+        .session-panel { border: 1px solid rgba(255,255,255,0.10); background: rgba(12, 14, 20, 0.92); border-radius: 16px; box-shadow: var(--shadow-sm); overflow: hidden; }
+        .session-panel .hd { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.90); font-weight: 820; font-size: 12px; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+        .session-panel .bd { padding: 12px; }
+        .tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag-chip { display: inline-flex; gap: 6px; align-items: center; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.86); cursor: pointer; font-size: 12px; font-weight: 750; user-select: none; transition: 0.12s; }
+        .tag-chip:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.20); transform: translateY(-1px); }
+        .tag-chip.common { border-color: rgba(245, 158, 11, 0.32); background: rgba(245, 158, 11, 0.10); color: rgba(255, 245, 225, 0.92); }
+        .tag-chip.common:hover { background: rgba(245, 158, 11, 0.14); border-color: rgba(245, 158, 11, 0.45); }
+        .tag-chip.common.active { background: rgba(245, 158, 11, 0.22); border-color: rgba(245, 158, 11, 0.62); }
+        .tag-chip.muted { color: rgba(255,255,255,0.66); border-style: dashed; background: rgba(255,255,255,0.03); }
+        .part-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .part-card2 { border: 1px solid rgba(255,255,255,0.10); background: transparent; border-radius: 16px; padding: 12px; cursor: pointer; transition: 0.12s; }
+        .part-card2:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.16); transform: translateY(-1px); }
+        .part-card2 .top { display:flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+        .part-card2 .t { font-weight: 820; font-size: 14px; letter-spacing: 0.2px; }
+        .part-card2 .k { color: var(--text-muted); font-weight: 750; font-size: 12px; }
+        .part-card2 .sum { margin-top: 8px; color: rgba(255,255,255,0.78); font-size: 12px; line-height: 1.55; }
+        .part-card2 .tags { margin-top: 10px; display:flex; gap: 8px; flex-wrap: wrap; }
+        .pill { padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 780; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.86); }
+        .pill.type { border-color: rgba(175, 82, 222, 0.40); background: rgba(175, 82, 222, 0.14); }
+        .pill.tech { border-color: rgba(10, 132, 255, 0.40); background: rgba(10, 132, 255, 0.14); }
+        .pill.domain { border-color: rgba(52, 199, 89, 0.40); background: rgba(52, 199, 89, 0.14); }
+        .pill.common { border-color: rgba(245, 158, 11, 0.40); background: rgba(245, 158, 11, 0.14); }
+        .rel-list { display:flex; flex-direction: column; gap: 8px; }
+        .rel-item { border: 1px solid rgba(255,255,255,0.10); border-radius: 14px; padding: 10px 12px; background: transparent; }
+        .rel-item .line { display:flex; justify-content: space-between; gap: 10px; font-weight: 760; font-size: 12px; color: rgba(255,255,255,0.88); }
+        .rel-item .why { margin-top: 6px; color: rgba(255,255,255,0.70); font-size: 12px; line-height: 1.45; }
+
+        /* === Landing (before tkd.zip loaded) === */
+        #landing {
+            position: absolute;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            z-index: 40;
+        }
+        #landing.hidden { display: none; }
+        .landing-shell { width: min(980px, 100%); }
+        .landing-card {
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(12, 14, 20, 0.94);
+            border-radius: 18px;
+            padding: 18px 18px 16px;
+            box-shadow: var(--shadow-md);
+        }
+        #landing code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            padding: 0.12em 0.42em;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+            color: rgba(255,255,255,0.92);
+        }
+        .landing-title { font-weight: 920; font-size: 18px; letter-spacing: 0.2px; }
+        .landing-sub { margin-top: 6px; color: var(--text-muted); font-size: 13px; line-height: 1.55; }
+        .dropzone {
+            margin-top: 14px;
+            border: 1.5px dashed rgba(255,255,255,0.20);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.03);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .dropzone.dragover {
+            border-color: rgba(10, 132, 255, 0.45);
+            background: rgba(10, 132, 255, 0.08);
+        }
+        .dropzone .left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .dropzone .icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex: 0 0 auto;
+        }
+        .dropzone .text { min-width: 0; }
+        .dropzone .primary { font-weight: 820; }
+        .dropzone .secondary { margin-top: 2px; color: var(--text-muted); font-size: 12px; line-height: 1.45; }
+        .landing-actions { display: flex; gap: 10px; align-items: center; flex: 0 0 auto; }
+        .landing-btn {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.90);
+            font-size: 12px;
+            font-weight: 780;
+            cursor: pointer;
+            transition: 0.12s;
+        }
+        .landing-btn:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.20); transform: translateY(-1px); }
+        .landing-btn:active { transform: translateY(0px); }
+        .landing-foot { margin-top: 10px; color: rgba(255,255,255,0.55); font-size: 12px; line-height: 1.5; }
+        .status-chip { cursor: default; }
+
+        #hidden-dom-stash { display: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { scroll-behavior: auto !important; }
+            #gap-bar { animation: none !important; }
+            .feed-card, .file-btn, .srt-item, .media-item, .cy-btn { transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<header id="app-header">
+    <div class="brand">TalkDistill Viewer</div>
+    <a class="file-btn" id="btn-home" href="index.html">🏠 返回入口</a>
+    <button class="file-btn" id="btn-back" style="display:none;" onclick="UI.backToOverview()">← 返回总览</button>
+    <div class="file-btn status-chip" id="btn-zip"><span>📦 会场</span></div>
+</header>
+
+<div id="landing">
+    <div class="landing-shell">
+        <div class="landing-card">
+            <div class="landing-title">打开 TalkDistill Viewer</div>
+            <div class="landing-sub">本页面已移除“手动导入 .tkd.zip”。请从入口页选择会场，或使用直链参数导航。</div>
+            <div class="dropzone" id="landing-dropzone" style="cursor: default;">
+                <div class="left">
+                    <div class="icon">🧭</div>
+                    <div class="text">
+                        <div class="primary" id="landing-primary">从入口页进入</div>
+                        <div class="secondary" id="landing-secondary"><a href="index.html" style="color: rgba(10,132,255,0.92); text-decoration: none; font-weight: 700;">打开 index.html</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="landing-foot">直链示例：<code>show.html?session=ai_session&amp;part=0&amp;sec=sec_3</code></div>
+        </div>
+    </div>
+</div>
+
+<div id="session-overview" style="display:none;"></div>
+<div id="layout-root" style="display:none;"></div>
+<div id="cy-tooltip"></div>
+
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close" onclick="UI.closeLightbox()">&times;</span>
+    <div class="lightbox-content">
+        <img class="lightbox-img" id="lightbox-img">
+        <video class="lightbox-video" id="lightbox-video" controls autoplay></video>
+        <a id="lightbox-download" class="lightbox-btn" download="asset">⬇️ 下载原素材</a>
+    </div>
+</div>
+
+<div id="hidden-dom-stash">
+    <div id="dom-video" class="component-wrapper"><div class="video-container"><video id="player" controls playsinline></video></div></div>
+    <div id="dom-subs" class="component-wrapper"><div class="scroll-area" id="srt-container"><div style="text-align:center; color:#555; margin-top:20px">等待导入数据...</div></div></div>
+    <div id="dom-feed" class="component-wrapper"><div class="scroll-area" id="feed-container"><div style="text-align:center; color:#555; margin-top:50px">等待导入数据...</div></div></div>
+    <div id="dom-graph" class="component-wrapper">
+        <div id="cy-container">
+            <div class="cy-tools"><button class="cy-btn" onclick="UI.fitGraph()">↺ 复位视图</button></div>
+            <div id="cy"></div>
+            <div class="cy-tip" id="cy-tip">等待导入数据...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+	    if (typeof cytoscapeDagre !== 'undefined' && typeof cytoscape !== 'undefined') {
+	        cytoscape.use(cytoscapeDagre);
+	    }
+
+	    const GRAPH_PILLAR_THEMES = [
+	        {
+	            key: 'blue',
+	            pillar_bg: 'rgba(233,238,243,1)',
+	            pillar_border: 'rgba(138,163,182,0.78)',
+	            pillar_label_bg: 'rgba(50,65,78,0.78)',
+	            group_border: 'rgba(138,163,182,0.26)',
+	        },
+	        {
+	            key: 'emerald',
+	            pillar_bg: 'rgba(234,240,236,1)',
+	            pillar_border: 'rgba(143,169,156,0.78)',
+	            pillar_label_bg: 'rgba(53,70,62,0.78)',
+	            group_border: 'rgba(143,169,156,0.26)',
+	        },
+	        {
+	            key: 'violet',
+	            pillar_bg: 'rgba(239,236,242,1)',
+	            pillar_border: 'rgba(167,154,175,0.78)',
+	            pillar_label_bg: 'rgba(67,56,80,0.78)',
+	            group_border: 'rgba(167,154,175,0.26)',
+	        },
+	        {
+	            key: 'amber',
+	            pillar_bg: 'rgba(242,239,234,1)',
+	            pillar_border: 'rgba(184,169,146,0.78)',
+	            pillar_label_bg: 'rgba(78,66,54,0.78)',
+	            group_border: 'rgba(184,169,146,0.26)',
+	        },
+	    ];
+
+	    function graphEscapeHtml(s) {
+	        return String(s ?? '')
+	            .replaceAll('&', '&amp;')
+	            .replaceAll('<', '&lt;')
+	            .replaceAll('>', '&gt;')
+	            .replaceAll('"', '&quot;')
+	            .replaceAll("'", '&#39;');
+	    }
+
+	    function graphFormatMs(ms) {
+	        if (ms == null || Number.isNaN(Number(ms))) return '-';
+	        const sec = Math.max(0, Math.floor(Number(ms) / 1000));
+	        const m = Math.floor(sec / 60);
+	        const s = sec % 60;
+	        return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+	    }
+
+	    function graphNodeType(node) {
+	        if (!node) return 'detail';
+	        if (node.parent) return 'detail';
+	        return 'pillar';
+	    }
+
+	    function graphComputeParallelGroups(nodes, edges) {
+	        const byId = new Map((nodes || []).map((n) => [String(n.id), n]));
+	        const parallels = (edges || []).filter(
+	            (e) => String(e.relation_type || '').toLowerCase() === 'parallel'
+	        );
+
+	        const edgesByParent = new Map();
+	        for (const e of parallels) {
+	            const src = byId.get(String(e.source));
+	            const dst = byId.get(String(e.target));
+	            if (!src || !dst) continue;
+	            const parent = src.parent || null;
+	            if (!parent || parent !== dst.parent) continue;
+	            if (!edgesByParent.has(parent)) edgesByParent.set(parent, []);
+	            edgesByParent.get(parent).push([String(e.source), String(e.target)]);
+	        }
+
+	        const groups = [];
+	        let seq = 1;
+	        for (const [parent, pairs] of edgesByParent.entries()) {
+	            const adj = new Map();
+	            const add = (a, b) => {
+	                if (!adj.has(a)) adj.set(a, new Set());
+	                adj.get(a).add(b);
+	            };
+	            for (const [a, b] of pairs) {
+	                add(a, b);
+	                add(b, a);
+	            }
+
+	            const seen = new Set();
+	            for (const start of adj.keys()) {
+	                if (seen.has(start)) continue;
+	                const stack = [start];
+	                const members = [];
+	                seen.add(start);
+	                while (stack.length) {
+	                    const cur = stack.pop();
+	                    members.push(cur);
+	                    for (const nxt of adj.get(cur) || []) {
+	                        if (seen.has(nxt)) continue;
+	                        seen.add(nxt);
+	                        stack.push(nxt);
+	                    }
+	                }
+	                if (members.length > 1) {
+	                    groups.push({ id: `__par__${seq++}`, parent, members });
+	                }
+	            }
+	        }
+
+	        const memberToGroup = new Map();
+	        for (const g of groups) {
+	            for (const m of g.members) memberToGroup.set(String(m), g.id);
+	        }
+	        return { groups, memberToGroup };
+	    }
+
+	    function graphBuildElements(graph) {
+	        const elements = [];
+	        const nodes = Array.isArray(graph?.nodes) ? graph.nodes : [];
+	        const edges = Array.isArray(graph?.edges) ? graph.edges : [];
+
+	        const { groups, memberToGroup } = graphComputeParallelGroups(nodes, edges);
+	        const byId = new Map(nodes.map((n) => [String(n.id), n]));
+
+	        const pillarNodes = nodes
+	            .filter((n) => graphNodeType(n) === 'pillar' && !n.parent)
+	            .slice()
+	            .sort((a, b) => String(a.id).localeCompare(String(b.id)));
+	        const themeByPillarId = new Map(
+	            pillarNodes.map((n, idx) => [String(n.id), GRAPH_PILLAR_THEMES[idx % GRAPH_PILLAR_THEMES.length]])
+	        );
+
+	        function rootPillarIdOfNodeId(id) {
+	            let cur = byId.get(String(id));
+	            let guard = 0;
+	            while (cur && cur.parent && guard++ < 20) {
+	                cur = byId.get(String(cur.parent));
+	            }
+	            return cur ? String(cur.id) : null;
+	        }
+
+	        function themeForNode(node) {
+	            const root = rootPillarIdOfNodeId(node.parent ? node.parent : node.id);
+	            return themeByPillarId.get(String(root)) || GRAPH_PILLAR_THEMES[0];
+	        }
+
+	        const pillarIds = new Set(pillarNodes.map((n) => n.id));
+	        const parentNodeIds = new Set();
+	        for (const n of nodes) {
+	            const p = memberToGroup.get(String(n.id)) || n.parent;
+	            if (p) parentNodeIds.add(String(p));
+	        }
+	        for (const g of groups) {
+	            if (g.parent) parentNodeIds.add(String(g.parent));
+	        }
+
+	        for (const g of groups) {
+	            const parentNode = byId.get(String(g.parent));
+	            const theme = parentNode ? themeForNode(parentNode) : GRAPH_PILLAR_THEMES[0];
+	            elements.push({
+	                data: {
+	                    id: g.id,
+	                    label: '',
+	                    type: 'parallel_group',
+	                    parent: g.parent || undefined,
+	                    group_border: theme.group_border,
+	                },
+	            });
+	        }
+
+	        for (const n of nodes) {
+	            const t = graphNodeType(n);
+	            const highlightMs = (n.references || {}).highlight?.primary_time_ms ?? null;
+	            const parent = memberToGroup.get(String(n.id)) || n.parent || undefined;
+	            const theme = themeForNode(n);
+	            elements.push({
+	                data: {
+	                    id: n.id,
+	                    label: n.label || n.id,
+	                    category: n.category || '',
+	                    type: t,
+	                    parent,
+	                    highlight_ms: highlightMs,
+	                    pillar_bg: theme.pillar_bg,
+	                    pillar_border: theme.pillar_border,
+	                    pillar_label_bg: theme.pillar_label_bg,
+	                },
+	            });
+	        }
+
+		        edges.forEach((e, idx) => {
+		            const relation = e.relation_type || '';
+		            const level = pillarIds.has(e.source) && pillarIds.has(e.target) ? 'pillar' : 'detail';
+		            const sourceIsPillarParent = pillarIds.has(String(e.source)) && parentNodeIds.has(String(e.source));
+		            const targetIsPillarParent = pillarIds.has(String(e.target)) && parentNodeIds.has(String(e.target));
+		            const hidePillarToOwnChild =
+		                sourceIsPillarParent && rootPillarIdOfNodeId(e.target) === String(e.source);
+		            const parallelGroup = memberToGroup.get(String(e.source));
+		            const hiddenParallel =
+		                String(relation).toLowerCase() === 'parallel' &&
+		                parallelGroup &&
+		                parallelGroup === memberToGroup.get(String(e.target));
+		            elements.push({
+		                data: {
+		                    id: 'e' + idx,
+		                    source: e.source,
+		                    target: e.target,
+		                    label: e.label || '',
+		                    relation_type: relation,
+		                    level,
+		                    hidden_parallel: hiddenParallel ? 1 : 0,
+		                    source_is_pillar_parent: sourceIsPillarParent ? 1 : 0,
+		                    target_is_pillar_parent: targetIsPillarParent ? 1 : 0,
+		                    hide_pillar_child: hidePillarToOwnChild ? 1 : 0,
+		                },
+		            });
+		        });
+
+	        return elements;
+	    }
+
+		    const Store = {
+		        srt: [], graph: null, slides: [],
+		        raw: { timeline: [], sections: [], narratives: {}, refined: {}, captures: {}, crops: {}, materialsById: {} },
+		        assets: {}, sectionToNodes: {},
+		        zip: null,
+                session: null, // { zip, file_name, index, overview, part_archives: [{index,name}], active_common_tags:Set<string>, current_part:number|null }
+                site: { manifest: null },
+		        _objectUrls: new Set(),
+		        trackUrl: function(url) { if (url) this._objectUrls.add(url); return url; },
+		        revokeTrackedUrls: function() {
+		            for (const url of this._objectUrls) {
+		                try { URL.revokeObjectURL(url); } catch (e) {}
+		            }
+		            this._objectUrls.clear();
+		        },
+		        state: { lastSrtIdx: -1, lastFeedIdx: -1, activeNodeIds: [], inGap: false, lastMatKey: '' },
+		        resetState: function() { this.state = { lastSrtIdx: -1, lastFeedIdx: -1, activeNodeIds: [], inGap: false, lastMatKey: '' }; },
+                resetPartView: function() {
+                    this.revokeTrackedUrls();
+                    this.resetState();
+                    this.raw = { timeline: [], sections: [], narratives: {}, refined: {}, captures: {}, crops: {}, materialsById: {} };
+                    this.srt = [];
+                    this.assets = {};
+                    this.slides = [];
+                    this.graph = null;
+                    this.sectionToNodes = {};
+                    this.zip = null;
+                },
+		        resetAll: function() {
+		            this.resetPartView();
+                    this.session = null;
+		        }
+		    };
+
+		    const DOM = {
+		        video: document.getElementById('player'),
+		        srtBox: document.getElementById('srt-container'),
+		        feedBox: document.getElementById('feed-container'),
+		        cyTip: document.getElementById('cy-tip'),
+		        tooltip: document.getElementById('cy-tooltip'),
+		        lightbox: document.getElementById('lightbox'),
+                landing: document.getElementById('landing'),
+                landingDropzone: document.getElementById('landing-dropzone'),
+                landingPrimary: document.getElementById('landing-primary'),
+                landingSecondary: document.getElementById('landing-secondary'),
+                zipInput: document.getElementById('zip-input'),
+	            sessionBox: document.getElementById('session-overview'),
+	            layoutRoot: document.getElementById('layout-root'),
+		        gapBar: document.createElement('div'),
+		        btns: { back: document.getElementById('btn-back'), zip: document.getElementById('btn-zip'), video: document.getElementById('btn-video'), srt: document.getElementById('btn-srt'), feed: document.getElementById('btn-json-feed'), graph: document.getElementById('btn-json-graph'), imgs: document.getElementById('btn-imgs') }
+		    };
+    DOM.gapBar.id = 'gap-bar';
+
+    const Utils = {
+        transparentPixel: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+        nextFrame: function() { return new Promise(r => requestAnimationFrame(() => r())); },
+        resetLoadedMarks: function() {
+            Object.values(DOM.btns || {}).forEach(btn => {
+                if (!btn) return;
+                btn.classList.remove('loaded', 'loading');
+                const span = btn.querySelector('span');
+                if (span) span.innerHTML = span.innerHTML.replace(/\s*✔\s*$/, '');
+                btn.removeAttribute('aria-busy');
+            });
+        },
+        setZipLoading: function(loading, text) {
+            const btn = DOM.btns.zip;
+            if (!btn) return;
+            btn.classList.toggle('loading', !!loading);
+            btn.setAttribute('aria-busy', loading ? 'true' : 'false');
+            const span = btn.querySelector('span');
+            if (span && typeof text === 'string') span.textContent = text;
+        },
+        parseSRT: function(txt) {
+            txt = txt.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+            const re = /(\d+)\n([0-9:.,]+)\s-->\s([0-9:.,]+)\n([\s\S]*?)(?=\n\n|\n$|$)/g;
+            const res = []; let m;
+            while ((m = re.exec(txt)) !== null) res.push({start: this.parseTimeStr(m[2]), end: this.parseTimeStr(m[3]), text: m[4].trim()});
+
+            // Defend against duplicated/overlapped cues from upstream:
+            // - sort by time to keep DOM order stable
+            // - drop exact duplicates (same start/end/text)
+            // - merge adjacent overlaps with identical text
+            res.sort((a, b) => (a.start - b.start) || (a.end - b.end) || (a.text || '').localeCompare(b.text || ''));
+
+            const textKey = (t) => String(t || '').replace(/\s+/g, ' ').trim();
+            const seen = new Set();
+            const unique = [];
+            for (const item of res) {
+                const key = `${Math.round((item.start || 0) * 1000)}|${Math.round((item.end || 0) * 1000)}|${textKey(item.text)}`;
+                if (seen.has(key)) continue;
+                seen.add(key);
+                unique.push(item);
+            }
+
+            const merged = [];
+            for (const item of unique) {
+                if (merged.length) {
+                    const prev = merged[merged.length - 1];
+                    if (textKey(prev.text) === textKey(item.text) && (item.start || 0) <= (prev.end || 0) + 1e-6) {
+                        if ((item.end || 0) > (prev.end || 0)) prev.end = item.end;
+                        continue;
+                    }
+                }
+                merged.push(item);
+            }
+
+            return merged;
+        },
+        findActiveIntervalIndex: function(items, t) {
+            if (!Array.isArray(items) || !items.length) return -1;
+            let bestIdx = -1;
+            let bestStart = -Infinity;
+            let bestEnd = Infinity;
+            for (let i = 0; i < items.length; i++) {
+                const it = items[i];
+                const st = it && typeof it.start === 'number' ? it.start : 0;
+                const ed = it && typeof it.end === 'number' ? it.end : 0;
+                if (t >= st && t < ed) {
+                    if (st > bestStart + 1e-6 || (Math.abs(st - bestStart) <= 1e-6 && ed < bestEnd)) {
+                        bestIdx = i;
+                        bestStart = st;
+                        bestEnd = ed;
+                    }
+                }
+            }
+            return bestIdx;
+        },
+        findNextStartIndex: function(items, t) {
+            if (!Array.isArray(items) || !items.length) return -1;
+            let bestIdx = -1;
+            let bestStart = Infinity;
+            for (let i = 0; i < items.length; i++) {
+                const it = items[i];
+                const st = it && typeof it.start === 'number' ? it.start : 0;
+                if (st > t && st < bestStart) {
+                    bestIdx = i;
+                    bestStart = st;
+                }
+            }
+            return bestIdx;
+        },
+        parseTimeStr: function(s) {
+            if(!s) return 0; s=s.replace(',','.'); const p=s.split(':');
+            return p.length===3 ? p[0]*3600+p[1]*60+parseFloat(p[2]) : (p.length===2 ? p[0]*60+parseFloat(p[1]) : parseFloat(p[0]));
+        },
+        formatTime: function(sec) {
+            const m = Math.floor(sec / 60); const s = Math.floor(sec % 60);
+            return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        },
+        findFileInZip: function(zip, suffix) {
+            const suffixLower = suffix.toLowerCase();
+            for (const filename in zip.files) {
+                if (filename.toLowerCase().endsWith(suffixLower) && !zip.files[filename].dir) return zip.file(filename);
+            }
+            return null;
+        },
+        markLoaded: function(key) {
+            const btn = DOM.btns[key];
+            if (btn) {
+                btn.classList.add('loaded');
+                if(!btn.innerHTML.includes('✔')) btn.querySelector('span').innerHTML+=' ✔';
+            }
+        },
+	        buildMapping: function() {
+	            Store.sectionToNodes = {};
+	            if (!Store.graph || !Store.graph.nodes) return;
+	            Store.graph.nodes.forEach(n => {
+	                const sids = (n.references || {}).section_ids || [];
+	                if (!Array.isArray(sids)) return;
+	                sids.forEach(sid => {
+	                    if (!sid) return;
+	                    if (!Store.sectionToNodes[sid]) Store.sectionToNodes[sid] = [];
+	                    Store.sectionToNodes[sid].push(n.id);
+	                });
+	            });
+	        }
+	    };
+
+	    let cy = null;
+	    let tooltipTimeout;
+	    let tooltipPinned = false;
+	    let tooltipActiveNodeId = null;
+	    let tooltipActiveIsPillar = false;
+	    let tooltipActivePillarLabelHover = false;
+	    let mdObserver = null;
+	    let mediaObserver = null;
+	    window.myLayout = null; 
+
+		    function graphFitPaddingPx() {
+		        if (!cy) return 80;
+		        const base = Math.round(Math.min(cy.width(), cy.height()) * 0.09);
+		        return Math.max(48, Math.min(160, base || 0));
+		    }
+
+		    const UI = {
+                showLanding: function(opts = {}) {
+                    if (DOM.landing) DOM.landing.classList.remove('hidden');
+                    if (DOM.sessionBox) DOM.sessionBox.style.display = 'none';
+                    if (DOM.layoutRoot) DOM.layoutRoot.style.display = 'none';
+                    if (DOM.btns.back) DOM.btns.back.style.display = 'none';
+                    try { DOM.tooltip.style.display = 'none'; } catch (e) {}
+                    const primary = typeof opts.primary === 'string' ? opts.primary : null;
+                    const secondary = typeof opts.secondary === 'string' ? opts.secondary : null;
+                    if (primary && DOM.landingPrimary) DOM.landingPrimary.textContent = primary;
+                    if (secondary && DOM.landingSecondary) DOM.landingSecondary.innerHTML = secondary;
+                },
+                hideLanding: function() {
+                    if (DOM.landing) DOM.landing.classList.add('hidden');
+                },
+                ensureLayout: function() {
+                    if (window.myLayout) return;
+                    const layoutConfig = { settings: { showPopoutIcon: false, showMaximiseIcon: true, showCloseIcon: false }, dimensions: { borderWidth: 4, headerHeight: 32 }, content: [{ type: 'row', content: [ { type: 'column', width: 25, content: [ { type: 'component', componentName: 'VideoPlayer', title: '视频播放', isClosable: false, height: 30 }, { type: 'component', componentName: 'Subtitles', title: '实时字幕', isClosable: false, height: 70 } ] }, { type: 'component', componentName: 'TimelineFeed', title: '时间轴 & 幻灯片', width: 45, isClosable: false }, { type: 'component', componentName: 'KnowledgeGraph', title: '知识图谱', width: 30, isClosable: false } ] }] };
+                    window.myLayout = new GoldenLayout(layoutConfig, $('#layout-root'));
+
+                    function reg(n, id, cb) {
+                        window.myLayout.registerComponent(n, function(c) {
+                            c.getElement().append(document.getElementById(id));
+                            c.on('resize', function() { if(cb) cb(); });
+                        });
+                    }
+
+                    reg('VideoPlayer', 'dom-video');
+                    reg('Subtitles', 'dom-subs');
+                    reg('TimelineFeed', 'dom-feed');
+                    reg('KnowledgeGraph', 'dom-graph', function() { if(cy) { cy.resize(); UI.fitGraph(); } });
+
+                    window.myLayout.init();
+
+                    const style = document.createElement('style');
+                    style.innerHTML = `.lm_header .lm_tab.lm_active { border-bottom: none !important; box-shadow: inset 0 -2px 0 var(--highlight) !important; color: var(--highlight) !important; } .lm_header .lm_tab:hover { background: rgba(255,255,255,0.05) !important; }`;
+                    document.head.appendChild(style);
+                },
+	            showSessionOverview: function() {
+                    this.hideLanding();
+	                if (DOM.sessionBox) DOM.sessionBox.style.display = 'block';
+	                if (DOM.layoutRoot) DOM.layoutRoot.style.display = 'none';
+	                if (DOM.btns.back) DOM.btns.back.style.display = 'none';
+	                try { DOM.tooltip.style.display = 'none'; } catch (e) {}
+	            },
+	            enterPartView: function() {
+                    this.hideLanding();
+	                if (DOM.sessionBox) DOM.sessionBox.style.display = 'none';
+	                if (DOM.layoutRoot) DOM.layoutRoot.style.display = 'block';
+                    this.ensureLayout();
+                    try { if (window.myLayout && window.myLayout.updateSize) window.myLayout.updateSize(); } catch (e) {}
+	                if (DOM.btns.back) DOM.btns.back.style.display = Store.session ? 'inline-flex' : 'none';
+	            },
+	            backToOverview: function() {
+	                if (!Store.session) return;
+	                try { DOM.video.pause(); } catch (e) {}
+	                if (Store.session) Store.session.current_part = null;
+                    Router.set({ part: null, sec: null }, { replace: true });
+	                this.showSessionOverview();
+	            },
+            onCommonTagClick: function(e, el) {
+                try { e.stopPropagation(); } catch (err) {}
+                if (!Store.session || !el) return;
+                const tag = (el.dataset && el.dataset.tag) ? String(el.dataset.tag) : '';
+                if (!tag) return;
+                if (!Store.session.active_common_tags) Store.session.active_common_tags = new Set();
+                const set = Store.session.active_common_tags;
+                if (set.has(tag)) set.delete(tag);
+                else set.add(tag);
+                this.renderSessionOverview();
+            },
+            clearCommonTags: function(e) {
+                try { e.stopPropagation(); } catch (err) {}
+                if (!Store.session) return;
+                Store.session.active_common_tags = new Set();
+                this.renderSessionOverview();
+            },
+            openPartFromOverview: function(partIndex) {
+                if (!Store.session) return;
+                const idx = Number(partIndex);
+                if (!Number.isFinite(idx)) return;
+                Loader.loadPartFromSession(idx, { preserveSec: false }).catch((err) => {
+                    console.error(err);
+                    alert("加载 part 失败: " + (err && err.message ? err.message : String(err)));
+                });
+            },
+            renderSessionOverview: function() {
+                if (!DOM.sessionBox) return;
+                const sess = Store.session;
+                if (!sess) {
+                    DOM.sessionBox.innerHTML = '';
+                    return;
+                }
+
+                const overview = sess.overview && typeof sess.overview === 'object' ? sess.overview : null;
+                const rawParts = overview && Array.isArray(overview.parts) ? overview.parts : [];
+                const commonTags = overview && Array.isArray(overview.common_tags) ? overview.common_tags : [];
+                const relations = overview && Array.isArray(overview.relations) ? overview.relations : [];
+                const learningPath = overview && Array.isArray(overview.learning_path) ? overview.learning_path : [];
+
+                const normPart = (p) => {
+                    const idx = Number(p && (p.index ?? p.part_index ?? p.part ?? 0));
+                    return {
+                        index: Number.isFinite(idx) ? idx : 0,
+                        title: String((p && p.title) || '') || '',
+                        type_tag: String((p && p.type_tag) || '') || '',
+                        summary: String((p && p.summary) || '') || '',
+                        tech_tags: Array.isArray(p && p.tech_tags) ? p.tech_tags.map(String) : [],
+                        domain_tags: Array.isArray(p && p.domain_tags) ? p.domain_tags.map(String) : [],
+                        common_tags: Array.isArray(p && p.common_tags) ? p.common_tags.map(String) : [],
+                    };
+                };
+
+                const parts = rawParts.length
+                    ? rawParts.map(normPart).sort((a, b) => a.index - b.index)
+                    : (sess.part_archives || []).map((p) => ({
+                        index: Number(p.index),
+                        title: '',
+                        type_tag: '',
+                        summary: '',
+                        tech_tags: [],
+                        domain_tags: [],
+                        common_tags: [],
+                    })).sort((a, b) => a.index - b.index);
+
+                const active = sess.active_common_tags || new Set();
+                const activeArr = [...active.values()];
+                const filtered = activeArr.length
+                    ? parts.filter((p) => activeArr.every((t) => (p.common_tags || []).includes(t)))
+                    : parts;
+
+                const sessionTitle = graphEscapeHtml(
+                    String((overview && (overview.session_title || overview.session)) || sess.file_name || "Session")
+                );
+                const sessionSummary = graphEscapeHtml(String((overview && overview.session_summary) || ''));
+                const partsCount = (sess.part_archives && sess.part_archives.length) ? sess.part_archives.length : parts.length;
+
+	                const chipsHtml = commonTags.length
+	                    ? `<div class="tag-row">${commonTags.map((t) => {
+	                        const tag = String((t && t.tag) || '');
+	                        const count = Array.isArray(t && t.parts) ? t.parts.length : 0;
+	                        const activeCls = active.has(tag) ? 'active' : '';
+	                        return `<span class="tag-chip common ${activeCls}" data-tag="${graphEscapeHtml(tag)}" onclick="UI.onCommonTagClick(event,this)">${graphEscapeHtml(tag)} <span style="opacity:0.72">(${count})</span></span>`;
+	                    }).join('')}
+	                    <span class="tag-chip muted" onclick="UI.clearCommonTags(event)">清除筛选</span>
+	                    </div>`
+	                    : `<div class="session-sub">未检测到 common_tags（请先生成 session_overview.json）。</div>`;
+
+	                const partsHtml = filtered.map((p) => {
+	                    const tagPills = [];
+	                    if (p.type_tag) tagPills.push(`<span class="pill type">${graphEscapeHtml(p.type_tag)}</span>`);
+	                    (p.tech_tags || []).slice(0, 6).forEach((t) => tagPills.push(`<span class="pill tech">${graphEscapeHtml(t)}</span>`));
+	                    (p.domain_tags || []).slice(0, 4).forEach((t) => tagPills.push(`<span class="pill domain">${graphEscapeHtml(t)}</span>`));
+	                    (p.common_tags || []).slice(0, 6).forEach((t) => tagPills.push(`<span class="pill common">${graphEscapeHtml(t)}</span>`));
+	                    const title = p.title || p.type_tag || `part_${String(p.index).padStart(2,'0')}`;
+	                    const summary = p.summary || (overview ? '' : '（未找到 session_overview.json，无法展示摘要/标签）');
+	                    return `<div class="part-card2" onclick="UI.openPartFromOverview(${p.index})">
+	                        <div class="top">
+	                            <div class="t">${graphEscapeHtml(`part_${String(p.index).padStart(2,'0')}  ${title}`)}</div>
+                            <div class="k">点击进入</div>
+                        </div>
+                        <div class="sum">${graphEscapeHtml(summary)}</div>
+                        <div class="tags">${tagPills.join('')}</div>
+                    </div>`;
+                }).join('');
+
+                const relHtml = relations.length ? relations.slice(0, 80).map((r) => {
+                    const s = Number(r && r.source);
+                    const t = Number(r && r.target);
+                    const label = String((r && r.label) || (r && r.relation_type) || '');
+                    const reason = String((r && r.reason) || '');
+                    return `<div class="rel-item">
+                        <div class="line">
+                            <div>${graphEscapeHtml(`part_${String(s).padStart(2,'0')} → part_${String(t).padStart(2,'0')}`)}</div>
+                            <div style="opacity:0.8">${graphEscapeHtml(label)}</div>
+                        </div>
+                        ${reason ? `<div class="why">${graphEscapeHtml(reason)}</div>` : ''}
+                    </div>`;
+                }).join('') : `<div class="session-sub">未检测到 relations（可在 session_overview.json 里生成）。</div>`;
+
+                const lpHtml = learningPath.length ? learningPath.slice(0, 3).map((lp) => {
+                    const title = String((lp && lp.title) || '学习路径');
+                    const items = Array.isArray(lp && lp.parts) ? lp.parts : [];
+                    const reason = String((lp && lp.reason) || '');
+                    return `<div class="rel-item">
+                        <div class="line">
+                            <div>${graphEscapeHtml(title)}</div>
+                            <div style="opacity:0.8">${graphEscapeHtml(items.map((i) => `part_${String(i).padStart(2,'0')}`).join(' → '))}</div>
+                        </div>
+                        ${reason ? `<div class="why">${graphEscapeHtml(reason)}</div>` : ''}
+                    </div>`;
+                }).join('') : '';
+
+                const meta = overview && typeof overview._meta === 'object' ? overview._meta : null;
+                const missingParts = meta && Array.isArray(meta.missing_parts) ? meta.missing_parts : [];
+                const missingArr = missingParts.map((x) => Number(x)).filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
+                const missingLabel = missingArr.map((i) => `part_${String(i).padStart(2,'0')}`).join(' / ');
+                const partialOverviewHint = missingArr.length
+                    ? `<div class="session-sub" style="margin-top:10px;">总览为部分生成：缺失 <code>part_digest</code> = ${graphEscapeHtml(missingLabel)}（可等待这些 part 完成后再次生成总览）。</div>`
+                    : '';
+
+                const missingOverviewHint = overview ? '' : `<div class="session-sub" style="margin-top:10px;">未找到 <code>session_overview.json</code>：请先跑 <code>run --stages overview</code> 并用 <code>python tools/package_session.py</code> 重新打包。</div>`;
+
+                DOM.sessionBox.innerHTML = `
+                    <div class="session-wrap">
+                        <div class="session-head">
+                            <div style="min-width: 280px; flex: 1 1 auto;">
+                                <div class="session-title">${sessionTitle}</div>
+                                <div class="session-sub">${sessionSummary || `共 ${partsCount} 个 part。点击卡片进入单 part 视图。`}</div>
+                                ${missingOverviewHint}
+                                ${partialOverviewHint}
+                            </div>
+                            <div class="session-sub">当前筛选：${activeArr.length ? graphEscapeHtml(activeArr.join(' / ')) : '（无）'}</div>
+                        </div>
+
+                        <div class="session-grid">
+                            <div class="session-panel">
+                                <div class="hd"><div>共性标签</div><div style="opacity:0.75">可筛选</div></div>
+                                <div class="bd">${chipsHtml}</div>
+                                <div class="hd"><div>学习路径</div><div style="opacity:0.75">可选</div></div>
+                                <div class="bd">${lpHtml || '<div class="session-sub">未提供 learning_path。</div>'}</div>
+                                <div class="hd"><div>Parts 关系</div><div style="opacity:0.75">${relations.length ? relations.length + ' 条' : ''}</div></div>
+                                <div class="bd"><div class="rel-list">${relHtml}</div></div>
+                            </div>
+                            <div class="session-panel">
+                                <div class="hd"><div>Parts 总览</div><div style="opacity:0.75">${filtered.length}/${parts.length}</div></div>
+                                <div class="bd"><div class="part-list">${partsHtml || '<div class="session-sub">未找到可用 part。</div>'}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+	        renderSrt: function() {
+	            DOM.srtBox.innerHTML = Store.srt.map((i,idx) => 
+	                `<div class="srt-item" data-idx="${idx}" onclick="Player.seek(${i.start})">${i.text}</div>`
+	            ).join('');
+            if (DOM.gapBar.parentNode) DOM.gapBar.parentNode.removeChild(DOM.gapBar);
+        },
+
+        renderFeed: function() {
+            if (!Store.slides.length) return;
+            DOM.feedBox.innerHTML = '<div class="feed-container">' + Store.slides.map((s, i) => {
+                const secId = String(s.sec_id || '');
+                let carouselHtml = '';
+                if (s.materials && s.materials.length > 0) {
+                    const itemsHtml = s.materials.map((m, mIdx) => this.createMediaItem(m, i, mIdx, secId)).join('');
+                    // Add Counter and Wrapper
+                    carouselHtml = `
+                    <div class="media-wrapper">
+                        <div class="carousel-counter" id="counter-${i}">1 / ${s.materials.length}</div>
+                        <div class="media-carousel" id="carousel-${i}" onwheel="UI.onCarouselWheel(event, this)">${itemsHtml}</div>
+                    </div>`;
+                }
+                const mdId = `md-${i}`;
+                const hasMd = !!String(s.refined_script || '').trim();
+                return `
+                <div class="feed-card" id="feed-${i}" data-sec-id="${graphEscapeHtml(secId)}" onclick="UI.onCardClick(this, ${s.start})">
+                    <div class="card-top">
+                        <span class="card-title">#${(s.display_index ?? s.index ?? (i+1))} ${s.title}</span>
+                        <span class="card-time" onclick="UI.onTimeClick(event, ${s.start})" title="跳转到开始">${Utils.formatTime(s.start)} - ${Utils.formatTime(s.end)}</span>
+                    </div>
+                    <div class="card-content">
+                        ${carouselHtml}
+                        <div class="summary-block"><strong>💡 摘要：</strong>${s.summary}</div>
+                        <div class="md-script" id="${mdId}" data-md-idx="${i}">${hasMd ? '<div class="md-skeleton">渲染中…</div>' : ''}</div>
+                    </div>
+                </div>`;
+            }).join('') + '</div>';
+
+            this.initLazyMarkdown();
+            this.initLazyMedia();
+        },
+
+        createMediaItem: function(m, secIdx, matIdx, secId) {
+            let styleStr = '';
+            let isCropped = false;
+            
+            // === SMART CROP LOGIC ===
+            if (m.crop) {
+                let x, y, w, h;
+                if (Array.isArray(m.crop)) { [x,y,w,h] = m.crop; } 
+                else { x=m.crop.x; y=m.crop.y; w=m.crop.width; h=m.crop.height; }
+
+                // Assume 1920x1080 if values are pixels (> 1.0)
+                let baseW = 1920, baseH = 1080;
+                
+                let normX = x, normY = y, normW = w, normH = h;
+                if (x > 1 || w > 1) {
+                    normX = x / baseW; normW = w / baseW;
+                    normY = y / baseH; normH = h / baseH;
+                }
+
+                // Zoom Factor = 1 / NormalizedWidth
+                const zoomW = (1 / normW) * 100; 
+                const zoomH = (1 / normH) * 100;
+                
+                // Offset = -(NormalizedX) * ZoomFactor
+                const offX = -(normX) * zoomW;
+                const offY = -(normY) * zoomH;
+
+                styleStr = `width:${zoomW}%; height:${zoomH}%; left:${offX}%; top:${offY}%; --z-width:${zoomW}%; --z-height:${zoomH}%; --z-left:${offX}%; --z-top:${offY}%;`;
+                isCropped = true;
+            }
+            
+            const content = m.type === 'video' 
+                ? `<video src="${m.url || ''}" class="media-content" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><span class="media-badge">🎥 Clip</span>`
+                : `<img src="${m.url || Utils.transparentPixel}" data-mid="${m.id || ''}" class="media-content ${m.url ? '' : 'is-placeholder'}" style="${styleStr}">`;
+            const lightboxRef = (m.type === 'video') ? (m.url || '') : (m.id || '');
+
+            return `
+            <div class="media-item" id="mat-${secIdx}-${matIdx}" 
+                 onclick="UI.onMaterialClick(event, this, ${m.start})"
+                 data-cropped="${isCropped}">
+                <div class="media-thumb-box">${content}</div>
+                <div class="media-zoom" onclick="UI.openLightbox(event, '${lightboxRef}', '${m.type}')" title="放大查看">🔍</div>
+            </div>`;
+        },
+
+        initLazyMarkdown: function() {
+            if (mdObserver) mdObserver.disconnect();
+            const root = DOM.feedBox;
+            if (!root) return;
+
+            mdObserver = new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue;
+                    const el = entry.target;
+                    const idx = Number(el.dataset.mdIdx);
+                    if (Number.isFinite(idx)) this.renderMarkdownIfNeeded(idx);
+                    mdObserver.unobserve(el);
+                }
+            }, { root, rootMargin: '600px 0px', threshold: 0.01 });
+
+            root.querySelectorAll('.md-script[data-md-idx]').forEach(el => mdObserver.observe(el));
+        },
+
+        renderMarkdownIfNeeded: function(idx) {
+            const slide = Store.slides[idx];
+            if (!slide || slide._mdRendered) return;
+            const box = document.getElementById(`md-${idx}`);
+            if (!box) return;
+            const md = String(slide.refined_script || '');
+            if (!md.trim()) { slide._mdRendered = true; box.innerHTML = ''; return; }
+            try {
+                box.innerHTML = marked.parse(md);
+            } catch (e) {
+                box.textContent = md;
+            }
+            slide._mdRendered = true;
+        },
+
+        initLazyMedia: function() {
+            if (mediaObserver) mediaObserver.disconnect();
+            const root = DOM.feedBox;
+            if (!root) return;
+
+            mediaObserver = new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue;
+                    const img = entry.target;
+                    const mid = img.dataset.mid;
+                    if (mid) this.ensureMaterialThumbLoaded(mid, img);
+                    mediaObserver.unobserve(img);
+                }
+            }, { root, rootMargin: '800px 0px', threshold: 0.01 });
+
+            root.querySelectorAll('img.media-content[data-mid]').forEach(img => {
+                const mid = img.dataset.mid;
+                if (!mid) return;
+                if (img.src && !img.classList.contains('is-placeholder')) return;
+                mediaObserver.observe(img);
+            });
+        },
+
+        ensureMaterialThumbLoaded: async function(materialId, imgEl) {
+            if (!materialId) return;
+            const url = await Loader.ensureCaptureUrl(materialId);
+            if (!url) return;
+            if (imgEl && imgEl.dataset && imgEl.dataset.mid === materialId) {
+                imgEl.src = url;
+                imgEl.classList.remove('is-placeholder');
+            }
+        },
+
+	        initGraph: function() {
+	            if (!Store.graph) return;
+	            DOM.cyTip.style.display = 'none';
+	            if (cy) cy.destroy();
+
+	            const elements = graphBuildElements(Store.graph);
+	            cy = cytoscape({
+	                container: document.getElementById('cy'),
+	                elements: elements,
+	                style: [
+	                    {
+	                        selector: 'node',
+	                        style: {
+	                            'background-color': 'rgba(255,255,255,0.96)',
+	                            'border-width': 2,
+	                            'border-color': 'rgba(203,213,225,0.58)',
+	                            color: '#0b1220',
+	                            label: 'data(label)',
+	                            'text-valign': 'center',
+	                            'text-halign': 'center',
+	                            'font-size': '10px',
+	                            'text-wrap': 'wrap',
+	                            'text-max-width': '140px',
+	                            width: 'label',
+	                            height: 'label',
+	                            padding: '12px',
+	                            shape: 'round-rectangle',
+	                            'text-background-color': 'rgba(255,255,255,0.72)',
+	                            'text-background-opacity': 1,
+	                            'text-background-padding': '4px',
+	                            'shadow-blur': 10,
+	                            'shadow-color': 'rgba(0,0,0,0.55)',
+	                            'shadow-opacity': 0.16,
+	                            'shadow-offset-x': 0,
+	                            'shadow-offset-y': 4,
+	                        },
+	                    },
+	                    {
+	                        selector: 'node[type="pillar"]',
+	                        style: {
+	                            width: 260,
+	                            height: 120,
+	                            'font-size': '12px',
+	                            'font-weight': 750,
+	                            padding: '16px',
+	                            'border-width': 3,
+	                            'border-color': 'data(pillar_border)',
+	                            'background-color': 'data(pillar_bg)',
+	                            'text-background-color': 'rgba(255,255,255,0.82)',
+	                        },
+	                    },
+	                    {
+	                        selector: 'node[category="Problem"]',
+	                        style: {
+	                            'border-color': 'rgba(176,140,147,0.82)',
+	                            'background-color': 'rgba(245,238,240,0.96)',
+	                        },
+	                    },
+	                    {
+	                        selector: 'node[category="Solution"]',
+	                        style: {
+	                            'border-color': 'rgba(143,169,156,0.82)',
+	                            'background-color': 'rgba(237,244,240,0.96)',
+	                        },
+	                    },
+	                    {
+	                        selector: 'node[category="Technology"]',
+	                        style: {
+	                            'border-color': 'rgba(138,163,182,0.82)',
+	                            'background-color': 'rgba(236,242,246,0.96)',
+	                        },
+	                    },
+	                    {
+	                        selector: 'node[category="Metric"]',
+	                        style: {
+	                            'border-color': 'rgba(184,169,146,0.84)',
+	                            'background-color': 'rgba(247,244,238,0.96)',
+	                        },
+	                    },
+	                    {
+	                        selector: 'node[category="Concept"]',
+	                        style: {
+	                            'border-color': 'rgba(167,154,175,0.84)',
+	                            'background-color': 'rgba(242,238,246,0.96)',
+	                        },
+	                    },
+	                    {
+	                        selector: ':parent',
+	                        style: {
+	                            'background-opacity': 0.06,
+	                            'text-valign': 'top',
+	                            'text-halign': 'center',
+	                            color: 'rgba(255,255,255,0.92)',
+	                            'font-size': '12px',
+	                            'font-weight': 820,
+	                            'text-max-width': '280px',
+	                            'text-background-color': 'rgba(11,18,32,0.78)',
+	                            'text-background-opacity': 1,
+	                            'text-background-padding': '6px',
+	                            'text-background-shape': 'roundrectangle',
+	                            'text-border-color': 'rgba(255,255,255,0.18)',
+	                            'text-border-width': 1,
+	                            'text-margin-y': -18,
+	                            padding: '26px',
+	                            'border-width': 1,
+	                            'border-color': 'rgba(255,255,255,0.10)',
+	                        },
+	                    },
+	                    {
+	                        selector: ':parent[type="pillar"]',
+	                        style: {
+	                            'background-color': 'data(pillar_bg)',
+	                            'background-opacity': 0.14,
+	                            'border-width': 2,
+	                            'border-color': 'data(pillar_border)',
+	                            'text-background-color': 'data(pillar_label_bg)',
+	                            'text-border-color': 'rgba(255,255,255,0.22)',
+	                        },
+	                    },
+	                    {
+	                        selector: 'node[type="parallel_group"]',
+	                        style: {
+	                            label: '并列',
+	                            'text-opacity': 1,
+	                            'text-halign': 'center',
+	                            'text-valign': 'top',
+	                            'text-margin-x': 0,
+	                            'text-margin-y': 4,
+	                            color: 'rgba(11,18,32,0.78)',
+	                            'font-size': '9px',
+	                            'font-weight': 650,
+	                            'text-background-color': '#ffffff',
+	                            'text-background-opacity': 1,
+	                            'text-background-shape': 'roundrectangle',
+	                            'text-background-padding': '4px',
+	                            'text-border-color': 'data(group_border)',
+	                            'text-border-width': 1,
+	                            'background-color': '#ffffff',
+	                            'background-opacity': 0.1,
+	                            'border-width': 1,
+	                            'border-color': 'data(group_border)',
+	                            'border-style': 'dashed',
+	                            padding: '20px',
+	                            shape: 'round-rectangle',
+	                            events: 'no',
+	                        },
+	                    },
+	                    {
+	                        selector: 'edge',
+	                        style: {
+	                            width: 2,
+	                            'line-color': 'rgba(203,213,225,0.46)',
+	                            'target-arrow-color': 'rgba(203,213,225,0.46)',
+	                            'target-arrow-shape': 'triangle',
+	                            'curve-style': 'bezier',
+	                            label: 'data(label)',
+	                            'font-size': '9px',
+	                            color: 'rgba(226,232,240,0.85)',
+	                            'text-rotation': 'autorotate',
+	                            'text-background-color': 'rgba(11,18,32,0.75)',
+	                            'text-background-opacity': 1,
+	                            'text-background-padding': '3px',
+	                        },
+	                    },
+		                    {
+		                        selector: 'edge[source_is_pillar_parent = 1]',
+		                        style: {
+		                            'source-endpoint': 'outside-to-node-or-label',
+		                        },
+		                    },
+		                    {
+		                        selector: 'edge[target_is_pillar_parent = 1]',
+		                        style: {
+		                            'target-endpoint': 'outside-to-node-or-label',
+		                        },
+		                    },
+		                    {
+		                        selector: 'edge[hide_pillar_child = 1]',
+		                        style: {
+		                            opacity: 0,
+		                            'line-opacity': 0,
+		                            'text-opacity': 0,
+		                            'target-arrow-shape': 'none',
+		                            events: 'no',
+		                        },
+		                    },
+	                    {
+	                        selector: 'edge[level="detail"]',
+	                        style: {
+	                            'text-opacity': 0.85,
+	                            'font-size': '8px',
+	                            'text-rotation': 'none',
+	                            'text-margin-y': -6,
+	                            color: 'rgba(226,232,240,0.78)',
+	                            'text-background-color': 'rgba(11,18,32,0.68)',
+	                            'text-background-opacity': 1,
+	                            'text-background-padding': '2px',
+	                        },
+	                    },
+	                    { selector: 'edge[level="pillar"]', style: { width: 3, 'text-opacity': 1 } },
+	                    {
+	                        selector: 'edge[relation_type="causal"]',
+	                        style: {
+	                            'line-color': 'rgba(176,140,147,0.88)',
+	                            'target-arrow-color': 'rgba(176,140,147,0.88)',
+	                        },
+	                    },
+	                    {
+	                        selector: 'edge[relation_type="sequential"]',
+	                        style: {
+	                            'line-color': 'rgba(138,163,182,0.88)',
+	                            'target-arrow-color': 'rgba(138,163,182,0.88)',
+	                        },
+	                    },
+	                    {
+	                        selector: 'edge[relation_type="compositional"]',
+	                        style: {
+	                            'line-color': 'rgba(143,169,156,0.88)',
+	                            'target-arrow-color': 'rgba(143,169,156,0.88)',
+	                            'line-style': 'dashed',
+	                        },
+	                    },
+	                    {
+	                        selector: 'edge[relation_type="parallel"]',
+	                        style: {
+	                            'line-color': 'rgba(184,169,146,0.88)',
+	                            'line-style': 'dotted',
+	                            'target-arrow-shape': 'none',
+	                        },
+	                    },
+	                    {
+	                        selector: 'edge[hidden_parallel = 1]',
+	                        style: {
+	                            opacity: 0,
+	                            'line-opacity': 0,
+	                            'text-opacity': 0,
+	                            'target-arrow-shape': 'none',
+	                            events: 'no',
+	                        },
+	                    },
+	                    {
+	                        selector: '.time-active',
+	                        style: {
+	                            'border-color': 'rgba(52,211,153,0.95)',
+	                            'border-width': 4,
+	                        },
+	                    },
+	                    {
+	                        selector: '.active-edge',
+	                        style: {
+	                            width: 4,
+	                            'line-color': 'rgba(52,211,153,0.85)',
+	                            'target-arrow-color': 'rgba(52,211,153,0.85)',
+	                            'text-opacity': 1,
+	                        },
+	                    },
+	                    {
+	                        selector: 'node:selected',
+	                        style: {
+	                            'border-width': 5,
+	                            'border-color': 'rgba(251,191,36,0.98)',
+	                        },
+	                    },
+	                ],
+	                layout: {
+	                    name: 'dagre',
+	                    padding: 40,
+	                    nodeDimensionsIncludeLabels: true,
+	                    rankDir: 'TB',
+	                    ranker: 'tight-tree',
+	                    animate: true,
+	                    animationDuration: 220,
+	                },
+	                wheelSensitivity: 0.16,
+	            });
+
+	            this.setupGraphEvents();
+	            setTimeout(() => UI.fitGraph(), 500);
+	        },
+
+		        setupGraphEvents: function() {
+		            const tooltipHideDelayMs = 140;
+		
+		            function clearTooltipHideTimer() {
+		                clearTimeout(tooltipTimeout);
+		            }
+		
+		            function scheduleTooltipHide(delayMs = tooltipHideDelayMs) {
+		                clearTooltipHideTimer();
+		                tooltipTimeout = setTimeout(() => {
+		                    if (tooltipPinned) return;
+		                    DOM.tooltip.style.display = 'none';
+		                }, delayMs);
+		            }
+		
+		            function renderedMousePos(evt) {
+		                const oe = evt.originalEvent;
+		                if (!oe) return null;
+		                const rect = cy.container().getBoundingClientRect();
+		                return { x: oe.clientX - rect.left, y: oe.clientY - rect.top, rect, oe };
+		            }
+		
+		            function isHoveringPillarLabel(node, evt) {
+		                if (!node) return false;
+		                if (node.data('type') !== 'pillar') return false;
+		                const p = renderedMousePos(evt);
+		                if (!p) return false;
+		                const bbAll = node.renderedBoundingBox({ includeLabels: true });
+		                const bbBody = node.renderedBoundingBox({ includeLabels: false });
+		                const pad = 3;
+		                const xOk = p.x >= bbAll.x1 - pad && p.x <= bbAll.x2 + pad;
+		                const labelBottom =
+		                    bbBody.y1 > bbAll.y1 + 1 ? bbBody.y1 + pad : bbBody.y1 + 26;
+		                const yOk = p.y >= bbAll.y1 - pad && p.y <= labelBottom;
+		                return xOk && yOk;
+		            }
+		
+		            function renderNodeTooltip(node, rawNode) {
+		                const highlightMs = (rawNode.references || {}).highlight?.primary_time_ms;
+		                const timeLabel = highlightMs != null ? graphFormatMs(highlightMs) : '-';
+		                const summary = String(rawNode.summary || '').trim();
+		                const cat = String(rawNode.category || '').trim();
+		                const secIds = Array.isArray((rawNode.references || {}).section_ids) ? rawNode.references.section_ids : [];
+		                const secMap = new Map((Store.raw.sections || []).map(s => [s.id, s]));
+		                const secPreview = secIds
+		                    .map(sid => secMap.get(sid))
+		                    .filter(Boolean)
+		                    .slice(0, 4)
+		                    .map(s => `${graphEscapeHtml(s.title || s.id)} (${graphFormatMs(s.start_ms)}-${graphFormatMs(s.end_ms)})`)
+		                    .join('<br/>');
+		
+		                let html = `<div class="tooltip-header">${graphEscapeHtml(rawNode.label || rawNode.id)}</div>`;
+		                html += `<div class="tooltip-item" style="cursor:default;">${cat ? `<span class="tooltip-idx">${graphEscapeHtml(cat)}</span>` : ''} @ ${graphEscapeHtml(timeLabel)}</div>`;
+		                if (summary) html += `<div class="tooltip-item" style="cursor:default; white-space:normal; line-height:1.4;">${graphEscapeHtml(summary)}</div>`;
+		                if (secPreview) html += `<div class="tooltip-item" style="cursor:default; white-space:normal; line-height:1.4;"><div style="opacity:0.85; margin-bottom:4px;">关联 Sections</div>${secPreview}</div>`;
+		
+		                DOM.tooltip.innerHTML = html;
+		                DOM.tooltip.style.display = 'block';
+		
+		                const pos = node.renderedPosition();
+		                const rect = document.getElementById('cy').getBoundingClientRect();
+		                DOM.tooltip.style.left = (rect.left + pos.x + (pos.x > window.innerWidth - 300 ? -260 : 20)) + 'px';
+		                DOM.tooltip.style.top = (rect.top + pos.y - 20) + 'px';
+		
+		                tooltipActiveNodeId = node.id();
+		                tooltipActiveIsPillar = node.data('type') === 'pillar';
+		            }
+		
+		            function maybeShowNodeTooltip(evt, reason) {
+		                const node = evt.target;
+		                const id = node.id();
+		                const rawNode = (Store.graph?.nodes || []).find(n => n.id === id);
+		                if (!rawNode) return;
+		
+		                const type = node.data('type');
+		                if (type === 'pillar') {
+		                    const inLabel = isHoveringPillarLabel(node, evt);
+		                    tooltipActivePillarLabelHover = inLabel;
+		                    if (!inLabel) {
+		                        if (tooltipActiveIsPillar && tooltipActiveNodeId === id && DOM.tooltip.style.display === 'block') {
+		                            scheduleTooltipHide();
+		                        }
+		                        return;
+		                    }
+		
+		                    const alreadySamePillar =
+		                        tooltipActiveIsPillar && tooltipActiveNodeId === id && DOM.tooltip.style.display === 'block';
+		                    if (alreadySamePillar && reason === 'mousemove') return;
+		                } else {
+		                    tooltipActivePillarLabelHover = false;
+		                }
+		
+		                clearTooltipHideTimer();
+		                renderNodeTooltip(node, rawNode);
+		            }
+		
+		            cy.on('mouseover', 'node', (evt) => maybeShowNodeTooltip(evt, 'mouseover'));
+		
+		            cy.on('mousemove', 'node', (evt) => {
+		                const node = evt.target;
+		                if (!node || node.data('type') !== 'pillar') return;
+		                const id = node.id();
+		                const inLabel = isHoveringPillarLabel(node, evt);
+		                if (inLabel) {
+		                    tooltipActivePillarLabelHover = true;
+		                    clearTooltipHideTimer();
+		                    if (!(tooltipActiveIsPillar && tooltipActiveNodeId === id && DOM.tooltip.style.display === 'block')) {
+		                        maybeShowNodeTooltip(evt, 'mousemove');
+		                    }
+		                    return;
+		                }
+		
+		                if (tooltipActiveIsPillar && tooltipActiveNodeId === id && DOM.tooltip.style.display === 'block' && !tooltipPinned) {
+		                    tooltipActivePillarLabelHover = false;
+		                    scheduleTooltipHide();
+		                }
+		            });
+		
+		            cy.on('mouseout', 'node', (evt) => {
+		                tooltipActivePillarLabelHover = false;
+		                const rt = evt.originalEvent?.relatedTarget;
+		                if (rt && (rt === DOM.tooltip || DOM.tooltip.contains(rt))) return;
+		                scheduleTooltipHide();
+		            });
+
+	            cy.on('tap', 'node', (evt) => {
+	                const t = evt.target.data('type');
+	                if (t === 'parallel_group') return;
+	                const rawNode = (Store.graph?.nodes || []).find(n => n.id === evt.target.id());
+	                const highlightMs = rawNode ? (rawNode.references || {}).highlight?.primary_time_ms : null;
+	                if (highlightMs != null) {
+	                    Player.seek(Math.max(0, Number(highlightMs) / 1000));
+                        const secId = rawNode ? ((rawNode.references || {}).section_ids || [])[0] : null;
+                        if (secId) Router.set({ sec: String(secId) }, { replace: true });
+	                    return;
+	                }
+	                const secId = rawNode ? ((rawNode.references || {}).section_ids || [])[0] : null;
+	                const sec = secId ? (Store.raw.sections || []).find(s => s.id === secId) : null;
+	                if (sec && typeof sec.start_ms === 'number') Player.seek(Math.max(0, Number(sec.start_ms) / 1000));
+                    if (secId) Router.set({ sec: String(secId) }, { replace: true });
+	            });
+	        },
+
+        scrollToSection: function(secId) {
+            const target = String(secId || '');
+            if (!target) return false;
+            const idx = (Store.slides || []).findIndex((s) => String(s && s.sec_id) === target);
+            if (idx < 0) return false;
+            try { this.renderMarkdownIfNeeded(idx); } catch (e) {}
+            this.highlight('feed-card', idx, DOM.feedBox, true);
+            return true;
+        },
+
+        onCardClick: function(el, time) {
+            if (!el.classList.contains('active')) Player.seek(time);
+            const secId = el && el.dataset ? String(el.dataset.secId || '') : '';
+            if (secId) Router.set({ sec: secId }, { replace: true });
+        },
+        onTimeClick: function(evt, time) {
+            evt.stopPropagation();
+            Player.seek(time);
+            const card = evt && evt.target && evt.target.closest ? evt.target.closest('.feed-card') : null;
+            const secId = card && card.dataset ? String(card.dataset.secId || '') : '';
+            if (secId) Router.set({ sec: secId }, { replace: true });
+        },
+        onMaterialClick: function(evt, el, time) {
+            evt.stopPropagation();
+            if (!el.classList.contains('active')) Player.seek(time);
+            const card = el && el.closest ? el.closest('.feed-card') : null;
+            const secId = card && card.dataset ? String(card.dataset.secId || '') : '';
+            if (secId) Router.set({ sec: secId }, { replace: true });
+        },
+        onCarouselWheel: function(evt, el) {
+            const absX = Math.abs(evt.deltaX);
+            const absY = Math.abs(evt.deltaY);
+
+            // 仅在明确的横向意图时拦截（包含 Shift+竖滚做横向）
+            const horizontalIntent = absX > absY || (evt.shiftKey && absY > absX);
+            if (!horizontalIntent) return; // 竖向滚动让浏览器继续冒泡/滚动整页
+
+            const multiplier = evt.deltaMode === 1 ? 16 : (evt.deltaMode === 2 ? el.clientWidth : 1);
+
+            // Trackpad 原生横向滑动：交给浏览器原生处理以保留惯性
+            if (evt.deltaMode === 0 && absX > absY) return;
+
+            evt.preventDefault();
+            const delta = absX > absY ? evt.deltaX : evt.deltaY;
+            el.scrollLeft += delta * multiplier;
+        },
+        jumpToSlide: function(time) { Player.seek(time); DOM.tooltip.style.display = 'none'; },
+        fitGraph: function() {
+            if (!cy) return;
+            const pad = graphFitPaddingPx();
+            try { cy.fit(cy.elements(), pad); } catch (e) { try { cy.fit(); } catch (e2) {} }
+        },
+
+        openLightbox: async function(evt, ref, type) {
+            evt.stopPropagation();
+            const img = document.getElementById('lightbox-img');
+            const vid = document.getElementById('lightbox-video');
+            const dl = document.getElementById('lightbox-download');
+
+            let url = ref || '';
+            if (type !== 'video' && ref && Store.raw && Store.raw.captures && Store.raw.captures[ref]) {
+                url = await Loader.ensureCaptureUrl(ref) || '';
+            }
+            if (!url) return;
+
+            if (type === 'video') { img.style.display='none'; vid.style.display='block'; vid.src=url; vid.play(); } 
+            else { vid.pause(); vid.style.display='none'; img.style.display='block'; img.src=url; }
+            
+            dl.href = url; dl.download = type === 'video' ? 'clip.mp4' : 'slide.png';
+            DOM.lightbox.style.display = 'flex';
+        },
+        closeLightbox: function() { DOM.lightbox.style.display='none'; document.getElementById('lightbox-video').pause(); },
+
+        updateHighlights: function(t, isSeek) {
+            if (DOM.video.paused) DOM.gapBar.classList.add('paused'); else DOM.gapBar.classList.remove('paused');
+
+            const sIdx = Utils.findActiveIntervalIndex(Store.srt, t);
+            if (sIdx !== -1) {
+                if (Store.state.inGap) { DOM.gapBar.style.display = 'none'; Store.state.inGap = false; }
+                if (sIdx !== Store.state.lastSrtIdx) { this.highlight('srt-item', sIdx, DOM.srtBox, true); Store.state.lastSrtIdx = sIdx; }
+            } else if (!Store.state.inGap || isSeek) {
+                Store.state.inGap = true; DOM.gapBar.style.display = 'block';
+                const next = Utils.findNextStartIndex(Store.srt, t);
+                this.clearHighlight(DOM.srtBox, 'srt-item'); Store.state.lastSrtIdx = -1;
+                if (next === 0) DOM.srtBox.prepend(DOM.gapBar);
+                else if (next === -1) DOM.srtBox.append(DOM.gapBar);
+                else DOM.srtBox.insertBefore(DOM.gapBar, DOM.srtBox.children[next]);
+                DOM.gapBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            const fIdx = Store.slides.findIndex(s => t >= s.start && t < s.end);
+            if (fIdx === -1 && Store.state.lastFeedIdx !== -1) {
+                this.clearHighlight(DOM.feedBox, 'feed-card');
+                this.updateGraphNodes([]);
+                Store.state.lastFeedIdx = -1;
+                return;
+            }
+
+            if (fIdx !== -1) {
+                if (fIdx !== Store.state.lastFeedIdx || isSeek) {
+                    this.highlight('feed-card', fIdx, DOM.feedBox, true);
+                    Store.state.lastFeedIdx = fIdx;
+	                    const secId = Store.slides[fIdx].sec_id || (Store.raw.sections[fIdx] ? Store.raw.sections[fIdx].id : null);
+	                    this.updateGraphNodes(secId ? (Store.sectionToNodes[secId] || []) : []);
+                    this.renderMarkdownIfNeeded(fIdx);
+                    if (fIdx + 1 < Store.slides.length) this.renderMarkdownIfNeeded(fIdx + 1);
+                    if (fIdx - 1 >= 0) this.renderMarkdownIfNeeded(fIdx - 1);
+	                }
+                
+                const slide = Store.slides[fIdx];
+                if (slide.materials) {
+                    let mIdx = slide.materials.findIndex(m => t >= m.start && t < m.end);
+                    if (mIdx !== -1) {
+                        const mKey = `${fIdx}-${mIdx}`;
+                        if (Store.state.lastMatKey !== mKey) {
+                            const carousel = document.getElementById(`carousel-${fIdx}`);
+                            if (carousel) this.highlight('media-item', mIdx, carousel, false); // Use center align for carousel
+                            const thumb = document.querySelector(`#mat-${fIdx}-${mIdx} img.media-content[data-mid]`);
+                            if (thumb && thumb.classList.contains('is-placeholder')) this.ensureMaterialThumbLoaded(thumb.dataset.mid, thumb);
+                            
+                            // Update Counter
+                            const counter = document.getElementById(`counter-${fIdx}`);
+                            if (counter) counter.innerText = `${mIdx + 1} / ${slide.materials.length}`;
+
+                            Store.state.lastMatKey = mKey;
+                        }
+                    }
+                }
+            }
+        },
+
+        highlight: function(cls, idx, box, alignTop) {
+            const oldActive = box.querySelector('.' + cls + '.active');
+            const els = box.getElementsByClassName(cls);
+            for(let el of els) el.classList.remove('active');
+            if (els[idx]) {
+                const target = els[idx];
+                target.classList.add('active');
+
+                if (cls === 'feed-card' && oldActive !== target) {
+                    const stamp = String(Date.now());
+                    target.dataset.activating = stamp;
+                    setTimeout(() => {
+                        if (target.dataset.activating === stamp) delete target.dataset.activating;
+                    }, 700);
+                }
+
+                if (box.classList.contains('media-carousel')) {
+                    this.centerCarouselItem(box, target, 'smooth');
+
+                    const card = box.closest('.feed-card');
+                    const stamp = card && card.dataset ? card.dataset.activating : null;
+                    if (stamp) {
+                        const recenter = () => {
+                            if (!card) return;
+                            if (card.dataset.activating !== stamp) return;
+                            this.centerCarouselItem(box, target, 'smooth');
+                        };
+                        requestAnimationFrame(recenter);
+                        setTimeout(recenter, 560);
+                    }
+                } else {
+                    target.scrollIntoView({ behavior: 'smooth', block: alignTop ? 'start' : 'center' });
+                }
+            }
+        },
+        centerCarouselItem: function(carouselEl, itemEl, behavior = 'auto') {
+            if (!carouselEl || !itemEl) return;
+            const carRect = carouselEl.getBoundingClientRect();
+            const itemRect = itemEl.getBoundingClientRect();
+            if (!carRect.width || !itemRect.width) return;
+            const delta = (itemRect.left + itemRect.width / 2) - (carRect.left + carRect.width / 2);
+            if (Math.abs(delta) < 1) return;
+            try {
+                carouselEl.scrollBy({ left: delta, behavior });
+            } catch (e) {
+                carouselEl.scrollLeft += delta;
+            }
+        },
+        clearHighlight: function(box, cls) {
+            const old = box.querySelector('.' + cls + '.active');
+            if (old) old.classList.remove('active');
+        },
+	        updateGraphNodes: function(ids) {
+	            if (!cy) return;
+	            const sorted = [...ids].sort();
+	            if (JSON.stringify(sorted) === JSON.stringify(Store.state.activeNodeIds)) return;
+	            Store.state.activeNodeIds = sorted;
+	            cy.batch(() => {
+	                cy.elements().removeClass('time-active active-edge');
+	                if (ids.length) {
+	                    const n = cy.nodes().filter(x => ids.includes(x.id()));
+	                    n.addClass('time-active');
+	                    n.connectedEdges().filter(e => ids.includes(e.source().id())).addClass('active-edge');
+	                }
+	            });
+	        }
+	    };
+
+    const Loader = {
+	        loadZip: async function(el) {
+	            const file = el && el.files ? el.files[0] : null;
+	            if (!file) return;
+	            try {
+	                await this.loadZipFile(file, { showAlert: true });
+	            } finally {
+	                try { el.value = ''; } catch (e) {}
+	            }
+	        },
+	        loadZipFile: async function(file, opts = {}) {
+	            if (!file) return;
+	            const showAlert = opts && typeof opts.showAlert === 'boolean' ? opts.showAlert : true;
+	            console.log("Loading ZIP...");
+	            Utils.resetLoadedMarks();
+	            const zipSpan = DOM.btns.zip ? DOM.btns.zip.querySelector('span') : null;
+	            const zipOrigText = zipSpan ? zipSpan.textContent : '📦 导入 .tkd.zip';
+	            Utils.setZipLoading(true, '📦 导入中…');
+	            UI.showLanding({ primary: '正在解析…', secondary: '正在读取压缩包并解析产物，请稍候。' });
+
+	            try {
+	                Store.resetAll();
+	                this._resetPartUi('正在解析…');
+
+	                const zip = new JSZip();
+	                const contents = await zip.loadAsync(file);
+
+	                const fileNames = [];
+	                for (const [name, entry] of Object.entries(contents.files || {})) {
+	                    if (entry && !entry.dir) fileNames.push(name);
+	                }
+
+	                const sessionHandled = await this.loadSessionBundleIfPossible(contents, fileNames, file.name, zipOrigText, { showAlert });
+	                if (sessionHandled) return;
+
+	                await this.loadPartZipContents(contents, { zipOrigText, zipLabel: file.name, showAlert });
+	            } catch (e) {
+	                console.error(e);
+	                if (showAlert) alert("ZIP 解析失败: " + (e && e.message ? e.message : String(e)));
+	                UI.showLanding({
+	                    primary: '拖拽导入',
+	                    secondary: '把 <code>.tkd.zip</code> 拖到这里（也可点“选择文件”）',
+	                });
+	            } finally {
+	                Utils.setZipLoading(false, zipOrigText);
+	            }
+	        },
+	
+        _resetPartUi: function(tipText) {
+            if (cy) { try { cy.destroy(); } catch (e) {} cy = null; }
+            try { DOM.video.pause(); DOM.video.removeAttribute('src'); DOM.video.load(); } catch (e) {}
+            DOM.srtBox.innerHTML = '<div style="text-align:center; color:#555; margin-top:20px">' + (tipText || '等待导入数据...') + '</div>';
+            DOM.feedBox.innerHTML = '<div style="text-align:center; color:#555; margin-top:50px">' + (tipText || '等待导入数据...') + '</div>';
+            DOM.cyTip.style.display = 'block';
+            DOM.cyTip.textContent = tipText || '等待导入数据...';
+        },
+
+        fetchJson: async function(url) {
+            const resp = await fetch(url, { cache: "no-cache" });
+            if (!resp.ok) throw new Error(`读取失败：${url}（HTTP ${resp.status}）`);
+            return await resp.json();
+        },
+        fetchArrayBuffer: async function(url) {
+            const resp = await fetch(url, { cache: "no-cache" });
+            if (!resp.ok) throw new Error(`下载失败：${url}（HTTP ${resp.status}）`);
+            return await resp.arrayBuffer();
+        },
+
+        loadSessionById: async function(sessionId, opts = {}) {
+            const showAlert = opts && typeof opts.showAlert === 'boolean' ? opts.showAlert : true;
+            const sid = String(sessionId || '').trim();
+            if (!sid) throw new Error("session 为空");
+
+            const manifest = Store.site && Store.site.manifest ? Store.site.manifest : (await Router.ensureManifest());
+            const sessions = manifest && Array.isArray(manifest.sessions) ? manifest.sessions : [];
+            const sess = sessions.find((s) => String(s && s.id) === sid);
+            if (!sess) throw new Error(`manifest 未找到 session=${sid}`);
+
+            Utils.resetLoadedMarks();
+            Utils.setZipLoading(true, '📦 加载中…');
+            UI.showLanding({ primary: '正在加载总览…', secondary: `session=${sid}` });
+
+            Store.resetAll();
+            this._resetPartUi('正在加载…');
+
+            Store.session = {
+                id: sid,
+                file_name: String(sess.title || sid),
+                zip: null,
+                videos_base_url: sess.videos_base_url ? String(sess.videos_base_url) : null,
+                index: null,
+                overview: null,
+                part_archives: [],
+                active_common_tags: new Set(),
+                current_part: null,
+            };
+
+            const [index, overview] = await Promise.all([
+                sess.index_json ? this.fetchJson(String(sess.index_json)) : Promise.resolve(null),
+                sess.overview_json ? this.fetchJson(String(sess.overview_json)) : Promise.resolve(null),
+            ]);
+
+            Store.session.index = index;
+            Store.session.overview = overview;
+
+            const partsBaseUrl = sess.parts_base_url ? String(sess.parts_base_url) : '';
+            const archives = [];
+            const indexParts = index && Array.isArray(index.parts) ? index.parts : [];
+            indexParts.forEach((p) => {
+                const idx = Number(p && p.index);
+                const name = String(p && (p.archive || p.name || ''));
+                if (!Number.isFinite(idx) || !name) return;
+                const url = partsBaseUrl ? (partsBaseUrl + name) : null;
+                const vbase = Store.session.videos_base_url ? String(Store.session.videos_base_url) : '';
+                const vname = `part_${String(idx).padStart(2, '0')}_low.mp4`;
+                const video_url = vbase ? (vbase + vname) : null;
+                archives.push({ index: idx, name, url, video_url });
+            });
+            archives.sort((a, b) => a.index - b.index);
+            Store.session.part_archives = archives;
+
+            UI.renderSessionOverview();
+            UI.showSessionOverview();
+            const zipSpan = DOM.btns.zip ? DOM.btns.zip.querySelector('span') : null;
+            const zipLabel = `📦 已加载：${Store.session.file_name || sid}`;
+            if (zipSpan) zipSpan.textContent = zipLabel;
+            Utils.setZipLoading(false, zipLabel);
+            Utils.markLoaded('zip');
+            if (showAlert) setTimeout(() => alert("会话总览加载成功！"), 0);
+        },
+
+        loadSessionBundleIfPossible: async function(contents, fileNames, fileName, zipOrigText, opts = {}) {
+            const showAlert = opts && typeof opts.showAlert === 'boolean' ? opts.showAlert : true;
+            const lowerNames = fileNames.map((n) => String(n || ""));
+            const sessionIndexPath = lowerNames.find((n) => n.toLowerCase().endsWith("session_index.json"));
+            const sessionOverviewPath = lowerNames.find((n) => n.toLowerCase().endsWith("session_overview.json"));
+            const partArchives = lowerNames.filter((n) => /\.tkd\.zip$/i.test(n));
+
+            if (!sessionIndexPath && !sessionOverviewPath && partArchives.length < 2) return false;
+
+            Store.resetPartView();
+            Store.session = {
+                zip: contents,
+                file_name: fileName || '',
+                index: null,
+                overview: null,
+                part_archives: [],
+                active_common_tags: new Set(),
+                current_part: null,
+            };
+
+            // 读取 session_index.json（可选）
+            if (sessionIndexPath && contents.file(sessionIndexPath)) {
+                try {
+                    Store.session.index = JSON.parse(await contents.file(sessionIndexPath).async("string"));
+                } catch (e) {
+                    console.warn("session_index.json parse failed:", e);
+                }
+            }
+
+            // 读取 session_overview.json（可选，但推荐）
+            if (sessionOverviewPath && contents.file(sessionOverviewPath)) {
+                try {
+                    Store.session.overview = JSON.parse(await contents.file(sessionOverviewPath).async("string"));
+                } catch (e) {
+                    console.warn("session_overview.json parse failed:", e);
+                }
+            }
+
+            // 解析 part archives：优先来自 session_index.json，否则按文件名推断 part_xx
+            const archives = [];
+            const indexParts = Store.session.index && Array.isArray(Store.session.index.parts) ? Store.session.index.parts : null;
+            if (indexParts) {
+                indexParts.forEach((p) => {
+                    const idx = Number(p && p.index);
+                    const name = String(p && (p.archive || p.name || ''));
+                    if (Number.isFinite(idx) && name) archives.push({ index: idx, name });
+                });
+            } else {
+                partArchives.forEach((name) => {
+                    const m = name.match(/_part_(\d+)\.tkd\.zip$/i) || name.match(/part_(\d+)\.tkd\.zip$/i) || name.match(/part_(\d+)\.zip$/i);
+                    const idx = m ? Number(m[1]) : NaN;
+                    if (Number.isFinite(idx)) archives.push({ index: idx, name });
+                });
+            }
+            archives.sort((a, b) => a.index - b.index);
+            Store.session.part_archives = archives;
+
+            UI.renderSessionOverview();
+            UI.showSessionOverview();
+            Utils.setZipLoading(false, zipOrigText);
+            Utils.markLoaded('zip');
+            if (showAlert) setTimeout(() => alert("会话包导入成功！"), 0);
+            return true;
+        },
+
+        loadPartFromSession: async function(partIndex, opts = {}) {
+            if (!Store.session) throw new Error("未加载 session");
+            const preserveSec = opts && typeof opts.preserveSec === 'boolean' ? opts.preserveSec : false;
+            const idx = Number(partIndex);
+            if (!Number.isFinite(idx)) throw new Error("part 索引非法");
+            const entryInfo = (Store.session.part_archives || []).find((p) => Number(p.index) === idx);
+            if (!entryInfo || !entryInfo.name) throw new Error("未找到该 part 的归档文件");
+
+            const zipSpan = DOM.btns.zip ? DOM.btns.zip.querySelector('span') : null;
+            const zipOrigText = zipSpan ? zipSpan.textContent : '📦 导入 .tkd.zip';
+            Utils.setZipLoading(true, `📦 加载 part_${String(idx).padStart(2,'0')}…`);
+
+            Store.resetPartView();
+            UI.enterPartView();
+            this._resetPartUi('正在解析…');
+
+            let buf = null;
+            if (entryInfo.url) {
+                buf = await this.fetchArrayBuffer(String(entryInfo.url));
+            } else {
+                if (!Store.session.zip) throw new Error("缺少 part 数据源（manifest 未提供 part url）");
+                const entry = Store.session.zip.file(entryInfo.name);
+                if (!entry) throw new Error("归档文件不存在: " + entryInfo.name);
+                buf = await entry.async("arraybuffer");
+            }
+
+            const inner = new JSZip();
+            const contents = await inner.loadAsync(buf);
+            Store.session.current_part = idx;
+            await this.loadPartZipContents(contents, { zipOrigText, zipLabel: entryInfo.name, showAlert: false });
+            Utils.setZipLoading(false, zipOrigText);
+
+            try {
+                const cur = Router.read();
+                if (cur && cur.session) {
+                    Router.set({ part: idx, sec: preserveSec ? (cur.sec ?? null) : null }, { replace: true });
+                }
+            } catch (e) {}
+        },
+
+        loadPartZipContents: async function(contents, opts) {
+            const zipOrigText = (opts && opts.zipOrigText) ? opts.zipOrigText : '📦 导入 .tkd.zip';
+            const showAlert = !!(opts && opts.showAlert);
+
+            Store.resetPartView();
+            Store.zip = contents;
+            UI.enterPartView();
+
+            const fileNames = [];
+            for (const [name, entry] of Object.entries(contents.files || {})) {
+                if (entry && !entry.dir) fileNames.push(name);
+            }
+
+            const inFinal = (name) => name.includes("/final/") || name.startsWith("final/");
+            const inChunk = (name) => name.includes("/chunk_") || name.startsWith("chunk_");
+            const chunkKeyFromPath = (p) => {
+                const m = p.match(/(^|\/)(chunk_[^/]+)\//);
+                return m ? m[2] : null;
+            };
+            const slideKeyFromPath = (p) => {
+                const m = p.match(/(^|\/)(slide_\d+)\//i);
+                return m ? m[2] : null;
+            };
+            const filenameNoExt = (p) => {
+                const name = p.split('/').pop() || "";
+                return name.replace(/\.[^.]+$/i, "");
+            };
+
+            const videoCandidates = [];
+            const srtCandidates = [];
+            const narFiles = [];
+            const refFiles = [];
+            const cropFiles = [];
+            const captureById = {};
+            let secManifestAligned = null;
+            let secManifestPlan = null;
+            let secManifestAny = null;
+            let graphFinal = null;
+            let graphAny = null;
+            let materialsFinal = null;
+            let materialsAny = null;
+            let materialManifestAny = null;
+
+            for (const name of fileNames) {
+                const lower = name.toLowerCase();
+                const isFinal = inFinal(name);
+                const isChunk = inChunk(name);
+
+                if (lower.endsWith("part_low.mp4")) videoCandidates.push({ rank: isFinal ? 0 : 10, name });
+                else if (lower.endsWith("part_high.mp4")) videoCandidates.push({ rank: isFinal ? 1 : 11, name });
+                else if (lower.endsWith("chunk_low.mp4")) videoCandidates.push({ rank: isChunk ? 2 : 12, name });
+                else if (lower.endsWith("chunk_high.mp4")) videoCandidates.push({ rank: isChunk ? 3 : 13, name });
+
+                if (lower.endsWith("part_subtitles_aligned.srt")) srtCandidates.push({ rank: isFinal ? 0 : 10, name });
+                else if (lower.endsWith("part_subtitles.srt")) srtCandidates.push({ rank: isFinal ? 1 : 11, name });
+                else if (lower.endsWith("chunk_subtitles_aligned.srt")) srtCandidates.push({ rank: isChunk ? 2 : 12, name });
+                else if (lower.endsWith("chunk_subtitles.srt")) srtCandidates.push({ rank: isChunk ? 3 : 13, name });
+
+                if (isFinal && lower.endsWith("section_manifest_aligned.json") && !secManifestAligned) secManifestAligned = name;
+                if (isFinal && lower.endsWith("section_manifest.json") && !secManifestPlan) secManifestPlan = name;
+                if (!secManifestAny && lower.endsWith("section_manifest.json")) secManifestAny = name;
+
+                if (isFinal && /_merge_slides\/artifacts\/materials\.json$/i.test(name) && !materialsFinal) materialsFinal = name;
+                if (!materialsAny && /materials\.json$/i.test(name)) materialsAny = name;
+                if (!materialManifestAny && lower.endsWith("material_manifest.json")) materialManifestAny = name;
+
+                if (isFinal && lower.endsWith("section_graph.json") && !graphFinal) graphFinal = name;
+                if (!graphAny && lower.endsWith("section_graph.json")) graphAny = name;
+
+                if (isFinal && /_narrative\.json$/i.test(name) && /_narrative_gen\//i.test(name)) narFiles.push(name);
+                if (isFinal && /_refined\.md$/i.test(name) && /_script_refine\//i.test(name)) refFiles.push(name);
+
+                if (/\/\d+_crop_decision\//.test(name) && lower.endsWith("step.json")) cropFiles.push(name);
+                if (/\/\d+_capture_frame\//.test(name) && /slide_\d+\.png$/i.test(name)) {
+                    const chunkKey = chunkKeyFromPath(name);
+                    const slideId = filenameNoExt(name);
+                    if (chunkKey && slideId) captureById[`${chunkKey}/${slideId}`] = name;
+                }
+            }
+
+            const pickBest = (items) => {
+                if (!items.length) return null;
+                items.sort((a, b) => a.rank - b.rank);
+                return items[0].name;
+            };
+
+            const videoPath = pickBest(videoCandidates);
+            const srtPath = pickBest(srtCandidates);
+            if (!srtPath) throw new Error("未找到字幕产物（part_subtitles_aligned.srt 或 chunk_subtitles_aligned.srt）");
+            const secManifestPath = secManifestAligned || secManifestPlan || secManifestAny;
+            if (!secManifestPath) throw new Error("未找到 section_manifest（请先跑 final DAG：merge_subtitles/merge_slides/section_*，再重新打包）");
+            const graphPath = graphFinal || graphAny;
+            const materialsPath = materialsFinal || materialsAny;
+
+            // Subtitles（final 优先）
+            const vidEntry = videoPath ? contents.file(videoPath) : null;
+            const srtEntry = contents.file(srtPath);
+            const secEntry = contents.file(secManifestPath);
+            if (!srtEntry) throw new Error("字幕文件不存在: " + srtPath);
+            if (!secEntry) throw new Error("section_manifest 不存在: " + secManifestPath);
+
+            const videoBlobPromise = vidEntry ? vidEntry.async("blob") : null;
+            const [srtText, secText] = await Promise.all([srtEntry.async("string"), secEntry.async("string")]);
+
+            try {
+                const json = JSON.parse(secText);
+                Store.raw.sections = json.sections || [];
+            } catch (e) {
+                throw new Error("section_manifest 解析失败: " + secManifestPath);
+            }
+
+            // Materials timeline（来自 merge_slides 的 materials.json 或旧 material_manifest.json）
+            Store.raw.materialsById = {};
+            const materialsEntry = materialsPath ? contents.file(materialsPath) : null;
+            const materialManifestEntry = materialManifestAny ? contents.file(materialManifestAny) : null;
+            if (materialsEntry) {
+                try {
+                    const json = JSON.parse(await materialsEntry.async("string"));
+                    const items = Array.isArray(json.materials) ? json.materials : (Array.isArray(json) ? json : []);
+                    items.forEach((m) => {
+                        if (!m || !m.id) return;
+                        Store.raw.materialsById[String(m.id)] = m;
+                    });
+                } catch (e) {
+                    console.warn("materials.json parse failed:", materialsPath, e);
+                }
+            } else if (materialManifestEntry) {
+                try {
+                    const json = JSON.parse(await materialManifestEntry.async("string"));
+                    const items = Array.isArray(json.materials) ? json.materials : (Array.isArray(json) ? json : []);
+                    items.forEach((m) => {
+                        if (!m || !m.id) return;
+                        Store.raw.materialsById[String(m.id)] = m;
+                    });
+                } catch (e) {
+                    console.warn("material_manifest.json parse failed:", materialManifestAny, e);
+                }
+            }
+
+            Store.srt = Utils.parseSRT(srtText);
+            UI.renderSrt();
+            Utils.markLoaded('srt');
+
+            // Timeline：final 默认使用 section_manifest 的 start_ms/end_ms（不依赖 slide_timeline.srt）
+            Store.raw.timeline = [];
+
+            // Captures（只建索引，不提前解压 blob）
+            Store.raw.captures = {};
+            for (const [id, p] of Object.entries(captureById)) {
+                Store.raw.captures[id] = { url: null, type: 'image', zip_path: p };
+            }
+            if (Object.keys(Store.raw.captures).length) Utils.markLoaded('imgs');
+
+            // Narratives（final）
+            Store.raw.narratives = {};
+            for (let idx = 0; idx < narFiles.length; idx++) {
+                const p = narFiles[idx];
+                const data = JSON.parse(await contents.file(p).async("string"));
+                const m = p.match(/section_(.+)_narrative\.json$/i);
+                const id = data.id || (m ? m[1] : `sec_${idx + 1}`);
+                Store.raw.narratives[id] = data;
+                if (idx % 8 === 7) await Utils.nextFrame();
+            }
+
+            // Refined scripts（final）
+            Store.raw.refined = {};
+            for (let idx = 0; idx < refFiles.length; idx++) {
+                const p = refFiles[idx];
+                const txt = await contents.file(p).async("string");
+                const m = p.match(/section_(.+)_refined\.md$/i);
+                const id = m ? m[1] : `sec_${idx + 1}`;
+                Store.raw.refined[id] = txt;
+                if (idx % 8 === 7) await Utils.nextFrame();
+            }
+
+            // Crop decisions（跨 chunk：key 必须包含 chunk）
+            Store.raw.crops = {};
+            for (let idx = 0; idx < cropFiles.length; idx++) {
+                const p = cropFiles[idx];
+                const data = JSON.parse(await contents.file(p).async("string"));
+                const chunkKey = chunkKeyFromPath(p);
+                const slideId = slideKeyFromPath(p) || filenameNoExt(p);
+                if (chunkKey && slideId) {
+                    const id = `${chunkKey}/${slideId}`;
+                    if (data.output) Store.raw.crops[id] = data.output;
+                }
+                if (idx % 12 === 11) await Utils.nextFrame();
+            }
+
+            // Graph（延迟初始化 Cytoscape，避免阻塞导入主路径）
+            if (graphPath && contents.file(graphPath)) {
+                try {
+                    const json = JSON.parse(await contents.file(graphPath).async("string"));
+                    Store.graph = json.graph_data || json;
+                    Utils.buildMapping();
+                    Utils.markLoaded('graph');
+                    const init = () => { try { UI.initGraph(); } catch (e) { console.error(e); } };
+                    if (typeof requestIdleCallback === 'function') requestIdleCallback(init, { timeout: 800 });
+                    else setTimeout(init, 60);
+                } catch (e) {
+                    console.warn("Graph parse failed:", e);
+                }
+            }
+
+            // Video（通常是最慢的）
+            const externalVideoUrl = (() => {
+                try {
+                    if (!Store.session || !Number.isFinite(Number(Store.session.current_part))) return null;
+                    const idx = Number(Store.session.current_part);
+                    const info = (Store.session.part_archives || []).find((p) => Number(p && p.index) === idx);
+                    return info && info.video_url ? String(info.video_url) : null;
+                } catch (e) {
+                    return null;
+                }
+            })();
+
+            if (videoBlobPromise) {
+                videoBlobPromise
+                    .then((blob) => {
+                        DOM.video.src = Store.trackUrl(URL.createObjectURL(blob));
+                        Utils.markLoaded('video');
+                    })
+                    .catch((e) => console.warn("Video blob load failed:", e));
+            } else if (externalVideoUrl) {
+                DOM.video.src = externalVideoUrl;
+                Utils.markLoaded('video');
+            } else {
+                try { DOM.video.removeAttribute('src'); DOM.video.load(); } catch (e) {}
+            }
+
+            Loader.rebuildTimeline();
+            if (Store.slides.length) Utils.markLoaded('feed');
+            Utils.setZipLoading(false, zipOrigText);
+            Utils.markLoaded('zip');
+
+            await Utils.nextFrame();
+            UI.updateHighlights(0, true);
+            if (showAlert) setTimeout(() => alert("导入成功！"), 0);
+        },
+
+        ensureCaptureUrl: async function(materialId) {
+            if (!materialId) return null;
+            const cap = Store.raw && Store.raw.captures ? Store.raw.captures[materialId] : null;
+            if (!cap) return null;
+            if (cap.url) return cap.url;
+            if (cap._promise) return cap._promise;
+            if (!Store.zip || !cap.zip_path) return null;
+            const entry = Store.zip.file(cap.zip_path);
+            if (!entry) return null;
+            cap._promise = entry.async("blob")
+                .then((blob) => {
+                    const url = Store.trackUrl(URL.createObjectURL(blob));
+                    cap.url = url;
+                    return url;
+                })
+                .catch((err) => {
+                    console.warn("Failed to load capture", materialId, err);
+                    return null;
+                });
+            return cap._promise;
+        },
+
+        parseTimelineSrt: function(txt) {
+            const items = Utils.parseSRT(txt);
+            return items.map((i, idx) => {
+                const lines = i.text.split('\n').map(l => l.trim()).filter(Boolean);
+                let title = '';
+                let summary = '';
+                lines.forEach(line => {
+                    if (!title && line.toLowerCase().startsWith('title:')) {
+                        title = line.slice(6).trim();
+                    } else if (!summary) {
+                        summary = line;
+                    } else {
+                        summary += '\n' + line;
+                    }
+                });
+                if (!title && lines.length) { title = lines[0]; summary = lines.slice(1).join('\n'); }
+                return { id: `sec_${idx + 1}`, start: i.start, end: i.end, title, summary };
+            });
+        },
+
+        rebuildTimeline: function() {
+            const secList = Array.isArray(Store.raw.sections) ? Store.raw.sections : [];
+            const timeline = Array.isArray(Store.raw.timeline) ? Store.raw.timeline : [];
+            const count = Math.max(secList.length, timeline.length);
+            const narMap = Store.raw.narratives || {};
+            const refinedMap = Store.raw.refined || {};
+            const captureMap = Store.raw.captures || {};
+            const cropMap = Store.raw.crops || {};
+            const materialsById = Store.raw.materialsById || {};
+
+            Store.slides = [];
+            for (let i = 0; i < count; i++) {
+                const sec = secList[i] || {};
+                const tl = timeline[i] || {};
+                const id = sec.id || tl.id || `sec_${i + 1}`;
+                const secStart = (typeof tl.start === 'number') ? tl.start : ((sec.start_ms || 0) / 1000);
+                const secEnd = (typeof tl.end === 'number') ? tl.end : ((sec.end_ms || 0) / 1000);
+                const nar = narMap[id] || {};
+                const title = tl.title || sec.title || nar.title || `Section ${i + 1}`;
+                const summary = nar.summary || sec.summary_hint || tl.summary || '';
+                const refined_script = refinedMap[id] || nar.refined_script || nar.script || '';
+
+                const materials = [];
+                (sec.material_ids || []).forEach(mid => {
+                    const asset = captureMap[mid];
+                    const meta = materialsById[mid] || null;
+                    if (asset) {
+                        const mStart = (meta && typeof meta.start_ms === 'number') ? (Number(meta.start_ms) / 1000) : secStart;
+                        const mEnd = (meta && typeof meta.end_ms === 'number') ? (Number(meta.end_ms) / 1000) : secEnd;
+                        materials.push({
+                            id: mid,
+                            url: asset.url,
+                            type: asset.type,
+                            start: mStart,
+                            end: mEnd,
+                            crop: cropMap[mid] || null
+                        });
+                    }
+                });
+
+	                Store.slides.push({
+	                    sec_id: id,
+	                    index: i,
+	                    display_index: i + 1,
+	                    start: secStart,
+	                    end: secEnd,
+                    title,
+                    summary,
+                    refined_script,
+                    materials
+                });
+            }
+            UI.renderFeed();
+        },
+
+        loadVideo: function(el) { if(el.files[0]) { DOM.video.src = Store.trackUrl(URL.createObjectURL(el.files[0])); Store.resetState(); Utils.markLoaded('video'); }},
+        loadSrt: function(el) { if(el.files[0]) { const r = new FileReader(); r.onload=e=>{Store.srt=Utils.parseSRT(e.target.result); UI.renderSrt(); Utils.markLoaded('srt');}; r.readAsText(el.files[0]); }},
+        loadFeedJson: function(el) { if(el.files[0]) { const r = new FileReader(); r.onload=e=>{try{const j=JSON.parse(e.target.result); Store.slides=j.slides||j; Store.slides.forEach(s=>{const p=s.time_range.split('-').map(t=>Utils.parseTimeStr(t.trim()));s.start=p[0];s.end=p[1]}); UI.renderFeed(); Utils.markLoaded('feed');}catch(e){alert('JSON Error');}}; r.readAsText(el.files[0]); }},
+        loadGraphJson: function(el) { if(el.files[0]) { const r = new FileReader(); r.onload=e=>{try{const j=JSON.parse(e.target.result); Store.graph=j.graph_data||j; Utils.buildMapping(); UI.initGraph(); Utils.markLoaded('graph');}catch(e){alert('Graph Error');}}; r.readAsText(el.files[0]); }},
+        loadImages: function(el) { 
+            const fs = Array.from(el.files);
+            if (fs.length) {
+                fs.forEach(f => {
+                    let type = f.type.startsWith('video') ? 'video' : 'image';
+                    Store.assets[f.name] = { url: Store.trackUrl(URL.createObjectURL(f)), type: type };
+                });
+                Utils.markLoaded('imgs');
+                if (Store.slides.length) UI.renderFeed(); 
+            }
+        }
+    };
+
+    const Router = {
+        manifestUrl: 'data/manifest.json',
+        _popBound: false,
+
+        read: function() {
+            const u = new URL(window.location.href);
+            const session = (u.searchParams.get('session') || '').trim() || null;
+            const sec = (u.searchParams.get('sec') || '').trim() || null;
+            const partStr = u.searchParams.get('part');
+            const partNum = partStr == null ? null : Number(partStr);
+            const part = Number.isFinite(partNum) ? partNum : null;
+            return { session, part, sec };
+        },
+
+        set: function(patch, opts = {}) {
+            const replace = opts && typeof opts.replace === 'boolean' ? opts.replace : true;
+            const u = new URL(window.location.href);
+            const keys = ['session', 'part', 'sec'];
+            keys.forEach((k) => {
+                if (!Object.prototype.hasOwnProperty.call(patch, k)) return;
+                const v = patch[k];
+                if (v === null || v === undefined || v === '') u.searchParams.delete(k);
+                else u.searchParams.set(k, String(v));
+            });
+            const qs = u.searchParams.toString();
+            const href = u.pathname + (qs ? '?' + qs : '') + u.hash;
+            if (replace) history.replaceState({}, '', href);
+            else history.pushState({}, '', href);
+        },
+
+        ensureManifest: async function() {
+            if (Store.site && Store.site.manifest) return Store.site.manifest;
+            const resp = await fetch(this.manifestUrl, { cache: "no-cache" });
+            if (!resp.ok) throw new Error(`manifest 读取失败：${this.manifestUrl}（HTTP ${resp.status}）`);
+            const json = await resp.json();
+            if (!Store.site) Store.site = { manifest: null };
+            Store.site.manifest = json;
+            return json;
+        },
+
+        _scrollToSectionWithRetry: function(secId) {
+            const target = String(secId || '').trim();
+            if (!target) return;
+            let tries = 0;
+            const tick = () => {
+                tries += 1;
+                if (UI.scrollToSection(target)) return;
+                if (tries < 18) setTimeout(tick, 120);
+            };
+            setTimeout(tick, 80);
+        },
+
+        bootstrap: async function() {
+            if (!this._popBound) {
+                this._popBound = true;
+                window.addEventListener('popstate', () => {
+                    this.bootstrap().catch((e) => console.warn(e));
+                });
+            }
+
+            const p = this.read();
+            if (!p.session) {
+                UI.showLanding({
+                    primary: '请选择会场',
+                    secondary: '<a href="index.html" style="color: rgba(10,132,255,0.92); text-decoration: none; font-weight: 700;">打开入口页 index.html</a>',
+                });
+                return;
+            }
+
+            try {
+                await this.ensureManifest();
+                await Loader.loadSessionById(p.session, { showAlert: false });
+                this.set({ session: p.session }, { replace: true });
+
+                if (p.part != null) {
+                    await Loader.loadPartFromSession(p.part, { preserveSec: true });
+                    if (p.sec) this._scrollToSectionWithRetry(p.sec);
+                }
+            } catch (e) {
+                console.warn(e);
+                UI.showLanding({
+                    primary: '自动加载失败',
+                    secondary: '可继续手动导入 .tkd.zip（右上角“导入 .tkd.zip”）。',
+                });
+            }
+        },
+    };
+
+    const Player = {
+        seek: function(t) { DOM.video.currentTime = t; DOM.video.play(); }
+    };
+
+		    $(function() {
+		        DOM.video.addEventListener('timeupdate', () => UI.updateHighlights(DOM.video.currentTime, false));
+		        DOM.video.addEventListener('seeked', () => UI.updateHighlights(DOM.video.currentTime, true));
+		        DOM.video.addEventListener('pause', () => DOM.gapBar.classList.add('paused'));
+		        DOM.video.addEventListener('play', () => DOM.gapBar.classList.remove('paused'));
+		        
+		        DOM.tooltip.addEventListener('mouseenter', () => { tooltipPinned = true; clearTimeout(tooltipTimeout); });
+		        DOM.tooltip.addEventListener('mouseleave', () => { tooltipPinned = false; if (!tooltipActivePillarLabelHover) DOM.tooltip.style.display='none'; });
+		        DOM.lightbox.addEventListener('click', (e) => { if(e.target===DOM.lightbox) UI.closeLightbox(); });
+		        document.addEventListener('keydown', (e) => { if(e.key==="Escape") UI.closeLightbox(); });
+
+	        let resizeTimer;
+	        $(window).resize(function() { 
+	            clearTimeout(resizeTimer); 
+	            resizeTimer = setTimeout(function() { if (window.myLayout && window.myLayout.updateSize) window.myLayout.updateSize(); }, 100); 
+	        });
+                UI.showLanding();
+                Router.bootstrap();
+	    });
+
+</script>
+</body>
+</html>

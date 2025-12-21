@@ -1,0 +1,80 @@
+{
+  "parts": [
+    {
+      "index": 5,
+      "type_tag": "AI操作系统与解决方案",
+      "summary": "本环节重点介绍了openEuler作为智能操作系统的战略布局与实践成果。openEuler通过AI赋能核心能力，推出了基于轻量化领域模型的智能调优方案，实现了在纯CPU环境下的高效部署与推理，效果媲美商用大模型。同时，发布了全栈开源AI解决方案Intelligence BoM 2511版本（代号“敲鱼面”），旨在降低企业AI落地门槛。演示环节展示了基于Dify的多模型协同Agent开发流程，并介绍了从云端扩展至端侧的Intelligence BoM Robot具身智能机器人软件栈，构建了全新的AI机器人框架。",
+      "common_tags": [],
+      "domain_tags": [
+        "操作系统",
+        "人工智能",
+        "大模型应用",
+        "智能运维",
+        "机器人技术",
+        "开源社区"
+      ],
+      "tech_tags": [
+        "openEuler",
+        "Intelligence BoM",
+        "Dify",
+        "Agent",
+        "Qwen",
+        "DeepSeek",
+        "A-Tune",
+        "具身智能",
+        "领域模型",
+        "RAG",
+        "云边协同",
+        "昇腾"
+      ],
+      "title": "openEuler智能操作系统与Intelligence BoM开源AI解决方案"
+    }
+  ],
+  "common_tags": [],
+  "learning_path": [
+    {
+      "title": "openEuler AI全栈概览",
+      "parts": [
+        5
+      ],
+      "reason": "本环节作为独立的AI操作系统与解决方案介绍，涵盖了从底层OS优化到上层Agent开发及具身智能的全栈内容。"
+    }
+  ],
+  "relations": [],
+  "session": "day2_main",
+  "session_summary": "本场次聚焦于openEuler在人工智能时代的演进，重点展示了其作为智能操作系统的核心能力升级，以及通过Intelligence BoM全栈开源方案降低企业AI应用门槛的实践，涵盖了智能调优、Agent开发及具身智能等前沿领域。",
+  "session_title": "openEuler智能操作系统演进与AI实践",
+  "_meta": {
+    "generated_at": "2025-12-17T13:39:07.493171",
+    "expected_parts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "available_parts": [
+      5
+    ],
+    "missing_parts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "is_partial": true,
+    "part_digest_order": 9
+  }
+}

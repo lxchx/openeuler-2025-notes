@@ -1,0 +1,125 @@
+{
+  "parts": [
+    {
+      "index": 2,
+      "type_tag": "技术研究报告",
+      "summary": "针对推荐大模型嵌入层面临的容量墙与带宽墙挑战，本报告深入分析了多层级存储（HBM/PM/SSD）在软硬交互中的效率瓶颈。提出了Fleche自识别Kernel融合、PetPS网卡聚集机制及MaxEmbed选择性副本布局三项核心技术，分别解决了GPU交互开销大、PM访问延迟高及SSD读放大严重的问题。基于此研发的RecStore系统已在快手等企业落地，显著降低硬件成本并提升服务吞吐，同时探讨了生成式推荐（GR）带来的新挑战。",
+      "common_tags": [
+        "软硬协同优化",
+        "系统架构创新",
+        "AI落地实践"
+      ],
+      "domain_tags": [
+        "AI基础设施",
+        "存储系统",
+        "推荐系统"
+      ],
+      "tech_tags": [
+        "推荐大模型",
+        "Embedding Layer",
+        "参数存储",
+        "HBM",
+        "持久性内存",
+        "SSD",
+        "Kernel Fusion",
+        "SG-DMA",
+        "RecStore",
+        "Fleche",
+        "PetPS",
+        "MaxEmbed"
+      ],
+      "title": "面向推荐大模型的参数存储系统研究与RecStore落地"
+    },
+    {
+      "index": 3,
+      "type_tag": "技术研究报告",
+      "summary": "针对APT攻击隐蔽性强及规则检测局限，李锭老师分享了端到端AI检测系统SysArmor。该方案通过溯源图建模系统行为，利用在线斯坦纳树算法实现无监督日志过滤，并结合大模型与gIoC中间表示自动生成攻击报告。通过分片式架构与DPU硬件加速，系统将性能损耗控制在3%以内，实现了低开销、高精度的自动化检测，目前已在openEuler社区开源。",
+      "common_tags": [
+        "软硬协同优化",
+        "系统架构创新",
+        "AI落地实践"
+      ],
+      "domain_tags": [
+        "网络安全",
+        "入侵检测",
+        "系统安全",
+        "AI安全"
+      ],
+      "tech_tags": [
+        "APT攻击",
+        "溯源图",
+        "无监督学习",
+        "在线斯坦纳树",
+        "VAE",
+        "大语言模型",
+        "gIoC",
+        "DPU硬件加速",
+        "SysArmor",
+        "openEuler"
+      ],
+      "title": "AI端到端复杂攻击检测技术与SysArmor系统实践"
+    }
+  ],
+  "common_tags": [
+    {
+      "tag": "软硬协同优化",
+      "parts": [
+        2,
+        3
+      ],
+      "description": "结合硬件特性（如SSD/PM/DPU）与软件算法优化，突破系统性能瓶颈。"
+    },
+    {
+      "tag": "系统架构创新",
+      "parts": [
+        2,
+        3
+      ],
+      "description": "针对特定场景痛点（推荐存储/安全检测）提出的端到端系统设计方案。"
+    },
+    {
+      "tag": "AI落地实践",
+      "parts": [
+        2,
+        3
+      ],
+      "description": "涉及AI模型在实际生产环境中的部署、支撑或应用（如推荐模型支撑或LLM辅助检测）。"
+    }
+  ],
+  "learning_path": [
+    {
+      "title": "系统创新与软硬协同",
+      "parts": [
+        2,
+        3
+      ],
+      "reason": "先了解支撑大规模AI推荐系统的存储优化技术，再学习利用AI与硬件加速解决网络安全问题的实践，全面掌握系统级创新思路。"
+    }
+  ],
+  "relations": [
+    {
+      "source": 2,
+      "target": 3,
+      "relation_type": "parallel",
+      "label": "跨领域系统实践",
+      "reason": "两者均展示了在不同领域（推荐系统vs网络安全）利用软硬协同技术解决性能与效率问题的创新实践。"
+    }
+  ],
+  "session": "ScienceEducationInnovation",
+  "session_summary": "本场会议聚焦于计算机系统领域的科研创新与落地实践。报告涵盖了面向推荐大模型的高效参数存储系统RecStore，通过多层级存储与软硬协同解决容量带宽瓶颈；以及基于溯源图与AI的端到端攻击检测系统SysArmor，利用DPU加速实现低开销的高精度防护。两个报告共同展示了如何通过架构创新与硬件优化解决工业界的实际挑战。",
+  "session_title": "AI基础设施与安全系统创新实践",
+  "_meta": {
+    "generated_at": "2025-12-19T03:06:53.729545",
+    "expected_parts": [
+      2,
+      3
+    ],
+    "available_parts": [
+      2,
+      3
+    ],
+    "missing_parts": [],
+    "is_partial": false,
+    "part_digest_order": 9
+  }
+}

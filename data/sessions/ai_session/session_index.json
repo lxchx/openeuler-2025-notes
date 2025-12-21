@@ -1,0 +1,56 @@
+{
+  "format": "talkdistill_session_bundle_v1",
+  "session": "ai_session",
+  "generated_at": "2025-12-16T05:07:24.274120",
+  "overview": "session_overview.json",
+  "parts": [
+    {
+      "index": 0,
+      "archive": "ai_session_part_00.tkd.zip"
+    },
+    {
+      "index": 1,
+      "archive": "ai_session_part_01.tkd.zip"
+    },
+    {
+      "index": 2,
+      "archive": "ai_session_part_02.tkd.zip"
+    },
+    {
+      "index": 3,
+      "archive": "ai_session_part_03.tkd.zip"
+    },
+    {
+      "index": 4,
+      "archive": "ai_session_part_04.tkd.zip"
+    },
+    {
+      "index": 5,
+      "archive": "ai_session_part_05.tkd.zip"
+    },
+    {
+      "index": 6,
+      "archive": "ai_session_part_06.tkd.zip"
+    },
+    {
+      "index": 7,
+      "archive": "ai_session_part_07.tkd.zip"
+    },
+    {
+      "index": 8,
+      "archive": "ai_session_part_08.tkd.zip"
+    },
+    {
+      "index": 9,
+      "archive": "ai_session_part_09.tkd.zip"
+    },
+    {
+      "index": 10,
+      "archive": "ai_session_part_10.tkd.zip"
+    },
+    {
+      "index": 11,
+      "archive": "ai_session_part_11.tkd.zip"
+    }
+  ]
+}

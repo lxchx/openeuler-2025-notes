@@ -1,0 +1,45 @@
+{
+  "site_title": "openEuler 2025 Notes",
+  "sessions": [
+    {
+      "id": "day1_main",
+      "title": "Day 1 主会场",
+      "kicker": "主会场",
+      "parts_count": 2,
+      "index_json": "data/sessions/day1_main/session_index.json",
+      "overview_json": "data/sessions/day1_main/session_overview.json",
+      "parts_base_url": "packages/parts-lite/",
+      "videos_base_url": "packages/videos/day1_main/"
+    },
+    {
+      "id": "day2_main",
+      "title": "Day 2 主会场",
+      "kicker": "主会场",
+      "parts_count": 1,
+      "index_json": "data/sessions/day2_main/session_index.json",
+      "overview_json": "data/sessions/day2_main/session_overview.json",
+      "parts_base_url": "packages/parts-lite/",
+      "videos_base_url": "packages/videos/day2_main/"
+    },
+    {
+      "id": "ScienceEducationInnovation",
+      "title": "Day 1 科教创新会场",
+      "kicker": "分会场",
+      "parts_count": 2,
+      "index_json": "data/sessions/ScienceEducationInnovation/session_index.json",
+      "overview_json": "data/sessions/ScienceEducationInnovation/session_overview.json",
+      "parts_base_url": "packages/parts-lite/",
+      "videos_base_url": "packages/videos/ScienceEducationInnovation/"
+    },
+    {
+      "id": "ai_session",
+      "title": "Day 2 AI 分会场",
+      "kicker": "分会场",
+      "parts_count": 12,
+      "index_json": "data/sessions/ai_session/session_index.json",
+      "overview_json": "data/sessions/ai_session/session_overview.json",
+      "parts_base_url": "packages/parts-lite/",
+      "videos_base_url": "packages/videos/ai_session/"
+    }
+  ]
+}

@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>openEuler 2025 Notes</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070a12;
+        --panel: rgba(255, 255, 255, 0.06);
+        --panel-2: rgba(255, 255, 255, 0.04);
+        --border: rgba(255, 255, 255, 0.12);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.66);
+        --accent: #0a84ff;
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC",
+          "Microsoft YaHei", "Segoe UI", sans-serif;
+        background: radial-gradient(1200px 760px at 20% 0%, rgba(255, 255, 255, 0.05), transparent 62%),
+          radial-gradient(1000px 720px at 80% 100%, rgba(255, 255, 255, 0.03), transparent 62%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 38%), var(--bg);
+        color: var(--text);
+      }
+      header {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(18px) saturate(180%);
+        -webkit-backdrop-filter: blur(18px) saturate(180%);
+        background: rgba(10, 12, 16, 0.72);
+        border-bottom: 1px solid var(--border);
+        z-index: 10;
+      }
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 18px 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .brand h1 {
+        font-size: 16px;
+        margin: 0;
+        letter-spacing: 0.2px;
+        font-weight: 760;
+      }
+      .brand .sub {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      main .wrap {
+        padding-top: 22px;
+        padding-bottom: 40px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      @media (max-width: 720px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, var(--panel), var(--panel-2));
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 14px 14px 12px;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.12s ease, border-color 0.12s ease;
+      }
+      .card:hover {
+        transform: translateY(-1px);
+        border-color: rgba(10, 132, 255, 0.55);
+      }
+      .kicker {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.62);
+        letter-spacing: 0.2px;
+      }
+      .title {
+        margin-top: 6px;
+        font-size: 15px;
+        font-weight: 760;
+      }
+      .meta {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--border);
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: rgba(10, 132, 255, 0.1);
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .hint {
+        margin-top: 18px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .parts {
+        margin-top: 16px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        overflow: hidden;
+      }
+      .parts .hd {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .parts .hd .t {
+        font-size: 13px;
+        font-weight: 780;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .parts .hd .s {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      details.part-group {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 10px 14px;
+      }
+      details.part-group:first-of-type {
+        border-top: none;
+      }
+      details.part-group > summary {
+        cursor: pointer;
+        list-style: none;
+        font-weight: 760;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      details.part-group > summary::-webkit-details-marker {
+        display: none;
+      }
+      .part-list {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .part-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.88);
+        text-decoration: none;
+        font-size: 12px;
+        transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+      }
+      .part-link:hover {
+        transform: translateY(-1px);
+        border-color: rgba(10, 132, 255, 0.55);
+        background: rgba(10, 132, 255, 0.12);
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
+        font-size: 0.95em;
+        color: rgba(255, 255, 255, 0.88);
+      }
+      .err {
+        margin-top: 10px;
+        font-size: 12px;
+        color: rgba(255, 160, 160, 0.92);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="brand">
+          <h1>openEuler 2025 Notes</h1>
+          <div class="sub">选择会场进入 TalkDistill 总览</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div id="grid" class="grid"></div>
+        <div id="err" class="err" style="display: none"></div>
+        <div id="parts" class="parts" style="display: none"></div>
+      </div>
+    </main>
+
+    <script>
+      const defaultSessions = [
+        { id: "day1_main", title: "Day 1 主会场", kicker: "主会场", parts_hint: "" },
+        { id: "day2_main", title: "Day 2 主会场", kicker: "主会场", parts_hint: "" },
+        { id: "ScienceEducationInnovation", title: "Day 1 科教创新会场", kicker: "分会场", parts_hint: "" },
+        { id: "ai_session", title: "Day 2 AI 分会场", kicker: "分会场", parts_hint: "" },
+      ];
+
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function sessionHref(id) {
+        const u = new URL("show.html", window.location.href);
+        u.searchParams.set("session", id);
+        return u.pathname + u.search;
+      }
+
+      function partHref(sessionId, partIndex) {
+        const u = new URL("show.html", window.location.href);
+        u.searchParams.set("session", sessionId);
+        u.searchParams.set("part", String(partIndex));
+        return u.pathname + u.search;
+      }
+
+      function render(sessions) {
+        const grid = document.getElementById("grid");
+        grid.innerHTML = sessions
+          .map((s) => {
+            const title = s.title || s.id;
+            const kicker = s.kicker || s.venue || "会场";
+            const parts = Number.isFinite(Number(s.parts_count)) ? Number(s.parts_count) : null;
+            return `
+              <a class="card" href="${escapeHtml(sessionHref(s.id))}">
+                <div class="kicker">${escapeHtml(kicker)}</div>
+                <div class="title">${escapeHtml(title)}</div>
+                <div class="meta">
+                  <span class="pill">进入总览</span>
+                  ${parts != null ? `<span>Parts：${parts}</span>` : ""}
+                </div>
+              </a>
+            `;
+          })
+          .join("");
+      }
+
+      function renderParts(groups) {
+        const box = document.getElementById("parts");
+        if (!box) return;
+        if (!Array.isArray(groups) || !groups.length) {
+          box.style.display = "none";
+          return;
+        }
+
+        box.style.display = "block";
+        const groupsHtml = groups
+          .map((g) => {
+            const links = (g.parts || [])
+              .map(
+                (p) =>
+                  `<a class="part-link" href="${escapeHtml(partHref(g.id, p.index))}">${escapeHtml(
+                    `part_${String(p.index).padStart(2, "0")}`
+                  )}${p.title ? `<span style="opacity:0.82">·</span><span style="opacity:0.82">${escapeHtml(p.title)}</span>` : ""}</a>`
+              )
+              .join("");
+            const count = (g.parts || []).length;
+            return `
+              <details class="part-group" open>
+                <summary>
+                  <span>${escapeHtml(g.title || g.id)}</span>
+                  <span style="opacity:0.7">Parts：${count}</span>
+                </summary>
+                <div class="part-list">${links || `<span style="opacity:0.7">未找到 parts。</span>`}</div>
+              </details>
+            `;
+          })
+          .join("");
+
+        box.innerHTML = `
+          <div class="hd">
+            <div class="t">Parts 快速跳转</div>
+            <div class="s"></div>
+          </div>
+          ${groupsHtml}
+        `;
+      }
+
+      async function fetchJson(url) {
+        const resp = await fetch(url, { cache: "no-cache" });
+        if (!resp.ok) throw new Error(`fetch failed: ${url} (HTTP ${resp.status})`);
+        return await resp.json();
+      }
+
+      async function main() {
+        try {
+          const resp = await fetch("data/manifest.json", { cache: "no-cache" });
+          if (!resp.ok) throw new Error(`manifest 读取失败：HTTP ${resp.status}`);
+          const manifest = await resp.json();
+          const sessions = Array.isArray(manifest.sessions) ? manifest.sessions : defaultSessions;
+          const hydrated = sessions.map((s) => ({
+            ...s,
+            parts_count: Array.isArray(s.parts) ? s.parts.length : s.parts_count,
+          }));
+          render(hydrated);
+
+          const settled = await Promise.allSettled(
+            hydrated.map(async (s) => {
+              if (!s || !s.id || !s.overview_json) return null;
+              const overview = await fetchJson(String(s.overview_json));
+              const parts = Array.isArray(overview && overview.parts) ? overview.parts : [];
+              const list = parts
+                .map((p) => ({
+                  index: Number(p && (p.index ?? p.part_index ?? p.part)),
+                  title: String((p && p.title) || "") || "",
+                }))
+                .filter((p) => Number.isFinite(p.index))
+                .sort((a, b) => a.index - b.index);
+
+              const limit = String(s.id) === "ai_session" ? 12 : 20;
+              return { id: String(s.id), title: String(s.title || s.id), parts: list.slice(0, limit) };
+            })
+          );
+          const groups = settled
+            .map((r) => (r.status === "fulfilled" ? r.value : null))
+            .filter(Boolean);
+          renderParts(groups);
+        } catch (e) {
+          render(defaultSessions);
+          const err = document.getElementById("err");
+          err.style.display = "block";
+          err.textContent = "未能读取 data/manifest.json，已使用内置会场列表。";
+          renderParts([]);
+        }
+      }
+
+      main();
+    </script>
+  </body>
+</html>

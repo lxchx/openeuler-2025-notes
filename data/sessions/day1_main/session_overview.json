@@ -1,0 +1,162 @@
+{
+  "parts": [
+    {
+      "index": 5,
+      "type_tag": "操作系统演进与AI战略",
+      "summary": "本环节回顾了 openEuler 过去五年成为中国新增市场份额第一的成就，并发布未来五年战略：从跟随转向引领，拥抱超级节点与 AI。重点介绍了为应对算力匹配挑战而构建的操作系统新底座，发布首个支持超级节点的版本 24.03 LTS SP3。同时推出 Intelligence Boom 开源 AI 解决方案，将 AI 应用于社区治理及开发全流程，并凭借 MICA 架构拓展嵌入式与工控领域，推动 OT/IT 融合与产业智能化转型。",
+      "common_tags": [
+        "openEuler生态",
+        "AI基础设施",
+        "异构算力与架构",
+        "智能化运维与治理"
+      ],
+      "domain_tags": [
+        "操作系统",
+        "人工智能",
+        "开源社区",
+        "工业控制",
+        "边缘计算"
+      ],
+      "tech_tags": [
+        "openEuler",
+        "超级节点",
+        "Intelligence Boom",
+        "MICA架构",
+        "AI for OS",
+        "24.03 LTS SP3",
+        "嵌入式系统",
+        "OT/IT融合",
+        "异构算力"
+      ],
+      "title": "openEuler引领AI时代操作系统与超级节点构建"
+    },
+    {
+      "index": 7,
+      "type_tag": "智算集群架构",
+      "summary": "本环节深入解析了百度如何构建和优化超万卡规模的智算集群。面对AI算力需求的爆发式增长，百度基于BaiduLinux CloudOS与openEuler深度融合，实现了从芯片到框架的全栈技术自主创新。内容涵盖了通过Scale-out与Scale-up双向扩展突破算力瓶颈的架构革新，利用全链路协同优化与一站式智能运维平台提升算力效能的实践，以及通过异构机密计算方案保障数据安全的创新举措。此外，还展示了百度与开源社区在操作系统演进及生态共建方面的成果。",
+      "common_tags": [
+        "openEuler生态",
+        "AI基础设施",
+        "异构算力与架构",
+        "智能化运维与治理"
+      ],
+      "domain_tags": [
+        "AI基础设施",
+        "云计算",
+        "高性能计算",
+        "系统安全",
+        "开源生态"
+      ],
+      "tech_tags": [
+        "BaiduLinux CloudOS",
+        "openEuler",
+        "Scale-out",
+        "Scale-up",
+        "RDMA",
+        "异构机密计算",
+        "机密直通技术",
+        "智能运维",
+        "超节点",
+        "Arm CCA",
+        "XPU-Link"
+      ],
+      "title": "百度超万卡智算集群架构演进与全栈优化实践"
+    }
+  ],
+  "common_tags": [
+    {
+      "tag": "openEuler生态",
+      "parts": [
+        5,
+        7
+      ],
+      "description": "涉及openEuler操作系统的核心演进、社区贡献或基于openEuler的商业发行版应用。"
+    },
+    {
+      "tag": "AI基础设施",
+      "parts": [
+        5,
+        7
+      ],
+      "description": "探讨支撑大规模人工智能模型训练与推理的底层算力、集群架构及操作系统底座。"
+    },
+    {
+      "tag": "异构算力与架构",
+      "parts": [
+        5,
+        7
+      ],
+      "description": "涉及针对不同芯片架构（如Arm、XPU等）的适配、优化及超级节点/超节点架构设计。"
+    },
+    {
+      "tag": "智能化运维与治理",
+      "parts": [
+        5,
+        7
+      ],
+      "description": "利用AI技术提升系统自身的运维效率、故障定位能力或社区治理水平。"
+    }
+  ],
+  "learning_path": [
+    {
+      "title": "从OS底座到大规模智算集群",
+      "parts": [
+        5,
+        7
+      ],
+      "reason": "先了解openEuler作为通用底座的最新战略与核心能力（Part 5），再深入学习百度如何基于该底座构建大规模智算集群的具体实践（Part 7）。"
+    }
+  ],
+  "relations": [
+    {
+      "source": 5,
+      "target": 7,
+      "relation_type": "continuation",
+      "label": "底座与应用",
+      "reason": "Part 5 讲述 openEuler 社区层面的通用底座能力与战略，Part 7 展示百度基于该底座在智算场景的深度应用与扩展。"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "relation_type": "parallel",
+      "label": "AI赋能系统",
+      "reason": "两者都强调了AI技术反哺系统：Part 5 侧重社区治理与开发流程，Part 7 侧重集群的智能运维与故障定位。"
+    }
+  ],
+  "session": "day1_main",
+  "session_summary": "本场次聚焦于操作系统在AI时代的演进与应用。首先由openEuler社区阐述了从跟随到引领的战略转变，发布了支持超级节点的新版本及AI赋能社区的解决方案；随后百度分享了基于openEuler底座构建超万卡智算集群的实战经验，涵盖架构优化、安全计算及智能运维。整体展示了开源操作系统如何作为底座支撑大规模AI基础设施的发展。",
+  "session_title": "AI时代的操作系统演进与智算基础设施实践",
+  "_meta": {
+    "generated_at": "2025-12-17T12:02:10.482075",
+    "expected_parts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "available_parts": [
+      5,
+      7
+    ],
+    "missing_parts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6,
+      8,
+      9,
+      10
+    ],
+    "is_partial": true,
+    "part_digest_order": 9
+  }
+}

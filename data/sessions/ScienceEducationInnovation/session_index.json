@@ -1,0 +1,16 @@
+{
+  "format": "talkdistill_session_bundle_v1",
+  "session": "ScienceEducationInnovation",
+  "generated_at": "2025-12-19T03:07:39.447017",
+  "overview": "session_overview.json",
+  "parts": [
+    {
+      "index": 2,
+      "archive": "ScienceEducationInnovation_part_02.tkd.zip"
+    },
+    {
+      "index": 3,
+      "archive": "ScienceEducationInnovation_part_03.tkd.zip"
+    }
+  ]
+}
