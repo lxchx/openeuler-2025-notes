@@ -3019,7 +3019,13 @@
                 const secEnd = (typeof tl.end === 'number') ? tl.end : ((sec.end_ms || 0) / 1000);
                 const nar = Utils.pickBySecId(narMap, id) || {};
                 const title = tl.title || sec.title || nar.title || `Section ${i + 1}`;
-                const summary = nar.summary || sec.summary_hint || tl.summary || '';
+                const summary =
+                    nar.summary ||
+                    sec.summary_hint ||
+                    sec.lead_text ||
+                    sec.tail_text ||
+                    tl.summary ||
+                    '';
                 const refined_script = Utils.pickBySecId(refinedMap, id) || nar.refined_script || nar.script || '';
 
                 const materials = [];
