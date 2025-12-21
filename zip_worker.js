@@ -34,6 +34,18 @@ function filenameNoExt(p) {
   const name = String(p).split('/').pop() || '';
   return name.replace(/\.[^.]+$/i, '');
 }
+function secIdAliases(id) {
+  const s = String(id || '').trim();
+  if (!s) return [];
+  const m = s.match(/^(sec_)(\d+)$/i);
+  if (!m) return [s];
+  const prefix = m[1];
+  const num = String(Number(m[2]));
+  if (!Number.isFinite(Number(num))) return [s];
+  const pad2 = num.padStart(2, '0');
+  const pad3 = num.padStart(3, '0');
+  return Array.from(new Set([s, `${prefix}${num}`, `${prefix}${pad2}`, `${prefix}${pad3}`]));
+}
 
 function pickBest(items) {
   if (!items.length) return null;
@@ -120,6 +132,28 @@ async function parsePartZip(buf, zipId) {
   const [srtText, secText] = await Promise.all([srtEntry.async('string'), secEntry.async('string')]);
   const secJson = JSON.parse(secText);
   const sections = Array.isArray(secJson.sections) ? secJson.sections : [];
+
+  if (secManifestPlan && secManifestPlan !== secManifestPath && contents.file(secManifestPlan)) {
+    try {
+      const planJson = JSON.parse(await contents.file(secManifestPlan).async('string'));
+      const planSections = Array.isArray(planJson.sections) ? planJson.sections : [];
+      if (planSections.length && sections.length) {
+        const map = {};
+        planSections.forEach((s) => {
+          if (!s || !s.id) return;
+          const hint = String(s.summary_hint || '').trim();
+          if (!hint) return;
+          secIdAliases(s.id).forEach((key) => { map[key] = hint; });
+        });
+        sections.forEach((s) => {
+          const cur = String(s.summary_hint || '').trim();
+          if (cur) return;
+          const key = String(s.id || '');
+          if (map[key]) s.summary_hint = map[key];
+        });
+      }
+    } catch (_e) {}
+  }
 
   // Materials timeline
   const materialsById = {};
@@ -239,4 +273,3 @@ self.onmessage = async (evt) => {
     fail(msg.id, e && e.message ? e.message : String(e));
   }
 };
-

@@ -430,6 +430,13 @@
         .md-script h1, .md-script h2 { color: rgba(255,255,255,0.92); margin: 15px 0 8px; font-weight: 750; font-size: 1.1em; border-bottom: 1px dashed rgba(255,255,255,0.14); }
         .md-script ul { padding-left: 20px; }
         .summary-block { background: rgba(0,0,0,0.20); border-left: 3px solid rgba(52,199,89,0.75); padding: 10px; font-size: 12px; color: rgba(255,255,255,0.84); margin-bottom: 10px; border-radius: var(--card-radius); }
+        .text-hit {
+            background: rgba(255, 214, 102, 0.35);
+            color: rgba(255,255,255,0.95);
+            padding: 1px 4px;
+            border-radius: 6px;
+            box-shadow: inset 0 0 0 1px rgba(255, 214, 102, 0.4);
+        }
         .md-script a { color: rgba(10,132,255,0.92); text-decoration: none; border-bottom: 1px solid rgba(10,132,255,0.20); }
         .md-script a:hover { border-bottom-color: rgba(10,132,255,0.55); color: rgba(120,190,255,0.95); }
         .md-script code {
@@ -1109,6 +1116,79 @@
         formatTime: function(sec) {
             const m = Math.floor(sec / 60); const s = Math.floor(sec % 60);
             return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        },
+        escapeRegExp: function(str) {
+            return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        },
+        extractSummaryFromMd: function(md) {
+            const lines = String(md || '')
+                .split('\n')
+                .map((l) => l.trim())
+                .filter(Boolean);
+            for (const line of lines) {
+                if (line.startsWith('```')) continue;
+                if (/^#{1,6}\s/.test(line)) continue;
+                if (/^[-*+]\s+/.test(line)) continue;
+                if (/^\d+\.\s+/.test(line)) continue;
+                if (/^>\s+/.test(line)) continue;
+                let text = line
+                    .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+                    .replace(/[`*_]/g, '')
+                    .trim();
+                if (text) return text;
+            }
+            return '';
+        },
+        parseRegex: function(input) {
+            const raw = String(input || '').trim();
+            if (!raw) return null;
+            let source = raw;
+            let flags = 'i';
+            const slashIdx = raw.lastIndexOf('/');
+            if (raw.startsWith('/') && slashIdx > 0) {
+                source = raw.slice(1, slashIdx);
+                flags = raw.slice(slashIdx + 1) || 'i';
+            }
+            try {
+                return new RegExp(source, flags.replace(/g/g, ''));
+            } catch (e) {
+                try {
+                    return new RegExp(this.escapeRegExp(raw), 'i');
+                } catch (_e) {
+                    return null;
+                }
+            }
+        },
+        highlightTextInElement: function(el, re) {
+            if (!el || !re) return null;
+            const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+                acceptNode: (node) => {
+                    if (!node || !node.nodeValue) return NodeFilter.FILTER_REJECT;
+                    if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
+                },
+            });
+            let node;
+            while ((node = walker.nextNode())) {
+                const text = node.nodeValue;
+                if (!text) continue;
+                const m = re.exec(text);
+                if (!m) continue;
+                const before = text.slice(0, m.index);
+                const match = text.slice(m.index, m.index + m[0].length);
+                const after = text.slice(m.index + m[0].length);
+                const parent = node.parentNode;
+                if (!parent) return null;
+                if (before) parent.insertBefore(document.createTextNode(before), node);
+                const mark = document.createElement('mark');
+                mark.className = 'text-hit';
+                mark.textContent = match;
+                parent.insertBefore(mark, node);
+                if (after) parent.insertBefore(document.createTextNode(after), node);
+                parent.removeChild(node);
+                return mark;
+            }
+            return null;
         },
         secIdAliases: function(id) {
             const s = String(id || '').trim();
@@ -1998,6 +2078,56 @@
             this.highlight('feed-card', idx, DOM.feedBox, true);
             return true;
         },
+        clearSectionHighlights: function(card) {
+            if (!card) return;
+            card.querySelectorAll('mark.text-hit').forEach((mark) => {
+                const parent = mark.parentNode;
+                if (!parent) return;
+                const text = document.createTextNode(mark.textContent || '');
+                parent.replaceChild(text, mark);
+            });
+        },
+        highlightSectionMatch: function(secId, pattern) {
+            const target = String(secId || '').trim();
+            if (!target) return false;
+            const aliases = Utils.secIdAliases(target);
+            const idx = (Store.slides || []).findIndex((s) => aliases.includes(String(s && s.sec_id)));
+            if (idx < 0) return false;
+
+            try { this.renderMarkdownIfNeeded(idx); } catch (e) {}
+            const card = document.getElementById(`feed-${idx}`);
+            if (!card) return false;
+            this.clearSectionHighlights(card);
+
+            const re = Utils.parseRegex(pattern);
+            if (!re) return false;
+
+            const candidates = [
+                card.querySelector('.summary-block'),
+                card.querySelector('.md-script'),
+            ].filter(Boolean);
+
+            for (const el of candidates) {
+                const mark = Utils.highlightTextInElement(el, re);
+                if (mark) {
+                    try { mark.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+                    return true;
+                }
+            }
+            return false;
+        },
+        highlightSectionMatchWithRetry: function(secId, pattern) {
+            const target = String(secId || '').trim();
+            const raw = String(pattern || '').trim();
+            if (!target || !raw) return;
+            let tries = 0;
+            const tick = () => {
+                tries += 1;
+                if (this.highlightSectionMatch(target, raw)) return;
+                if (tries < 18) setTimeout(tick, 140);
+            };
+            setTimeout(tick, 120);
+        },
 
         onCardClick: function(el, time) {
             if (!el.classList.contains('active')) Player.seek(time);
@@ -2492,6 +2622,7 @@
             const files = (manifest && manifest.files && typeof manifest.files === 'object') ? manifest.files : {};
             const srtUrl = resolveUrl(files.srt);
             const secUrl = resolveUrl(files.section_manifest);
+            const secPlanUrl = resolveUrl(files.section_manifest_plan);
             const materialsUrl = resolveUrl(files.materials) || resolveUrl(files.material_manifest);
             const graphUrl = resolveUrl(files.graph);
             const refinedFiles = (files.refined && typeof files.refined === 'object') ? files.refined : {};
@@ -2509,6 +2640,31 @@
             Store.raw.sections = Array.isArray(secJson && secJson.sections) ? secJson.sections : [];
             Store.raw.timeline = [];
             Store.raw.crops = {};
+
+            if (secPlanUrl) {
+                try {
+                    const planJson = await this.fetchJson(secPlanUrl);
+                    const planSections = Array.isArray(planJson && planJson.sections) ? planJson.sections : [];
+                    if (planSections.length && Store.raw.sections.length) {
+                        const map = {};
+                        planSections.forEach((s) => {
+                            if (!s || !s.id) return;
+                            const hint = String(s.summary_hint || '').trim();
+                            if (!hint) return;
+                            const aliases = Utils.secIdAliases(s.id);
+                            aliases.forEach((key) => { map[key] = hint; });
+                        });
+                        Store.raw.sections.forEach((s) => {
+                            const cur = String(s.summary_hint || '').trim();
+                            if (cur) return;
+                            const key = String(s.id || '');
+                            if (map[key]) s.summary_hint = map[key];
+                        });
+                    }
+                } catch (e) {
+                    console.warn('section_manifest_plan load failed:', secPlanUrl, e);
+                }
+            }
 
             // Materials (optional)
             Store.raw.materialsById = {};
@@ -2808,6 +2964,31 @@
                 throw new Error("section_manifest 解析失败: " + secManifestPath);
             }
 
+            if (secManifestPlan && secManifestPlan !== secManifestPath && contents.file(secManifestPlan)) {
+                try {
+                    const planJson = JSON.parse(await contents.file(secManifestPlan).async("string"));
+                    const planSections = Array.isArray(planJson.sections) ? planJson.sections : [];
+                    if (planSections.length && Store.raw.sections.length) {
+                        const map = {};
+                        planSections.forEach((s) => {
+                            if (!s || !s.id) return;
+                            const hint = String(s.summary_hint || '').trim();
+                            if (!hint) return;
+                            const aliases = Utils.secIdAliases(s.id);
+                            aliases.forEach((key) => { map[key] = hint; });
+                        });
+                        Store.raw.sections.forEach((s) => {
+                            const cur = String(s.summary_hint || '').trim();
+                            if (cur) return;
+                            const key = String(s.id || '');
+                            if (map[key]) s.summary_hint = map[key];
+                        });
+                    }
+                } catch (e) {
+                    console.warn("section_manifest_plan parse failed:", secManifestPlan, e);
+                }
+            }
+
             // Materials timeline（来自 merge_slides 的 materials.json 或旧 material_manifest.json）
             Store.raw.materialsById = {};
             const materialsEntry = materialsPath ? contents.file(materialsPath) : null;
@@ -3019,14 +3200,14 @@
                 const secEnd = (typeof tl.end === 'number') ? tl.end : ((sec.end_ms || 0) / 1000);
                 const nar = Utils.pickBySecId(narMap, id) || {};
                 const title = tl.title || sec.title || nar.title || `Section ${i + 1}`;
-                const summary =
-                    nar.summary ||
-                    sec.summary_hint ||
-                    sec.lead_text ||
-                    sec.tail_text ||
-                    tl.summary ||
-                    '';
                 const refined_script = Utils.pickBySecId(refinedMap, id) || nar.refined_script || nar.script || '';
+                const summary =
+                    sec.summary_hint ||
+                    nar.summary ||
+                    sec.summary ||
+                    tl.summary ||
+                    Utils.extractSummaryFromMd(refined_script) ||
+                    '';
 
                 const materials = [];
                 (sec.material_ids || []).forEach(mid => {
@@ -3086,10 +3267,11 @@
             const u = new URL(window.location.href);
             const session = (u.searchParams.get('session') || '').trim() || null;
             const sec = (u.searchParams.get('sec') || '').trim() || null;
+            const hit = (u.searchParams.get('hit') || u.searchParams.get('q') || u.searchParams.get('re') || '').trim() || null;
             const partStr = u.searchParams.get('part');
             const partNum = partStr == null ? null : Number(partStr);
             const part = Number.isFinite(partNum) ? partNum : null;
-            return { session, part, sec };
+            return { session, part, sec, hit };
         },
 
         set: function(patch, opts = {}) {
@@ -3155,6 +3337,7 @@
                 if (p.part != null) {
                     await Loader.loadPartFromSession(p.part, { preserveSec: true });
                     if (p.sec) this._scrollToSectionWithRetry(p.sec);
+                    if (p.sec && p.hit) UI.highlightSectionMatchWithRetry(p.sec, p.hit);
                 }
             } catch (e) {
                 console.warn(e);
