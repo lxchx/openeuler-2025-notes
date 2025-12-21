@@ -2407,7 +2407,7 @@
             Store.zipWorkerZipId = zipId;
             Store.zipWorker = ZipWorkerClient;
 
-            UI.showLanding({ primary: '正在解析…', secondary: '正在解析压缩包目录并读取关键产物（worker）。' });
+            this._resetPartUi('正在解析（worker）…');
             let parsed = null;
             try {
                 parsed = await ZipWorkerClient.parsePartZip(buf, zipId);
