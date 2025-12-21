@@ -1110,6 +1110,28 @@
             const m = Math.floor(sec / 60); const s = Math.floor(sec % 60);
             return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         },
+        secIdAliases: function(id) {
+            const s = String(id || '').trim();
+            if (!s) return [];
+            const m = s.match(/^(sec_)(\d+)$/i);
+            if (!m) return [s];
+            const prefix = m[1];
+            const num = String(Number(m[2]));
+            if (!Number.isFinite(Number(num))) return [s];
+            const pad2 = num.padStart(2, '0');
+            const pad3 = num.padStart(3, '0');
+            const set = new Set([s, `${prefix}${num}`, `${prefix}${pad2}`, `${prefix}${pad3}`]);
+            return Array.from(set);
+        },
+        pickBySecId: function(map, id) {
+            if (!map || !id) return null;
+            if (map[id]) return map[id];
+            const aliases = Utils.secIdAliases(id);
+            for (const key of aliases) {
+                if (map[key]) return map[key];
+            }
+            return null;
+        },
         findFileInZip: function(zip, suffix) {
             const suffixLower = suffix.toLowerCase();
             for (const filename in zip.files) {
@@ -1132,8 +1154,12 @@
 	                if (!Array.isArray(sids)) return;
 	                sids.forEach(sid => {
 	                    if (!sid) return;
-	                    if (!Store.sectionToNodes[sid]) Store.sectionToNodes[sid] = [];
-	                    Store.sectionToNodes[sid].push(n.id);
+	                    const aliases = Utils.secIdAliases(sid);
+	                    if (!aliases.length) return;
+	                    aliases.forEach((key) => {
+	                        if (!Store.sectionToNodes[key]) Store.sectionToNodes[key] = [];
+	                        Store.sectionToNodes[key].push(n.id);
+	                    });
 	                });
 	            });
 	        }
@@ -1965,7 +1991,8 @@
         scrollToSection: function(secId) {
             const target = String(secId || '');
             if (!target) return false;
-            const idx = (Store.slides || []).findIndex((s) => String(s && s.sec_id) === target);
+            const aliases = Utils.secIdAliases(target);
+            const idx = (Store.slides || []).findIndex((s) => aliases.includes(String(s && s.sec_id)));
             if (idx < 0) return false;
             try { this.renderMarkdownIfNeeded(idx); } catch (e) {}
             this.highlight('feed-card', idx, DOM.feedBox, true);
@@ -2990,10 +3017,10 @@
                 const id = sec.id || tl.id || `sec_${i + 1}`;
                 const secStart = (typeof tl.start === 'number') ? tl.start : ((sec.start_ms || 0) / 1000);
                 const secEnd = (typeof tl.end === 'number') ? tl.end : ((sec.end_ms || 0) / 1000);
-                const nar = narMap[id] || {};
+                const nar = Utils.pickBySecId(narMap, id) || {};
                 const title = tl.title || sec.title || nar.title || `Section ${i + 1}`;
                 const summary = nar.summary || sec.summary_hint || tl.summary || '';
-                const refined_script = refinedMap[id] || nar.refined_script || nar.script || '';
+                const refined_script = Utils.pickBySecId(refinedMap, id) || nar.refined_script || nar.script || '';
 
                 const materials = [];
                 (sec.material_ids || []).forEach(mid => {
