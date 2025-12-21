@@ -2219,12 +2219,12 @@
         },
 
         fetchJson: async function(url) {
-            const resp = await fetch(url, { cache: "no-cache" });
+            const resp = await fetch(url);
             if (!resp.ok) throw new Error(`读取失败：${url}（HTTP ${resp.status}）`);
             return await resp.json();
         },
         fetchArrayBuffer: async function(url) {
-            const resp = await fetch(url, { cache: "no-cache" });
+            const resp = await fetch(url);
             if (!resp.ok) throw new Error(`下载失败：${url}（HTTP ${resp.status}）`);
             return await resp.arrayBuffer();
         },
