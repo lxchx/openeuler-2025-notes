@@ -1190,6 +1190,20 @@
             }
             return null;
         },
+        findSectionIndex: function(targetId) {
+            const target = String(targetId || '').trim();
+            if (!target) return { idx: -1, sec: null };
+            const aliases = Utils.secIdAliases(target);
+            const secList = Array.isArray(Store.raw.sections) ? Store.raw.sections : [];
+            for (let i = 0; i < secList.length; i++) {
+                const sec = secList[i];
+                const id = String(sec && sec.id ? sec.id : '');
+                if (aliases.includes(id)) return { idx: i, sec };
+            }
+            const slides = Array.isArray(Store.slides) ? Store.slides : [];
+            const idx = slides.findIndex((s) => aliases.includes(String(s && s.sec_id)));
+            return { idx, sec: idx >= 0 ? secList[idx] || null : null };
+        },
         secIdAliases: function(id) {
             const s = String(id || '').trim();
             if (!s) return [];
@@ -2071,11 +2085,16 @@
         scrollToSection: function(secId) {
             const target = String(secId || '');
             if (!target) return false;
-            const aliases = Utils.secIdAliases(target);
-            const idx = (Store.slides || []).findIndex((s) => aliases.includes(String(s && s.sec_id)));
+            const found = Utils.findSectionIndex(target);
+            const idx = found.idx;
             if (idx < 0) return false;
             try { this.renderMarkdownIfNeeded(idx); } catch (e) {}
             this.highlight('feed-card', idx, DOM.feedBox, true);
+            try {
+                if (found.sec && typeof found.sec.start_ms === 'number') {
+                    Player.seek(Math.max(0, Number(found.sec.start_ms) / 1000));
+                }
+            } catch (e) {}
             return true;
         },
         clearSectionHighlights: function(card) {
@@ -2090,8 +2109,7 @@
         highlightSectionMatch: function(secId, pattern) {
             const target = String(secId || '').trim();
             if (!target) return false;
-            const aliases = Utils.secIdAliases(target);
-            const idx = (Store.slides || []).findIndex((s) => aliases.includes(String(s && s.sec_id)));
+            const idx = Utils.findSectionIndex(target).idx;
             if (idx < 0) return false;
 
             try { this.renderMarkdownIfNeeded(idx); } catch (e) {}
