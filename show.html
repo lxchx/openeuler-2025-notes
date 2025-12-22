@@ -1142,53 +1142,92 @@
         parseRegex: function(input) {
             const raw = String(input || '').trim();
             if (!raw) return null;
-            let source = raw;
-            let flags = 'i';
             const slashIdx = raw.lastIndexOf('/');
             if (raw.startsWith('/') && slashIdx > 0) {
-                source = raw.slice(1, slashIdx);
-                flags = raw.slice(slashIdx + 1) || 'i';
+                const source = raw.slice(1, slashIdx);
+                const flags = (raw.slice(slashIdx + 1) || 'i').replace(/g/g, '');
+                try { return new RegExp(source, flags); } catch (e) {}
             }
-            try {
-                return new RegExp(source, flags.replace(/g/g, ''));
-            } catch (e) {
-                try {
-                    return new RegExp(this.escapeRegExp(raw), 'i');
-                } catch (_e) {
-                    return null;
-                }
-            }
+            try { return new RegExp(this.escapeRegExp(raw), 'i'); } catch (e) { return null; }
         },
         highlightTextInElement: function(el, re) {
             if (!el || !re) return null;
+            const text = el.textContent || '';
+            if (!text.trim()) return null;
+            const m = re.exec(text);
+            if (!m) return null;
+            const startIdx = m.index;
+            const endIdx = startIdx + m[0].length;
+            if (startIdx < 0 || endIdx <= startIdx) return null;
+
             const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
                 acceptNode: (node) => {
                     if (!node || !node.nodeValue) return NodeFilter.FILTER_REJECT;
-                    if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
                     return NodeFilter.FILTER_ACCEPT;
                 },
             });
+
             let node;
+            let acc = 0;
+            let startNode = null;
+            let endNode = null;
+            let startOffset = 0;
+            let endOffset = 0;
             while ((node = walker.nextNode())) {
-                const text = node.nodeValue;
-                if (!text) continue;
-                const m = re.exec(text);
-                if (!m) continue;
-                const before = text.slice(0, m.index);
-                const match = text.slice(m.index, m.index + m[0].length);
-                const after = text.slice(m.index + m[0].length);
-                const parent = node.parentNode;
-                if (!parent) return null;
-                if (before) parent.insertBefore(document.createTextNode(before), node);
+                const len = node.nodeValue.length;
+                const nextAcc = acc + len;
+                if (startNode == null && startIdx < nextAcc) {
+                    startNode = node;
+                    startOffset = startIdx - acc;
+                }
+                if (startNode != null && endIdx <= nextAcc) {
+                    endNode = node;
+                    endOffset = endIdx - acc;
+                    break;
+                }
+                acc = nextAcc;
+            }
+            if (!startNode || !endNode) return null;
+
+            const wrapRangeInTextNode = (textNode, start, end) => {
+                if (!textNode || start < 0 || end <= start) return null;
+                const raw = textNode.nodeValue || '';
+                const before = raw.slice(0, start);
+                const middle = raw.slice(start, end);
+                const after = raw.slice(end);
                 const mark = document.createElement('mark');
                 mark.className = 'text-hit';
-                mark.textContent = match;
-                parent.insertBefore(mark, node);
-                if (after) parent.insertBefore(document.createTextNode(after), node);
-                parent.removeChild(node);
+                mark.textContent = middle;
+                const frag = document.createDocumentFragment();
+                if (before) frag.appendChild(document.createTextNode(before));
+                frag.appendChild(mark);
+                if (after) frag.appendChild(document.createTextNode(after));
+                textNode.parentNode.replaceChild(frag, textNode);
                 return mark;
+            };
+
+            if (startNode === endNode) {
+                return wrapRangeInTextNode(startNode, startOffset, endOffset);
             }
-            return null;
+
+            const nodes = [];
+            const walker2 = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+            while ((node = walker2.nextNode())) nodes.push(node);
+            const startIndex = nodes.indexOf(startNode);
+            const endIndex = nodes.indexOf(endNode);
+            if (startIndex < 0 || endIndex < 0 || endIndex < startIndex) return null;
+
+            let firstMark = null;
+            firstMark = wrapRangeInTextNode(startNode, startOffset, startNode.nodeValue.length);
+            for (let i = startIndex + 1; i < endIndex; i++) {
+                const midNode = nodes[i];
+                if (!midNode || !midNode.nodeValue) continue;
+                const mark = wrapRangeInTextNode(midNode, 0, midNode.nodeValue.length);
+                if (!firstMark && mark) firstMark = mark;
+            }
+            const endMark = wrapRangeInTextNode(endNode, 0, endOffset);
+            if (!firstMark && endMark) firstMark = endMark;
+            return firstMark;
         },
         findSectionIndex: function(targetId) {
             const target = String(targetId || '').trim();
