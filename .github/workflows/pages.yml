@@ -24,6 +24,16 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Build docs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/build_docs.py \
+            --input docs/analysis-draft.md \
+            --template templates/md_viewer_template.html \
+            --output analysis-draft.html \
+            --title "Analysis Draft"
+
       - name: Prepare site
         shell: bash
         run: |

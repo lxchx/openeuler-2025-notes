@@ -86,6 +86,10 @@
         transform: translateY(-1px);
         border-color: rgba(10, 132, 255, 0.55);
       }
+      .card.doc-card {
+        border-style: dashed;
+        background: linear-gradient(180deg, rgba(76, 195, 255, 0.16), rgba(255, 255, 255, 0.04));
+      }
       .kicker {
         font-size: 12px;
         color: rgba(255, 255, 255, 0.62);
@@ -272,6 +276,20 @@
             `;
           })
           .join("");
+
+        grid.insertAdjacentHTML(
+          "beforeend",
+          `
+            <a class="card doc-card" href="analysis-draft.html">
+              <div class="kicker">资料</div>
+              <div class="title">分析稿（阅读版）</div>
+              <div class="meta">
+                <span class="pill">支持目录 / 折叠</span>
+                <span>CI 自动生成</span>
+              </div>
+            </a>
+          `
+        );
       }
 
       function renderParts(groups) {

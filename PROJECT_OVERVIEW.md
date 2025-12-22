@@ -15,6 +15,11 @@ Static GitHub Pages site for TalkDistill outputs.
 - After load, the viewer re-aligns scroll to avoid layout shifts.
 - `hit` highlight works across markdown nodes (bold/list/line breaks).
 
+## Docs
+- `docs/analysis-draft.md` is the source markdown.
+- CI builds `analysis-draft.html` from `templates/md_viewer_template.html` via `tools/build_docs.py`.
+- The HTML page provides sticky TOC, heading/list collapse, and reading progress.
+
 ## Asset prep
 - `tools/split_parts_for_pages.py --viewer-only`: create slim `.tkd.zip` for viewer.
 - `tools/export_parts_web.py`: unpack to `packages/parts-web` for progressive load.
