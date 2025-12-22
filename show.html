@@ -2129,12 +2129,31 @@
             if (idx < 0) return false;
             try { this.renderMarkdownIfNeeded(idx); } catch (e) {}
             this.highlight('feed-card', idx, DOM.feedBox, true);
+            this.pinSectionScroll(idx);
             try {
                 if (found.sec && typeof found.sec.start_ms === 'number') {
                     Player.seek(Math.max(0, Number(found.sec.start_ms) / 1000));
                 }
             } catch (e) {}
             return true;
+        },
+        pinSectionScroll: function(idx) {
+            if (!DOM.feedBox) return;
+            const box = DOM.feedBox;
+            const target = document.getElementById(`feed-${idx}`);
+            if (!target) return;
+            const adjust = () => {
+                if (!box || !target) return;
+                const boxRect = box.getBoundingClientRect();
+                const targetRect = target.getBoundingClientRect();
+                const padding = 12;
+                const delta = targetRect.top - boxRect.top - padding;
+                if (Math.abs(delta) < 4) return;
+                box.scrollTop = box.scrollTop + delta;
+            };
+            requestAnimationFrame(adjust);
+            setTimeout(adjust, 180);
+            setTimeout(adjust, 520);
         },
         clearSectionHighlights: function(card) {
             if (!card) return;
