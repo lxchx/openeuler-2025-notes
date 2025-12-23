@@ -96,6 +96,11 @@
         border-radius: 14px;
         padding: 14px;
         box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: calc(100vh - 120px);
+        overflow: hidden;
       }
       .toc h3 {
         margin: 0 0 10px;
@@ -114,6 +119,10 @@
         color: var(--text);
         font-size: 12px;
       }
+      .toc nav { overflow: auto; min-height: 0; padding-right: 4px; }
+      .toc nav::-webkit-scrollbar { width: 6px; }
+      .toc nav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 999px; }
+      .toc nav::-webkit-scrollbar-track { background: transparent; }
       .toc ul { list-style: none; padding-left: 0; margin: 0; }
       .toc li { margin: 3px 0; }
       .toc a {
@@ -180,7 +189,15 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        margin-bottom: 8px;
       }
+      .section-header .section-title { margin: 0; }
+      .doc-section { margin-top: 20px; }
+      .doc-section.level-1 { margin-top: 28px; }
+      .doc-section.level-2 { margin-top: 22px; }
+      .doc-section.level-3 { margin-top: 18px; }
+      .doc-section.level-4 { margin-top: 16px; }
+      .doc-section:first-child { margin-top: 0; }
       .section-toggle {
         border: none;
         background: rgba(76, 195, 255, 0.16);
@@ -208,7 +225,7 @@
       .doc ul .list-toggle {
         position: absolute;
         left: -18px;
-        top: 0.1em;
+        top: 0.25em;
       }
       .doc ol .list-toggle {
         margin-right: 6px;
