@@ -208,6 +208,11 @@
         border-radius: 6px;
         cursor: pointer;
         font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        align-self: center;
       }
       .doc-section.collapsed .section-body { display: none; }
       .list-toggle {
@@ -224,6 +229,8 @@
         justify-content: center;
         vertical-align: middle;
         margin-right: 6px;
+        line-height: 1;
+        transform: translateY(-1px);
       }
       .doc ul .list-toggle {
         position: relative;
@@ -289,7 +296,7 @@
         transition: opacity 0.15s ease, transform 0.15s ease;
         pointer-events: none;
       }
-      .link-preview.show { opacity: 1; transform: translateY(0); }
+      .link-preview.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
       .link-preview .preview-head {
         padding: 12px 14px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -308,8 +315,11 @@
       .link-preview .preview-body {
         padding: 12px 14px 14px;
         max-height: 46vh;
-        overflow: hidden;
+        overflow: auto;
       }
+      .link-preview .preview-body::-webkit-scrollbar { width: 6px; }
+      .link-preview .preview-body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 999px; }
+      .link-preview .preview-body::-webkit-scrollbar-track { background: transparent; }
       .link-preview .preview-summary {
         margin-bottom: 8px;
         padding: 8px 10px;
@@ -322,6 +332,22 @@
         font-size: 12px;
         line-height: 1.6;
         color: rgba(255, 255, 255, 0.82);
+      }
+      .link-preview .preview-slides {
+        margin-top: 10px;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(120px, 1fr);
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+      .link-preview .preview-slides img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
       .link-preview mark {
         background: rgba(255, 213, 102, 0.35);
@@ -589,6 +615,7 @@
         <div class="preview-body">
           <div class="preview-summary" style="display:none"></div>
           <div class="preview-snippet"></div>
+          <div class="preview-slides" style="display:none"></div>
         </div>
       `;
       document.body.appendChild(preview);
@@ -760,6 +787,7 @@
         const planPath = manifest.files ? (manifest.files.section_manifest_plan || manifest.files.section_manifest) : null;
         let title = "";
         let summary = "";
+        let slides = [];
         if (planPath) {
           const planUrl = new URL(
             `packages/parts-web/${info.session}/part_${String(info.part).padStart(2, "0")}/${planPath}`,
@@ -771,6 +799,14 @@
           if (sec) {
             title = String(sec.title || "");
             summary = String(sec.summary_hint || sec.summary || "");
+            const captures = (manifest.files && manifest.files.captures) || {};
+            const ids = Array.isArray(sec.material_ids) ? sec.material_ids : [];
+            const partPrefix = `packages/parts-web/${info.session}/part_${String(info.part).padStart(2, "0")}/`;
+            slides = ids
+              .map((id) => captures[id])
+              .filter(Boolean)
+              .slice(0, 5)
+              .map((rel) => new URL(partPrefix + rel, window.location.href).toString());
           }
         }
 
@@ -790,7 +826,7 @@
 
         const snippet = buildSnippet(md);
         const meta = `${info.session} · part_${String(info.part).padStart(2, "0")} · ${info.sec}`;
-        return { title, summary, snippet, hit: info.hit, meta };
+        return { title, summary, snippet, hit: info.hit, meta, slides };
       }
 
       function renderPreview(data) {
@@ -798,6 +834,7 @@
         const metaEl = preview.querySelector(".preview-meta");
         const summaryEl = preview.querySelector(".preview-summary");
         const snippetEl = preview.querySelector(".preview-snippet");
+        const slidesEl = preview.querySelector(".preview-slides");
         titleEl.textContent = data.title || "未命名 Section";
         metaEl.textContent = data.meta || "";
         if (data.summary) {
@@ -813,6 +850,26 @@
         if (re) {
           highlightInElement(summaryEl, re);
           highlightInElement(snippetEl, re);
+        }
+
+        if (slidesEl) {
+          if (Array.isArray(data.slides) && data.slides.length) {
+            slidesEl.style.display = "";
+            slidesEl.innerHTML = data.slides
+              .map((url, idx) => `<img data-src="${url}" alt="slide ${idx + 1}" loading="lazy" />`)
+              .join("");
+            const loadSlides = () => {
+              slidesEl.querySelectorAll("img[data-src]").forEach((img) => {
+                img.src = img.dataset.src;
+                img.removeAttribute("data-src");
+              });
+            };
+            if (typeof requestIdleCallback === "function") requestIdleCallback(loadSlides, { timeout: 400 });
+            else setTimeout(loadSlides, 60);
+          } else {
+            slidesEl.style.display = "none";
+            slidesEl.innerHTML = "";
+          }
         }
       }
 
@@ -838,6 +895,8 @@
         preview.querySelector(".preview-meta").textContent = "";
         preview.querySelector(".preview-summary").style.display = "none";
         preview.querySelector(".preview-snippet").innerHTML = "";
+        preview.querySelector(".preview-slides").style.display = "none";
+        preview.querySelector(".preview-slides").innerHTML = "";
         preview.classList.add("show");
         positionPreview(link);
 
@@ -878,8 +937,12 @@
             }, 120);
           });
         });
+        preview.addEventListener("mouseenter", () => {
+          if (previewTimer) clearTimeout(previewTimer);
+        });
+        preview.addEventListener("mouseleave", () => hidePreview());
         window.addEventListener("scroll", () => {
-          if (previewActive) hidePreview();
+          if (previewActive && !preview.matches(":hover")) hidePreview();
         }, { passive: true });
       }
 
