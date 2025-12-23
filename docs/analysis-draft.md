@@ -4,6 +4,7 @@
 
 ### ai_session part00 OS 补丁合入自动化
 公司：**深信服**
+
 功能：
 * 补丁合入工作流（[引用](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=0&sec=sec_003&hit=/AI+Agent+驱动的自动化流程.*生成最终报告/is)）
     * 自然语言下达任务（拉取指定 Linux 主线节点、与当前内核版本做对比分析）
@@ -48,6 +49,7 @@
   - **最终目标**：通过监督 Agent 的不断优化，逐步减少人工介入的需求，最终实现更高程度的自动化。
 
 效果（[引用](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=0&sec=sec_003&hit=/实践成果与价值/)）：
+
 内核团队的季度性代码分析与合入工作中取得了显著成效，主要体现在以下方面：
 
 *   **分析准确率**
@@ -94,7 +96,9 @@
 
 ### ai_session Part 07：中间件智能体
 公司：**东方通**
+
 产品：**中间件智能体** (中间件生命周期的智能化管理)（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=7&sec=sec_005)）
+
 功能（[引用](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=7&sec=sec_005&hit=/核心能力：全生命周期智能化/)）：
 * 覆盖中间件**全生命周期**：
     * 规划
@@ -713,7 +717,7 @@ SysArmor 原型集成上述能力，支持自然语言问答式分析；已在�
 - 收益
   * 该 part 主要描述设计理念与系统能力，未给量化加速数据。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ScienceEducationInnovation&part=4&sec=sec_006)）
 
-#### 3) **推理链路的通信编排调度与负载均衡**（CAM：大EP / FusedDeepMoE / M2N）
+#### 3) 挖掘硬件特性，使用专有算子加速通信（CAM：大EP / FusedDeepMoE / M2N）
 - 背景与问题
   * CAM 是面向昇腾平台的通信加速库，覆盖大模型训练与推理通信场景。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004)）
   * 在 MoE 模型中，`Dispatch/Combine` 等通信操作开销显著，通信耗时占比可达 **30%**。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004&hit=通信耗时占比可达30%)）
@@ -726,19 +730,12 @@ SysArmor 原型集成上述能力，支持自然语言问答式分析；已在�
 - M2N 通信加速：把通信编排进计算时序
   * **通信融合与编排调度**：将 A2F/F2A 通信过程与本地计算融合调度，消除冗余通信，掩盖通信延迟。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004&hit=通信融合与编排调度)）
   * **弹性通信能力**：支持 Attention/FFN 节点动态增减，通信域无需销毁并重建。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004&hit=支持Attention和FFN节点的动态增减)）
-- 收益
-  * 该 part 以瓶颈拆解与优化点说明为主，未给统一的端到端推理加速数字。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004)）
-
-#### 4) **KV Cache 传输的中间件化与策略优化**（MIXL）
-- 背景与定位
-  * 在 PD 分离的推理架构下，跨节点 KV Cache 传输是关键性能瓶颈；MIXL 作为“屏蔽底层传输差异、对接上层 AI 框架的中间件层”。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004&hit=MIXL)）
-- 核心策略
+- MIXL：聚合KVcache发送。利用多种传输通道和其他空闲NPU卡的传输资源
   * **分片消息聚合**：将多层 KV Cache 在发送前聚合成一个或少数大消息包，以提高有效带宽利用率与吞吐。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004&hit=分片消息聚合)）
   * **异构多径聚合**：聚合利用多种传输通道（如片上 UB、RoCE 网卡等），并利用其他空闲 NPU 卡的传输资源做多路径并行传输，以最大化整体带宽。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004&hit=异构多径聚合)）
-- 收益
-  * 提到 KV Cache 传输性能提升 **30%**。（[引用](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004&hit=传输性能提升30%)）
+  * KV Cache 传输性能提升 **30%**。（[引用](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=8&sec=sec_004&hit=传输性能提升30%)）
 
-#### 5) **软 FP8：Ascend C 动态反量化 + Matmul/GroupedMatmul 调优**
+#### 4) **软 FP8：Ascend C 动态反量化 + Matmul/GroupedMatmul 调优**
 - 背景与问题
   * 昇腾 910B/910B3 等不支持 FP8 原生计算，但模型开始广泛采用 FP8 权重（强调在**不支持 FP8 原生计算硬件**上运行 FP8 权重模型）。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=9&sec=sec_001&hit=不支持+FP8+数据类型的原生计算)）
 - 工作内容
@@ -746,8 +743,10 @@ SysArmor 原型集成上述能力，支持自然语言问答式分析；已在�
 - 收益
   * **端到端推理效率提升 32%**；GroupedMatmul（down）吞吐平均 **+40%**，Matmul（gate/up）平均 **+25%**；单台设备可流畅运行完整版 DeepSeek V3.1；兼容 DeepSeek/Qwen3 等 FP8 模型。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=9&sec=sec_002&hit=32%25+的端到端推理效率提升)；[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=9&sec=sec_003&hit=GroupedMatmul)）
 
-#### 6) **CPU 推理图编译器 ANNC**（非大模型，但“融合/前移”思路可能可迁移）
+#### 5) **CPU 推理图编译器 ANNC**（非大模型，但“融合/前移”思路可能可迁移）
 - 工作内容
   * **图算融合**把多个小算子融合成大算子、**常量折叠**减少运行时计算；编译期静态打包/**最优布局传递**消除运行时 **Matmul repack** 开销。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=10&sec=sec_003)；[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=10&sec=sec_004)）
 - 收益
   * 开源推荐模型 **+20%**；客户推荐模型 **+25%**；Embedding 融合 +5%；常量折叠场景时延 -10%（见各节案例）。（[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=10&sec=sec_003&hit=在实际应用中，ANNC+在多个开源推荐模型上获得了+20%25+的性能提升，在某客户的推荐模型下获得了+25%25+的性能提升。)；[来源](https://lxchx.github.io/openeuler-2025-notes/show.html?session=ai_session&part=10&sec=sec_004&hit=该优化使单个模型的推理时延降低了约+10%25。)）
+
+
