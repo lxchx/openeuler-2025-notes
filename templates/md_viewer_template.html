@@ -355,6 +355,27 @@
         object-fit: cover;
         border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.08);
+        cursor: zoom-in;
+      }
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(3, 6, 12, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 80;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+      .lightbox.show { opacity: 1; pointer-events: auto; }
+      .lightbox img {
+        max-width: min(92vw, 1200px);
+        max-height: 88vh;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
       }
       .link-preview mark {
         background: rgba(255, 213, 102, 0.35);
@@ -402,6 +423,9 @@
     </main>
 
     <button class="back-top" id="back-top">回到顶部</button>
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <img id="lightbox-img" alt="slide preview" />
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script id="doc-source" type="text/markdown">{{MD_CONTENT}}</script>
@@ -412,6 +436,8 @@
       const tocFilter = document.getElementById("toc-filter");
       const toc = document.getElementById("toc");
       const backTop = document.getElementById("back-top");
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
 
       marked.setOptions({ gfm: true, breaks: true });
       content.innerHTML = marked.parse(source);
@@ -846,7 +872,11 @@
         const re = parseRegex(data.hit);
         if (re) {
           highlightInElement(summaryEl, re);
-          highlightInElement(contentEl, re);
+          const blocks = contentEl.querySelectorAll("p, li, h1, h2, h3, h4, blockquote");
+          for (const block of blocks) {
+            re.lastIndex = 0;
+            if (highlightInElement(block, re)) break;
+          }
         }
 
         if (slidesEl) {
@@ -863,6 +893,15 @@
             };
             if (typeof requestIdleCallback === "function") requestIdleCallback(loadSlides, { timeout: 400 });
             else setTimeout(loadSlides, 60);
+            slidesEl.querySelectorAll("img").forEach((img) => {
+              img.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (!img.src) return;
+                lightboxImg.src = img.src;
+                lightbox.classList.add("show");
+                lightbox.setAttribute("aria-hidden", "false");
+              });
+            });
           } else {
             slidesEl.style.display = "none";
             slidesEl.innerHTML = "";
@@ -943,6 +982,21 @@
         }, { passive: true });
       }
 
+      function setupLightbox() {
+        lightbox.addEventListener("click", () => {
+          lightbox.classList.remove("show");
+          lightbox.setAttribute("aria-hidden", "true");
+          lightboxImg.src = "";
+        });
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && lightbox.classList.contains("show")) {
+            lightbox.classList.remove("show");
+            lightbox.setAttribute("aria-hidden", "true");
+            lightboxImg.src = "";
+          }
+        });
+      }
+
       backTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
       wrapSections();
@@ -954,6 +1008,7 @@
       setupTocFilter();
       setupTocToggle();
       setupShowLinkPreviews();
+      setupLightbox();
     </script>
   </body>
 </html>
