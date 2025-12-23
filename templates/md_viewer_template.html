@@ -328,11 +328,18 @@
         font-size: 12px;
         color: rgba(255, 255, 255, 0.86);
       }
-      .link-preview .preview-snippet {
+      .link-preview .preview-content {
         font-size: 12px;
         line-height: 1.6;
         color: rgba(255, 255, 255, 0.82);
       }
+      .link-preview .preview-content h1 { font-size: 16px; margin: 12px 0 6px; }
+      .link-preview .preview-content h2 { font-size: 14px; margin: 10px 0 6px; }
+      .link-preview .preview-content h3 { font-size: 13px; margin: 8px 0 6px; }
+      .link-preview .preview-content h4 { font-size: 12px; margin: 6px 0 6px; }
+      .link-preview .preview-content p { margin: 6px 0; }
+      .link-preview .preview-content ul,
+      .link-preview .preview-content ol { padding-left: 18px; margin: 6px 0; }
       .link-preview .preview-slides {
         margin-top: 10px;
         display: grid;
@@ -614,7 +621,7 @@
         </div>
         <div class="preview-body">
           <div class="preview-summary" style="display:none"></div>
-          <div class="preview-snippet"></div>
+          <div class="preview-content"></div>
           <div class="preview-slides" style="display:none"></div>
         </div>
       `;
@@ -752,15 +759,6 @@
         return await resp.text();
       }
 
-      function buildSnippet(md) {
-        const blocks = String(md || "")
-          .split(/\n{2,}/)
-          .map((b) => b.trim())
-          .filter(Boolean)
-          .filter((b) => !/^#+\s/.test(b));
-        return blocks.slice(0, 3).join("\n\n");
-      }
-
       async function loadPreviewData(info) {
         const key = `${info.session}:${info.part}`;
         let manifest = previewCache.get(key);
@@ -824,16 +822,15 @@
           if (m) title = m[1].trim();
         }
 
-        const snippet = buildSnippet(md);
         const meta = `${info.session} · part_${String(info.part).padStart(2, "0")} · ${info.sec}`;
-        return { title, summary, snippet, hit: info.hit, meta, slides };
+        return { title, summary, content: md, hit: info.hit, meta, slides };
       }
 
       function renderPreview(data) {
         const titleEl = preview.querySelector(".preview-title");
         const metaEl = preview.querySelector(".preview-meta");
         const summaryEl = preview.querySelector(".preview-summary");
-        const snippetEl = preview.querySelector(".preview-snippet");
+        const contentEl = preview.querySelector(".preview-content");
         const slidesEl = preview.querySelector(".preview-slides");
         titleEl.textContent = data.title || "未命名 Section";
         metaEl.textContent = data.meta || "";
@@ -844,12 +841,12 @@
           summaryEl.style.display = "none";
           summaryEl.textContent = "";
         }
-        snippetEl.innerHTML = data.snippet ? marked.parse(data.snippet) : "<em style=\"opacity:0.6\">暂无内容</em>";
+        contentEl.innerHTML = data.content ? marked.parse(data.content) : "<em style=\"opacity:0.6\">暂无内容</em>";
 
         const re = parseRegex(data.hit);
         if (re) {
           highlightInElement(summaryEl, re);
-          highlightInElement(snippetEl, re);
+          highlightInElement(contentEl, re);
         }
 
         if (slidesEl) {
@@ -894,7 +891,7 @@
         preview.querySelector(".preview-title").textContent = "加载中…";
         preview.querySelector(".preview-meta").textContent = "";
         preview.querySelector(".preview-summary").style.display = "none";
-        preview.querySelector(".preview-snippet").innerHTML = "";
+        preview.querySelector(".preview-content").innerHTML = "";
         preview.querySelector(".preview-slides").style.display = "none";
         preview.querySelector(".preview-slides").innerHTML = "";
         preview.classList.add("show");

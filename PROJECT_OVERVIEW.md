@@ -19,7 +19,7 @@ Static GitHub Pages site for TalkDistill outputs.
 - `docs/analysis-draft.md` is the source markdown.
 - CI builds `analysis-draft.html` from `templates/md_viewer_template.html` via `tools/build_docs.py`.
 - The HTML page provides sticky TOC, heading/list collapse, and reading progress.
-- Links to `show.html?session=...&part=...&sec=...` show a hover preview with highlighted `hit`.
+- Links to `show.html?session=...&part=...&sec=...` show a hover preview with highlighted `hit`, full section content, and async slide thumbs.
 
 ## Asset prep
 - `tools/split_parts_for_pages.py --viewer-only`: create slim `.tkd.zip` for viewer.
