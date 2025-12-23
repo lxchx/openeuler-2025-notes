@@ -120,6 +120,7 @@
         font-size: 12px;
       }
       .toc nav { overflow: auto; min-height: 0; padding-right: 4px; }
+      .toc nav { flex: 1; }
       .toc nav::-webkit-scrollbar { width: 6px; }
       .toc nav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 999px; }
       .toc nav::-webkit-scrollbar-track { background: transparent; }
@@ -221,11 +222,13 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        vertical-align: middle;
+        margin-right: 6px;
       }
       .doc ul .list-toggle {
-        position: absolute;
-        left: -18px;
-        top: 0.25em;
+        position: relative;
+        left: 0;
+        top: 0;
       }
       .doc ol .list-toggle {
         margin-right: 6px;
@@ -272,6 +275,60 @@
         transition: opacity 0.2s ease;
       }
       .back-top.show { opacity: 1; pointer-events: auto; }
+      .link-preview {
+        position: fixed;
+        z-index: 40;
+        width: min(520px, 82vw);
+        max-height: 60vh;
+        background: linear-gradient(180deg, rgba(8, 12, 20, 0.96), rgba(10, 12, 18, 0.92));
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 16px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        pointer-events: none;
+      }
+      .link-preview.show { opacity: 1; transform: translateY(0); }
+      .link-preview .preview-head {
+        padding: 12px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .link-preview .preview-title {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .link-preview .preview-meta {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .link-preview .preview-body {
+        padding: 12px 14px 14px;
+        max-height: 46vh;
+        overflow: hidden;
+      }
+      .link-preview .preview-summary {
+        margin-bottom: 8px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        background: rgba(76, 195, 255, 0.12);
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.86);
+      }
+      .link-preview .preview-snippet {
+        font-size: 12px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .link-preview mark {
+        background: rgba(255, 213, 102, 0.35);
+        color: rgba(255, 255, 255, 0.95);
+        padding: 0 3px;
+        border-radius: 4px;
+      }
       @media (max-width: 960px) {
         .layout { grid-template-columns: 1fr; }
         .toc { position: static; order: -1; }
@@ -428,7 +485,9 @@
             btn.textContent = li.classList.contains("list-collapsed") ? "▸" : "▾";
           });
           li.classList.add("has-toggle");
-          const target = li.querySelector(":scope > p") || li;
+          const target =
+            li.querySelector(":scope > p, :scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6") ||
+            li;
           target.insertBefore(btn, target.firstChild);
         });
       }
@@ -520,6 +579,310 @@
         });
       }
 
+      const preview = document.createElement("div");
+      preview.className = "link-preview";
+      preview.innerHTML = `
+        <div class="preview-head">
+          <div class="preview-title">加载中…</div>
+          <div class="preview-meta"></div>
+        </div>
+        <div class="preview-body">
+          <div class="preview-summary" style="display:none"></div>
+          <div class="preview-snippet"></div>
+        </div>
+      `;
+      document.body.appendChild(preview);
+
+      const previewCache = new Map();
+      let previewActive = null;
+      let previewTimer = null;
+
+      function parseShowUrl(href) {
+        try {
+          const u = new URL(href, window.location.href);
+          if (!u.pathname.endsWith("show.html")) return null;
+          const session = u.searchParams.get("session");
+          const part = Number(u.searchParams.get("part"));
+          const sec = u.searchParams.get("sec");
+          if (!session || !Number.isFinite(part) || !sec) return null;
+          const hit = u.searchParams.get("hit") || "";
+          return { session, part, sec, hit };
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function secIdAliases(id) {
+        const s = String(id || "").trim();
+        if (!s) return [];
+        const m = s.match(/^(sec_)(\d+)$/i);
+        if (!m) return [s];
+        const prefix = m[1];
+        const num = String(Number(m[2]));
+        if (!Number.isFinite(Number(num))) return [s];
+        const pad2 = num.padStart(2, "0");
+        const pad3 = num.padStart(3, "0");
+        return Array.from(new Set([s, `${prefix}${num}`, `${prefix}${pad2}`, `${prefix}${pad3}`]));
+      }
+
+      function parseRegex(input) {
+        const raw = String(input || "").trim();
+        if (!raw) return null;
+        const slashIdx = raw.lastIndexOf("/");
+        if (raw.startsWith("/") && slashIdx > 0) {
+          const source = raw.slice(1, slashIdx);
+          const flags = (raw.slice(slashIdx + 1) || "i").replace(/g/g, "");
+          try { return new RegExp(source, flags); } catch (e) {}
+        }
+        try { return new RegExp(raw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"); } catch (e) { return null; }
+      }
+
+      function highlightInElement(el, re) {
+        if (!el || !re) return false;
+        const text = el.textContent || "";
+        if (!text.trim()) return false;
+        const m = re.exec(text);
+        if (!m) return false;
+        const startIdx = m.index;
+        const endIdx = startIdx + m[0].length;
+        if (startIdx < 0 || endIdx <= startIdx) return false;
+
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+          acceptNode: (node) => {
+            if (!node || !node.nodeValue) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          },
+        });
+
+        let node;
+        let acc = 0;
+        let startNode = null;
+        let endNode = null;
+        let startOffset = 0;
+        let endOffset = 0;
+        while ((node = walker.nextNode())) {
+          const len = node.nodeValue.length;
+          const nextAcc = acc + len;
+          if (startNode == null && startIdx < nextAcc) {
+            startNode = node;
+            startOffset = startIdx - acc;
+          }
+          if (startNode != null && endIdx <= nextAcc) {
+            endNode = node;
+            endOffset = endIdx - acc;
+            break;
+          }
+          acc = nextAcc;
+        }
+        if (!startNode || !endNode) return false;
+
+        const wrapRangeInTextNode = (textNode, start, end) => {
+          if (!textNode || start < 0 || end <= start) return null;
+          const raw = textNode.nodeValue || "";
+          const before = raw.slice(0, start);
+          const middle = raw.slice(start, end);
+          const after = raw.slice(end);
+          const mark = document.createElement("mark");
+          mark.textContent = middle;
+          const frag = document.createDocumentFragment();
+          if (before) frag.appendChild(document.createTextNode(before));
+          frag.appendChild(mark);
+          if (after) frag.appendChild(document.createTextNode(after));
+          textNode.parentNode.replaceChild(frag, textNode);
+          return mark;
+        };
+
+        if (startNode === endNode) {
+          return !!wrapRangeInTextNode(startNode, startOffset, endOffset);
+        }
+
+        const nodes = [];
+        const walker2 = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        while ((node = walker2.nextNode())) nodes.push(node);
+        const startIndex = nodes.indexOf(startNode);
+        const endIndex = nodes.indexOf(endNode);
+        if (startIndex < 0 || endIndex < 0 || endIndex < startIndex) return false;
+
+        wrapRangeInTextNode(startNode, startOffset, startNode.nodeValue.length);
+        for (let i = startIndex + 1; i < endIndex; i++) {
+          const midNode = nodes[i];
+          if (!midNode || !midNode.nodeValue) continue;
+          wrapRangeInTextNode(midNode, 0, midNode.nodeValue.length);
+        }
+        wrapRangeInTextNode(endNode, 0, endOffset);
+        return true;
+      }
+
+      async function fetchJson(url) {
+        const resp = await fetch(url, { cache: "no-cache" });
+        if (!resp.ok) throw new Error(`fetch failed: ${url}`);
+        return await resp.json();
+      }
+
+      async function fetchText(url) {
+        const resp = await fetch(url, { cache: "no-cache" });
+        if (!resp.ok) throw new Error(`fetch failed: ${url}`);
+        return await resp.text();
+      }
+
+      function buildSnippet(md) {
+        const blocks = String(md || "")
+          .split(/\n{2,}/)
+          .map((b) => b.trim())
+          .filter(Boolean)
+          .filter((b) => !/^#+\s/.test(b));
+        return blocks.slice(0, 3).join("\n\n");
+      }
+
+      async function loadPreviewData(info) {
+        const key = `${info.session}:${info.part}`;
+        let manifest = previewCache.get(key);
+        if (!manifest) {
+          const part = String(info.part).padStart(2, "0");
+          const manifestUrl = new URL(
+            `packages/parts-web/${info.session}/part_${part}/manifest.json`,
+            window.location.href
+          ).toString();
+          manifest = await fetchJson(manifestUrl);
+          previewCache.set(key, manifest);
+        }
+
+        const aliases = secIdAliases(info.sec);
+        const refinedMap = (manifest.files && manifest.files.refined) || {};
+        let refinedPath = null;
+        for (const alias of aliases) {
+          if (refinedMap[alias]) {
+            refinedPath = refinedMap[alias];
+            break;
+          }
+        }
+
+        const planPath = manifest.files ? (manifest.files.section_manifest_plan || manifest.files.section_manifest) : null;
+        let title = "";
+        let summary = "";
+        if (planPath) {
+          const planUrl = new URL(
+            `packages/parts-web/${info.session}/part_${String(info.part).padStart(2, "0")}/${planPath}`,
+            window.location.href
+          ).toString();
+          const planJson = await fetchJson(planUrl);
+          const sections = Array.isArray(planJson.sections) ? planJson.sections : [];
+          const sec = sections.find((s) => aliases.includes(String(s.id)));
+          if (sec) {
+            title = String(sec.title || "");
+            summary = String(sec.summary_hint || sec.summary || "");
+          }
+        }
+
+        let md = "";
+        if (refinedPath) {
+          const refinedUrl = new URL(
+            `packages/parts-web/${info.session}/part_${String(info.part).padStart(2, "0")}/${refinedPath}`,
+            window.location.href
+          ).toString();
+          md = await fetchText(refinedUrl);
+        }
+
+        if (!title) {
+          const m = md.match(/^\\s*#\\s+(.+)$/m);
+          if (m) title = m[1].trim();
+        }
+
+        const snippet = buildSnippet(md);
+        const meta = `${info.session} · part_${String(info.part).padStart(2, "0")} · ${info.sec}`;
+        return { title, summary, snippet, hit: info.hit, meta };
+      }
+
+      function renderPreview(data) {
+        const titleEl = preview.querySelector(".preview-title");
+        const metaEl = preview.querySelector(".preview-meta");
+        const summaryEl = preview.querySelector(".preview-summary");
+        const snippetEl = preview.querySelector(".preview-snippet");
+        titleEl.textContent = data.title || "未命名 Section";
+        metaEl.textContent = data.meta || "";
+        if (data.summary) {
+          summaryEl.style.display = "";
+          summaryEl.textContent = data.summary;
+        } else {
+          summaryEl.style.display = "none";
+          summaryEl.textContent = "";
+        }
+        snippetEl.innerHTML = data.snippet ? marked.parse(data.snippet) : "<em style=\"opacity:0.6\">暂无内容</em>";
+
+        const re = parseRegex(data.hit);
+        if (re) {
+          highlightInElement(summaryEl, re);
+          highlightInElement(snippetEl, re);
+        }
+      }
+
+      function positionPreview(link) {
+        const rect = link.getBoundingClientRect();
+        const spacing = 12;
+        preview.style.display = "block";
+        const box = preview.getBoundingClientRect();
+        let left = rect.right + spacing;
+        if (left + box.width > window.innerWidth - 12) left = rect.left - box.width - spacing;
+        if (left < 12) left = 12;
+        let top = rect.top;
+        if (top + box.height > window.innerHeight - 12) top = window.innerHeight - box.height - 12;
+        if (top < 12) top = 12;
+        preview.style.left = `${left}px`;
+        preview.style.top = `${top}px`;
+      }
+
+      function showPreview(link, info) {
+        previewActive = link;
+        if (previewTimer) clearTimeout(previewTimer);
+        preview.querySelector(".preview-title").textContent = "加载中…";
+        preview.querySelector(".preview-meta").textContent = "";
+        preview.querySelector(".preview-summary").style.display = "none";
+        preview.querySelector(".preview-snippet").innerHTML = "";
+        preview.classList.add("show");
+        positionPreview(link);
+
+        const key = `${info.session}:${info.part}:${info.sec}:${info.hit}`;
+        const task = previewCache.get(key) || loadPreviewData(info);
+        previewCache.set(key, task);
+        Promise.resolve(task)
+          .then((data) => {
+            if (previewActive !== link) return;
+            renderPreview(data);
+            positionPreview(link);
+          })
+          .catch(() => {
+            if (previewActive !== link) return;
+            preview.querySelector(".preview-title").textContent = "预览加载失败";
+            preview.querySelector(".preview-meta").textContent = "";
+            preview.querySelector(".preview-summary").style.display = "none";
+            preview.querySelector(".preview-snippet").innerHTML = "<em style=\"opacity:0.6\">请直接打开链接查看。</em>";
+            positionPreview(link);
+          });
+      }
+
+      function hidePreview() {
+        previewActive = null;
+        preview.classList.remove("show");
+      }
+
+      function setupShowLinkPreviews() {
+        const links = Array.from(content.querySelectorAll("a[href*=\"show.html\"]"));
+        links.forEach((link) => {
+          const info = parseShowUrl(link.href);
+          if (!info) return;
+          link.addEventListener("mouseenter", () => showPreview(link, info));
+          link.addEventListener("mousemove", () => positionPreview(link));
+          link.addEventListener("mouseleave", () => {
+            previewTimer = setTimeout(() => {
+              if (previewActive === link) hidePreview();
+            }, 120);
+          });
+        });
+        window.addEventListener("scroll", () => {
+          if (previewActive) hidePreview();
+        }, { passive: true });
+      }
+
       backTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
       wrapSections();
@@ -530,6 +893,7 @@
       setupProgress();
       setupTocFilter();
       setupTocToggle();
+      setupShowLinkPreviews();
     </script>
   </body>
 </html>
