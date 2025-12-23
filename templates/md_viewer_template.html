@@ -742,11 +742,18 @@
           const before = raw.slice(0, start);
           const middle = raw.slice(start, end);
           const after = raw.slice(end);
-          const mark = document.createElement("mark");
-          mark.textContent = middle;
           const frag = document.createDocumentFragment();
           if (before) frag.appendChild(document.createTextNode(before));
-          frag.appendChild(mark);
+          let mark = null;
+          if (middle) {
+            if (middle.trim()) {
+              mark = document.createElement("mark");
+              mark.textContent = middle;
+              frag.appendChild(mark);
+            } else {
+              frag.appendChild(document.createTextNode(middle));
+            }
+          }
           if (after) frag.appendChild(document.createTextNode(after));
           textNode.parentNode.replaceChild(frag, textNode);
           return mark;
